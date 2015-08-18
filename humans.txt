@@ -1,0 +1,17 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+    Stephen Thomas -- Designer/Developer -- @stephen_thomas
+
+# THANKS
+
+    Turgay Ayer
+    Pinar Keskinocak
+    Jia Yan
+
+# TECHNOLOGY COLOPHON
+
+    CSS3, HTML5
+    Material Design Lite

@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Amniocentesis Advisor</title>
+        <meta name="description" content="Web application that uses decision theory to advise patients on amniocentesis testing">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Add to homescreen for Chrome on Android -->
+        <meta name="mobile-web-app-capable" content="yes">
+        <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
+    
+        <!-- Add to homescreen for Safari on iOS -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-title" content="Amnio Advisor">
+        <link rel="apple-touch-icon-precomposed" href="apple-touch-icon-precomposed.png">
+    
+        <!-- Tile icon for Win8 (144x144 + tile color) -->
+        <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+        <meta name="msapplication-TileColor" content="#3372DF">
+
+        <!-- External assets delivered by Content Distribution Networks -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.2/material.indigo-pink.min.css">
+        <script src="https://storage.googleapis.com/code.getmdl.io/1.0.2/material.min.js"></script>
+        
+        <!-- Local CSS styles and overrides -->
+        <style>
+            
+            .mdl-card {
+                margin: 16px;
+                max-width: 600px;
+                width: auto;
+            }
+            
+            .mdl-card__supporting-text > p:not(:first-of-type) {
+                margin-top: 1.5em;
+            }
+            
+            .mdl-textfield--floating-label.is-invalid .mdl-textfield__label {
+                top: 4px;
+            }
+            
+            .mdl-textfield__error {
+                left: 0;
+                top: 48px;
+            }
+            
+            legend {
+                font-size: 18px;
+                font-weight: 400;
+                line-height: normal;
+                padding-top: 1em;
+                overflow: hidden;
+            }
+            
+            input[type=number]::-webkit-inner-spin-button,
+            input[type=number]::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            input[type=number] {
+                -moz-appearance:textfield;
+            }
+            
+            fieldset div.rating {
+                padding-top: 0.5em;
+            }
+
+            fieldset div.rating:last-child {
+                padding-bottom: 2.2em;
+            }
+            
+            .rating {
+                width: 108%;
+            }
+
+            .rating > label {
+                display: block;
+                padding-left: 1em;
+                padding-top: 1em;
+            }
+            
+            .rating > .mdl-slider__container {
+                display: inline-block;
+                width: calc(100% - 72px);
+            }
+            
+            .rating > i {
+                position: relative;
+                top: 8px;
+            }
+            
+            .rating > i:first-of-type {
+                left: 8px;
+            }
+            
+            .rating input[type=range] {
+                position: relative;
+                top: -3px;
+            }
+
+            .rating > i:last-of-type {
+                right: 8px;
+            }
+            
+            .rating--keys {
+                display: table;
+                position: relative;
+                left: calc(36px - 16px);
+                width: calc(100% + 16px - 72px);
+            }
+            
+            .rating--key {
+                display: table-cell;
+                opacity: 0;
+                text-align: center;
+            }
+            
+        </style>
+
+    </head>
+    <body class="mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
+
+            <!-- Application navigation header -->
+
+            <header class="mdl-layout__header mdl-color--primary">
+                <nav class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
+                    <a href="#welcome" class="mdl-layout__tab is-active">Welcome</a>
+                    <a href="#info" class="mdl-layout__tab">Info</a>
+                    <a href="#priorities" class="mdl-layout__tab">Priorities</a>
+                    <a href="#advice" class="mdl-layout__tab">Advice</a>
+                    <a href="#details" class="mdl-layout__tab">Details</a>
+                </nav>
+            </header>
+            
+            <!-- Application main content -->
+
+            <main class="mdl-layout__content">
+                
+                <!-- Welcome panel -->
+
+                <section class="mdl-layout__tab-panel is-active" id="welcome">
+                    <div class="page-content">
+                        <div class="mdl-card mdl-shadow--2dp demo-card-event">
+                            <div class="mdl-card__title">
+                                <h2 class="mdl-card__title-text">Amniocentesis Advisor</h2>
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                <p>
+                                    Welcome and introductory information here. If you have
+                                    stumbled across this application on the internet, please
+                                    note that this is a non-functioning prototype. It does
+                                    <strong>not</strong> provide actual advice.
+                                </p>
+                                <p>
+                                    <em>Note:</em> Your information is completely private. We do
+                                    not store or save any of your information on our servers.
+                                    Nor do we use any cookies.
+                                </p>
+                                <p>
+                                    Get started by telling us some basic medical information.
+                                </p>
+                            </div>
+                            <div class="mdl-card__actions">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" data-onclick="info">
+                                    Medical Info
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="mdl-layout__tab-panel" id="info">
+                    <div class="page-content">
+                        <div class="mdl-card mdl-shadow--2dp demo-card-event">
+                            <div class="mdl-card__title">
+                                <h2 class="mdl-card__title-text">Medical Information</h2>
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                <p>
+                                    In addition to some general information, we need to know the results from
+                                    lab tests performed during your first and second trimesters. Your doctor
+                                    can tell you the test result values.
+                                </p>
+
+                                <form action="#">
+
+                                    <fieldset>
+                                        <legend>General information:</legend>
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="number" min="1" max="99" id="age" />
+                                            <label class="mdl-textfield__label" for="age">How old are you?</label>
+                                            <span class="mdl-textfield__error">Please enter a number between 1 and 99</span>
+                                        </div>
+                                    </fieldset>
+
+                                    <fieldset>
+                                        <legend>First trimester lab test results:</legend>
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="number" min="0.5" max="2.5" step="any" id="nt" />
+                                            <label class="mdl-textfield__label" for="nt">Nuchal Translucency (NT)</label>
+                                            <span class="mdl-textfield__error">Please enter a number between 0.5 and 2.5 (MoM)</span>
+                                        </div>
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="number" min="0.2" max="3.0" step="any" id="pappa" />
+                                            <label class="mdl-textfield__label" for="pappa">PAPP-A</label>
+                                            <span class="mdl-textfield__error">Please enter a number between 0.2 and 3.0 (MoM)</span>
+                                        </div>
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="number" min="0.3" max="5.0" step="any" id="fbhcg" />
+                                            <label class="mdl-textfield__label" for="fbhcg">fbhCG</label>
+                                            <span class="mdl-textfield__error">Please enter a number between 0.3 and 5.0 (MoM)</span>
+                                        </div>
+                                    </fieldset>
+
+                                    <fieldset>
+                                        <legend>Second trimester lab test results:</legend>
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="number" min="0.4" max="3.0" step="any" id="afp" />
+                                            <label class="mdl-textfield__label" for="apf">Alpha-Feprotein (AFP)</label>
+                                            <span class="mdl-textfield__error">Please enter a number between 0.4 and 3.0 (MoM)</span>
+                                        </div>
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="number" min="0.4" max="2.0" step="any" id="ue3" />
+                                            <label class="mdl-textfield__label" for="ue3">Unconjugated Estriol (uE3)</label>
+                                            <span class="mdl-textfield__error">Please enter a number between 0.4 and 2.0 (MoM)</span>
+                                        </div>
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="number" min="0.3" max="5.0" step="any" id="inhibina" />
+                                            <label class="mdl-textfield__label" for="inhibina">Inhibin-A</label>
+                                            <span class="mdl-textfield__error">Please enter a number between 0.3 and 5.0 (MoM)</span>
+                                        </div>
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="number" min="0.4" max="5.0" step="any" id="hgc" />
+                                            <label class="mdl-textfield__label" for="hgc">Total hGC</label>
+                                            <span class="mdl-textfield__error">Please enter a number between 0.4 and 5.0 (MoM)</span>
+                                        </div>
+                                    </fieldset>
+                                </form>
+
+                                <p>
+                                    Next, help us understand your concerns and priorities.
+                                </p>
+
+                            </div>
+                            <div class="mdl-card__actions">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" data-onclick="priorities">
+                                    Priorities
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="mdl-layout__tab-panel" id="priorities">
+                    <div class="page-content">
+                        <div class="mdl-card mdl-shadow--2dp demo-card-event">
+                            <div class="mdl-card__title">
+                                <h2 class="mdl-card__title-text">Your priorities</h2>
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                <p>
+                                    To help us understand your priorities, please tell us how you
+                                    feel about the following possible outcomes.
+                                </p>
+
+                                <form action="#">
+
+                                    <fieldset>
+                                        <legend>If you <strong>don't</strong> have an amniocentesis:</legend>
+                                        <div class="rating">
+                                            <label for="notest_healthy">And the baby is born healthy</label>
+                                            <i class="material-icons">mood_bad</i>
+                                            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="notest_healthy" />
+                                            <i class="material-icons">mood</i>
+                                            <div class="rating--keys">
+                                                <span class="rating--key">Terrible</span>
+                                                <span class="rating--key">Bad</span>
+                                                <span class="rating--key">Neutral</span>
+                                                <span class="rating--key">Good</span>
+                                                <span class="rating--key">Great</span>
+                                            </div>
+                                        </div>
+                                        <div class="rating">
+                                            <label for="notest_ds">And the baby is born with Down Syndrome</label>
+                                            <i class="material-icons">mood_bad</i>
+                                            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="notest_ds" />
+                                            <i class="material-icons">mood</i>
+                                            <div class="rating--keys">
+                                                <span class="rating--key">Terrible</span>
+                                                <span class="rating--key">Bad</span>
+                                                <span class="rating--key">Neutral</span>
+                                                <span class="rating--key">Good</span>
+                                                <span class="rating--key">Great</span>
+                                            </div>
+                                        </div>
+                                        <div class="rating">
+                                            <label for="notest_still">And the baby has Down Syndrome but is stillborn</label>
+                                            <i class="material-icons">mood_bad</i>
+                                            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="notest_still" />
+                                            <i class="material-icons">mood</i>
+                                            <div class="rating--keys">
+                                                <span class="rating--key">Terrible</span>
+                                                <span class="rating--key">Bad</span>
+                                                <span class="rating--key">Neutral</span>
+                                                <span class="rating--key">Good</span>
+                                                <span class="rating--key">Great</span>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+                                    <fieldset>
+                                        <legend>If you have an amniocentesis that shows <strong>no</strong> Down Syndrome:</legend>
+                                        <div class="rating">
+                                            <label for="test_healthy">And the baby is born healthy</label>
+                                            <i class="material-icons">mood_bad</i>
+                                            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="test_healthy" />
+                                            <i class="material-icons">mood</i>
+                                            <div class="rating--keys">
+                                                <span class="rating--key">Terrible</span>
+                                                <span class="rating--key">Bad</span>
+                                                <span class="rating--key">Neutral</span>
+                                                <span class="rating--key">Good</span>
+                                                <span class="rating--key">Great</span>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+                                    <fieldset>
+                                        <legend>If you have an amniocentesis that shows Down Syndrome:</legend>
+                                        <div class="rating">
+                                            <label for="test_term">And you terminate the pregnancy</label>
+                                            <i class="material-icons">mood_bad</i>
+                                            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="test_term" />
+                                            <i class="material-icons">mood</i>
+                                            <div class="rating--keys">
+                                                <span class="rating--key">Terrible</span>
+                                                <span class="rating--key">Bad</span>
+                                                <span class="rating--key">Neutral</span>
+                                                <span class="rating--key">Good</span>
+                                                <span class="rating--key">Great</span>
+                                            </div>
+                                        </div>
+                                        <div class="rating">
+                                            <label for="test_ds">And the baby is born with Down Syndrome</label>
+                                            <i class="material-icons">mood_bad</i>
+                                            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="test_ds" />
+                                            <i class="material-icons">mood</i>
+                                            <div class="rating--keys">
+                                                <span class="rating--key">Terrible</span>
+                                                <span class="rating--key">Bad</span>
+                                                <span class="rating--key">Neutral</span>
+                                                <span class="rating--key">Good</span>
+                                                <span class="rating--key">Great</span>
+                                            </div>
+                                        </div>
+                                        <div class="rating">
+                                            <label for="test_still">And the baby is stillborn</label>
+                                            <i class="material-icons">mood_bad</i>
+                                            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="test_still" />
+                                            <i class="material-icons">mood</i>
+                                            <div class="rating--keys">
+                                                <span class="rating--key">Terrible</span>
+                                                <span class="rating--key">Bad</span>
+                                                <span class="rating--key">Neutral</span>
+                                                <span class="rating--key">Good</span>
+                                                <span class="rating--key">Great</span>
+                                            </div>
+                                        </div>
+                                   </fieldset>
+
+                                    <fieldset>
+                                        <legend>If you have an amniocentesis that results in a miscarriage:</legend>
+                                        <div class="rating">
+                                            <label for="mis_ds">And the baby had Down Syndrome</label>
+                                            <i class="material-icons">mood_bad</i>
+                                            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="mis_ds" />
+                                            <i class="material-icons">mood</i>
+                                            <div class="rating--keys">
+                                                <span class="rating--key">Terrible</span>
+                                                <span class="rating--key">Bad</span>
+                                                <span class="rating--key">Neutral</span>
+                                                <span class="rating--key">Good</span>
+                                                <span class="rating--key">Great</span>
+                                            </div>
+                                        </div>
+                                        <div class="rating">
+                                            <label for="mis-healthy">And the baby did <strong>not</strong> have Down Syndrome</label>
+                                            <i class="material-icons">mood_bad</i>
+                                            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="mis-healthy" />
+                                            <i class="material-icons">mood</i>
+                                            <div class="rating--keys">
+                                                <span class="rating--key">Terrible</span>
+                                                <span class="rating--key">Bad</span>
+                                                <span class="rating--key">Neutral</span>
+                                                <span class="rating--key">Good</span>
+                                                <span class="rating--key">Great</span>
+                                            </div>
+                                        </div>
+                                   </fieldset>
+                                </form>
+
+                                <p>
+                                    Based on your information and priorities, we can offer some advice on an amniocentesis.
+                                </p>
+                            </div>
+                            <div class="mdl-card__actions">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" data-onclick="advice">
+                                    Advice
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="mdl-layout__tab-panel" id="advice">
+                    <div class="page-content"><!-- Your content goes here --></div>
+                </section>
+                <section class="mdl-layout__tab-panel" id="details">
+                    <div class="page-content">
+                        <div class="mdl-card mdl-shadow--2dp demo-card-event">
+                            <div class="mdl-card__title">
+                                <h2 class="mdl-card__title-text">Detailed Analysis</h2>
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                <p>
+                                    Based on your test result values, the chance of Down Syndrome
+                                    is about the same as for other women your age.
+                                </p>
+                                <p>
+                                    Based on your test result values, the chance of Down Syndrome
+                                    is less than for other women your age.
+                                </p>
+                                <p>
+                                    Based on those test results, the chance of Down Syndrome is about 
+                                    is greater than for other women your age.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+            
+            <!-- Application footer
+
+            <footer class="mdl-mini-footer mdl-color--primary">
+                <div class="mdl-mini-footer__left-section">
+                    <ul class="mdl-mini-footer__link-list">
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Privacy & Terms</a></li>
+                    </ul>
+                </div>
+            </footer>
+            
+             -->
+
+        </div>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. 
+         *** Re-visist the privacy statement/policy if this is enabled. ***
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='https://www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+        </script>
+        -->
+        
+        <!-- Local JavaScript -->
+        <script>
+
+            // Avoid polluting the global name space by embedding all of our
+            // code in an IIFE.
+
+//            (function() {
+
+                // The Rating object encapuslates the behavior of a
+                // rating component on the page. The optional input
+                // parameter of the constructor is the parent HTML
+                // element.
+
+                function Rating(el) {            
+
+                    // Private Properties and Attributes
+                    // ---------------------------------
+        
+                    var element,   // Containing element for the rating component
+                        input,     // Actual input control
+                        lowIcon,   // Icon for low value
+                        highIcon,  // Icon for high value
+                        keys,      // Key values
+                        callback;  // Callback for value changes
+
+                    // Private Methods and Functions
+                    // -----------------------------
+                    
+                    var setElement = function(el) {
+                        
+                        // Keep a reference to the various elements and sub-elements
+                        element = el;
+                        input = element.getElementsByTagName("input")[0];
+                        lowIcon = element.getElementsByTagName("i")[0];
+                        highIcon = element.getElementsByTagName("i")[1];
+                        keys = [].slice.call(element.getElementsByClassName("rating--key"));
+                        
+                        // Set/update event handlers
+                        input.addEventListener("input", handleInput);
+                        input.addEventListener("change", handleChange);
+
+                    };
+                    
+                    var update = function() {
+                        // Cache the current value
+                        var value = parseFloat(input.value);
+                        
+                        // Update the icons
+                        lowIcon.style.opacity = value < 6 ? 1 : 0.25 + ((10 - value)/6);
+                        highIcon.style.opacity = value > 4 ? 1 : 0.25 + (value/6);                        
+
+                        // Update the keys
+                        keys.forEach(function(key, idx) {
+                            idx = 20/8 * idx;
+                            if (Math.abs(value - idx) < 2) {
+                                key.style.opacity = (2 - Math.abs(value - idx)) / 2;
+                            } else {
+                                key.style.opacity = 0;
+                            }
+                        })
+                    };
+
+                    // Event Handlers
+                    // --------------
+                    
+                    var handleInput = function() {
+                        // We don't want special styling on lowest value
+                        setTimeout(function() {
+                            input.classList.remove("is-lowest-value");
+                        }, 0);
+                        update();
+                    }
+
+                    var handleChange = function() {
+                        // IE10 doesn't fire input events, so fire one for it
+                        handleInput();
+                        
+                        if (typeof callback === "function") {
+                            callback();
+                        }
+
+                    }
+
+                    // Object to be Returned
+                    // ---------------------
+
+                    function exports() { };
+
+                    // Public API Methods
+                    // ------------------
+
+                    exports.callback = function(fn) {
+                        if (!arguments.length) { return callback; }
+                        callback = fn;
+                        return this;
+                    };
+                                                
+                    exports.element = function(el) {
+                        if (!arguments.length) { return element; }
+                        setElement(el);
+                        return this;
+                    };
+                    
+                    exports.value = function(x) {
+                        if (!arguments.length) {
+                            if (input && input.value) { 
+                                return parseFloat(input.value); 
+                            }
+                            return undefined;
+                        }
+                        if (input && input.value) { 
+                            input.MaterialSlider.change(x);
+                            handleChange();
+                        }
+                        return this;
+                    };
+
+                    // Initialization
+                    // --------------
+
+                    if (arguments.length) {
+                        setElement(el);
+                        update();
+                    }
+
+                    return exports;
+
+                };
+                
+                
+                // Set up all the behaviors.
+                
+                // Look for all the `<button>` elements that have a `data-onclick`
+                // attribute (that will indicate a new section).
+                
+                [].slice.call(document.querySelectorAll("button[data-onclick]")).forEach(function(btn) {
+                    btn.addEventListener("click", function() {
+                        var target = btn.getAttribute('data-onclick');
+                        [].slice.call(document.querySelectorAll(".mdl-layout__tab-bar a")).forEach(function(anchor) {
+                            anchor.classList.remove("is-active");
+                        });
+                        [].slice.call(document.querySelectorAll(".mdl-layout__tab-panel")).forEach(function(section) {
+                            section.classList.remove("is-active");
+                        });
+                        document.querySelector(".mdl-layout__tab-bar a[href='#" + target + "']").classList.add("is-active");
+                        document.getElementById(target).classList.add("is-active");
+                    });
+                });
+
+                // Enable all the ratings components
+                
+                [].slice.call(document.getElementsByClassName("rating")).forEach(function(el) {
+                    new Rating(el); 
+                });
+
+//            }());
+            
+        </script>
+
+    </body>
+</html>
