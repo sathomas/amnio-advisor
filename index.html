@@ -200,7 +200,7 @@
                                     <fieldset>
                                         <legend>General information:</legend>
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" type="number" min="1" max="99" id="age" />
+                                            <input class="mdl-textfield__input info" type="number" min="1" max="99" id="age" />
                                             <label class="mdl-textfield__label" for="age">How old are you?</label>
                                             <span class="mdl-textfield__error">Please enter a number between 1 and 99</span>
                                         </div>
@@ -209,17 +209,17 @@
                                     <fieldset>
                                         <legend>First trimester lab test results:</legend>
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" type="number" min="0.5" max="2.5" step="any" id="nt" />
+                                            <input class="mdl-textfield__input info" type="number" min="0.5" max="2.5" step="any" id="nt" />
                                             <label class="mdl-textfield__label" for="nt">Nuchal Translucency (NT)</label>
                                             <span class="mdl-textfield__error">Please enter a number between 0.5 and 2.5 (MoM)</span>
                                         </div>
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" type="number" min="0.2" max="3.0" step="any" id="pappa" />
+                                            <input class="mdl-textfield__input info" type="number" min="0.2" max="3.0" step="any" id="pappa" />
                                             <label class="mdl-textfield__label" for="pappa">PAPP-A</label>
                                             <span class="mdl-textfield__error">Please enter a number between 0.2 and 3.0 (MoM)</span>
                                         </div>
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" type="number" min="0.3" max="5.0" step="any" id="fbhcg" />
+                                            <input class="mdl-textfield__input info" type="number" min="0.3" max="5.0" step="any" id="fbhcg" />
                                             <label class="mdl-textfield__label" for="fbhcg">fbhCG</label>
                                             <span class="mdl-textfield__error">Please enter a number between 0.3 and 5.0 (MoM)</span>
                                         </div>
@@ -228,22 +228,22 @@
                                     <fieldset>
                                         <legend>Second trimester lab test results:</legend>
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" type="number" min="0.4" max="3.0" step="any" id="afp" />
+                                            <input class="mdl-textfield__input info" type="number" min="0.4" max="3.0" step="any" id="afp" />
                                             <label class="mdl-textfield__label" for="apf">Alpha-Feprotein (AFP)</label>
                                             <span class="mdl-textfield__error">Please enter a number between 0.4 and 3.0 (MoM)</span>
                                         </div>
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" type="number" min="0.4" max="2.0" step="any" id="ue3" />
+                                            <input class="mdl-textfield__input info" type="number" min="0.4" max="2.0" step="any" id="ue3" />
                                             <label class="mdl-textfield__label" for="ue3">Unconjugated Estriol (uE3)</label>
                                             <span class="mdl-textfield__error">Please enter a number between 0.4 and 2.0 (MoM)</span>
                                         </div>
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" type="number" min="0.3" max="5.0" step="any" id="inhibina" />
+                                            <input class="mdl-textfield__input info" type="number" min="0.3" max="5.0" step="any" id="inhibina" />
                                             <label class="mdl-textfield__label" for="inhibina">Inhibin-A</label>
                                             <span class="mdl-textfield__error">Please enter a number between 0.3 and 5.0 (MoM)</span>
                                         </div>
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input" type="number" min="0.4" max="5.0" step="any" id="hgc" />
+                                            <input class="mdl-textfield__input info" type="number" min="0.4" max="5.0" step="any" id="hgc" />
                                             <label class="mdl-textfield__label" for="hgc">Total hGC</label>
                                             <span class="mdl-textfield__error">Please enter a number between 0.4 and 5.0 (MoM)</span>
                                         </div>
@@ -397,9 +397,9 @@
                                             </div>
                                         </div>
                                         <div class="rating">
-                                            <label for="mis-healthy">And the baby did <strong>not</strong> have Down Syndrome</label>
+                                            <label for="mis_healthy">And the baby did <strong>not</strong> have Down Syndrome</label>
                                             <i class="material-icons">mood_bad</i>
-                                            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="mis-healthy" />
+                                            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="mis_healthy" />
                                             <i class="material-icons">mood</i>
                                             <div class="rating--keys">
                                                 <span class="rating--key">Terrible</span>
@@ -474,9 +474,9 @@
             (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
             function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
             e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='https://www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+            e.src="https://www.google-analytics.com/analytics.js";
+            r.parentNode.insertBefore(e,r)}(window,document,"script","ga"));
+            ga("create","UA-XXXXX-X","auto");ga("send","pageview");
         </script>
         -->
         
@@ -487,6 +487,90 @@
             // code in an IIFE.
 
 //            (function() {
+    
+                // The Info object encapsulates the behavior
+                // of an input element that accepts user input.
+                
+                function Info(el) {
+
+                    // Private Properties and Attributes
+                    // ---------------------------------
+        
+                    var element,   // Containing element for the rating component
+                        callback;  // Callback for value changes
+
+                    // Private Methods and Functions
+                    // -----------------------------
+                    
+                    var setElement = function(el) {
+                        
+                        // Keep a reference to the various elements and sub-elements
+                        element = el;
+                        
+                        // Set/update event handlers
+                        element.addEventListener("change", handleChange);
+
+                    };
+                    
+                    // Event Handlers
+                    // --------------
+                    
+                    var handleChange = function(ev) {
+                        if (typeof callback === "function") {
+                            callback(ev);
+                        }
+                    }
+
+                    // Object to be Returned
+                    // ---------------------
+
+                    function exports() { };
+
+                    // Public API Methods
+                    // ------------------
+
+                    exports.callback = function(fn) {
+                        if (!arguments.length) { return callback; }
+                        callback = fn;
+                        return this;
+                    };
+                                                
+                    exports.element = function(el) {
+                        if (!arguments.length) { return element; }
+                        setElement(el);
+                        return this;
+                    };
+                    
+                    exports.id = function(s) {
+                        if (!arguments.length) { return element.getAttribute("id"); }
+                        element.setAttribute("id", s);
+                        return this;
+                    };
+                    
+                    exports.value = function(x) {
+                        if (!arguments.length) {
+                            if (element && element.value) { 
+                                return parseFloat(element.value); 
+                            }
+                            return undefined;
+                        }
+                        if (element && element.value) { 
+                            element.value = x;
+                            handleChange();
+                        }
+                        return this;
+                    };
+
+                    // Initialization
+                    // --------------
+
+                    if (arguments.length) {
+                        setElement(el);
+                    }
+
+                    return exports;
+
+                };
 
                 // The Rating object encapuslates the behavior of a
                 // rating component on the page. The optional input
@@ -545,7 +629,7 @@
                     // Event Handlers
                     // --------------
                     
-                    var handleInput = function() {
+                    var handleInput = function(ev) {
                         // We don't want special styling on lowest value
                         setTimeout(function() {
                             input.classList.remove("is-lowest-value");
@@ -553,12 +637,12 @@
                         update();
                     }
 
-                    var handleChange = function() {
+                    var handleChange = function(ev) {
                         // IE10 doesn't fire input events, so fire one for it
-                        handleInput();
+                        handleInput(ev);
                         
                         if (typeof callback === "function") {
-                            callback();
+                            callback(ev);
                         }
 
                     }
@@ -580,6 +664,12 @@
                     exports.element = function(el) {
                         if (!arguments.length) { return element; }
                         setElement(el);
+                        return this;
+                    };
+                    
+                    exports.id = function(s) {
+                        if (!arguments.length) { return input.getAttribute("id"); }
+                        input.setAttribute("id", s);
                         return this;
                     };
                     
@@ -609,6 +699,12 @@
 
                 };
                 
+                // Event handlers
+                
+                var inputChanged = function(ev) {
+                    console.log("new input value", ev);  
+                };
+                
                 
                 // Set up all the behaviors.
                 
@@ -617,7 +713,12 @@
                 
                 [].slice.call(document.querySelectorAll("button[data-onclick]")).forEach(function(btn) {
                     btn.addEventListener("click", function() {
-                        var target = btn.getAttribute('data-onclick');
+                        
+                        // When the user clicks on a button, simulate the effect of
+                        // selecting the corresponding tab panel. Essentially that's
+                        // nothing more than managing the `is-active` class on the
+                        // tabs and the panels.
+                        var target = btn.getAttribute("data-onclick");
                         [].slice.call(document.querySelectorAll(".mdl-layout__tab-bar a")).forEach(function(anchor) {
                             anchor.classList.remove("is-active");
                         });
@@ -626,13 +727,30 @@
                         });
                         document.querySelector(".mdl-layout__tab-bar a[href='#" + target + "']").classList.add("is-active");
                         document.getElementById(target).classList.add("is-active");
+                        
+                        // Also, go ahead and position the window at the top
+                        // of the new panel.
+                        document.getElementsByTagName('main')[0].scrollTop = 0;
                     });
                 });
 
-                // Enable all the ratings components
+                // Enable all the input components
                 
+                var inputs = {},
+                    inputArray = [];
+                
+                [].slice.call(document.getElementsByClassName("info")).forEach(function(el) {
+                    var obj = new Info(el);
+                    inputs[obj.id()] = obj;
+                    inputArray.push(obj);
+                    obj.callback(inputChanged);
+                });
+
                 [].slice.call(document.getElementsByClassName("rating")).forEach(function(el) {
-                    new Rating(el); 
+                    var obj = new Rating(el);
+                    inputs[obj.id()] = obj;
+                    inputArray.push(obj);
+                    obj.callback(inputChanged);
                 });
 
 //            }());
