@@ -119,6 +119,22 @@
                 opacity: 0;
                 text-align: center;
             }
+
+            .results__notready {
+                display: block;
+            }
+            
+            .results__ready {
+                display: none;
+            }
+            
+            body[data-results-ready="true"] .results__notready {
+                display: none;                
+            }
+
+            body[data-results-ready="true"] .results__ready {
+                display: block;
+            }
             
         </style>
 
@@ -199,8 +215,8 @@
 
                                     <fieldset>
                                         <legend>General information:</legend>
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input info" type="number" min="1" max="99" id="age" />
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
+                                            <input class="mdl-textfield__input" type="number" min="1" max="99" id="age" />
                                             <label class="mdl-textfield__label" for="age">How old are you?</label>
                                             <span class="mdl-textfield__error">Please enter a number between 1 and 99</span>
                                         </div>
@@ -208,18 +224,18 @@
 
                                     <fieldset>
                                         <legend>First trimester lab test results:</legend>
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input info" type="number" min="0.5" max="2.5" step="any" id="nt" />
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
+                                            <input class="mdl-textfield__input" type="number" min="0.5" max="2.5" step="any" id="nt" />
                                             <label class="mdl-textfield__label" for="nt">Nuchal Translucency (NT)</label>
                                             <span class="mdl-textfield__error">Please enter a number between 0.5 and 2.5 (MoM)</span>
                                         </div>
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input info" type="number" min="0.2" max="3.0" step="any" id="pappa" />
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
+                                            <input class="mdl-textfield__input" type="number" min="0.2" max="3.0" step="any" id="pappa" />
                                             <label class="mdl-textfield__label" for="pappa">PAPP-A</label>
                                             <span class="mdl-textfield__error">Please enter a number between 0.2 and 3.0 (MoM)</span>
                                         </div>
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input info" type="number" min="0.3" max="5.0" step="any" id="fbhcg" />
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
+                                            <input class="mdl-textfield__input" type="number" min="0.3" max="5.0" step="any" id="fbhcg" />
                                             <label class="mdl-textfield__label" for="fbhcg">fbhCG</label>
                                             <span class="mdl-textfield__error">Please enter a number between 0.3 and 5.0 (MoM)</span>
                                         </div>
@@ -227,27 +243,28 @@
 
                                     <fieldset>
                                         <legend>Second trimester lab test results:</legend>
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input info" type="number" min="0.4" max="3.0" step="any" id="afp" />
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
+                                            <input class="mdl-textfield__input" type="number" min="0.4" max="3.0" step="any" id="afp" />
                                             <label class="mdl-textfield__label" for="apf">Alpha-Feprotein (AFP)</label>
                                             <span class="mdl-textfield__error">Please enter a number between 0.4 and 3.0 (MoM)</span>
                                         </div>
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input info" type="number" min="0.4" max="2.0" step="any" id="ue3" />
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
+                                            <input class="mdl-textfield__input" type="number" min="0.4" max="2.0" step="any" id="ue3" />
                                             <label class="mdl-textfield__label" for="ue3">Unconjugated Estriol (uE3)</label>
                                             <span class="mdl-textfield__error">Please enter a number between 0.4 and 2.0 (MoM)</span>
                                         </div>
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input info" type="number" min="0.3" max="5.0" step="any" id="inhibina" />
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
+                                            <input class="mdl-textfield__input" type="number" min="0.3" max="5.0" step="any" id="inhibina" />
                                             <label class="mdl-textfield__label" for="inhibina">Inhibin-A</label>
                                             <span class="mdl-textfield__error">Please enter a number between 0.3 and 5.0 (MoM)</span>
                                         </div>
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                                            <input class="mdl-textfield__input info" type="number" min="0.4" max="5.0" step="any" id="hgc" />
+                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
+                                            <input class="mdl-textfield__input" type="number" min="0.4" max="5.0" step="any" id="hgc" />
                                             <label class="mdl-textfield__label" for="hgc">Total hGC</label>
                                             <span class="mdl-textfield__error">Please enter a number between 0.4 and 5.0 (MoM)</span>
                                         </div>
                                     </fieldset>
+
                                 </form>
 
                                 <p>
@@ -410,6 +427,7 @@
                                             </div>
                                         </div>
                                    </fieldset>
+
                                 </form>
 
                                 <p>
@@ -426,27 +444,43 @@
                 </section>
 
                 <section class="mdl-layout__tab-panel" id="advice">
-                    <div class="page-content"><!-- Your content goes here --></div>
+                    <div class="page-content">
+                        <div class="mdl-card mdl-shadow--2dp demo-card-event results__notready">
+                            <div class="mdl-card__title">
+                                <h2 class="mdl-card__title-text">Suggested Action</h2>
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                <p>
+                                    Before we can offer any suggestions, we need some 
+                                    basic medical information.
+                                </p>
+                            </div>
+                            <div class="mdl-card__actions">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" data-onclick="info">
+                                    Medical Info
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </section>
+
+
                 <section class="mdl-layout__tab-panel" id="details">
                     <div class="page-content">
-                        <div class="mdl-card mdl-shadow--2dp demo-card-event">
+                        <div class="mdl-card mdl-shadow--2dp demo-card-event results__notready">
                             <div class="mdl-card__title">
                                 <h2 class="mdl-card__title-text">Detailed Analysis</h2>
                             </div>
                             <div class="mdl-card__supporting-text">
                                 <p>
-                                    Based on your test result values, the chance of Down Syndrome
-                                    is about the same as for other women your age.
+                                    Before we can provide detailed analysis, we need some 
+                                    basic medical information.
                                 </p>
-                                <p>
-                                    Based on your test result values, the chance of Down Syndrome
-                                    is less than for other women your age.
-                                </p>
-                                <p>
-                                    Based on those test results, the chance of Down Syndrome is about 
-                                    is greater than for other women your age.
-                                </p>
+                            </div>
+                            <div class="mdl-card__actions">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" data-onclick="info">
+                                    Medical Info
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -497,6 +531,7 @@
                     // ---------------------------------
         
                     var element,   // Containing element for the rating component
+                        input,     // Actual input control
                         callback;  // Callback for value changes
 
                     // Private Methods and Functions
@@ -505,10 +540,12 @@
                     var setElement = function(el) {
                         
                         // Keep a reference to the various elements and sub-elements
-                        element = el;
+                        element = el,
+                        input = element.getElementsByTagName("input")[0];
                         
                         // Set/update event handlers
-                        element.addEventListener("change", handleChange);
+                        input.addEventListener("change", handleChange);
+                        input.addEventListener("blur", handleBlur);
 
                     };
                     
@@ -519,7 +556,18 @@
                         if (typeof callback === "function") {
                             callback(ev);
                         }
-                    }
+                    };
+                    
+                    var handleBlur = function(ev) {
+
+                        // We don't use `required` attributes initially
+                        // to avoid a bunch of error messages on an
+                        // empty form. But we will add the attribute
+                        // after the user visits the input.
+                        input.setAttribute("required", "required");
+                        element.MaterialTextfield.checkValidity();
+
+                    };
 
                     // Object to be Returned
                     // ---------------------
@@ -542,20 +590,20 @@
                     };
                     
                     exports.id = function(s) {
-                        if (!arguments.length) { return element.getAttribute("id"); }
-                        element.setAttribute("id", s);
+                        if (!arguments.length) { return input.getAttribute("id"); }
+                        input.setAttribute("id", s);
                         return this;
                     };
                     
                     exports.value = function(x) {
                         if (!arguments.length) {
-                            if (element && element.value) { 
-                                return parseFloat(element.value); 
+                            if (input && input.value) { 
+                                return parseFloat(input.value); 
                             }
                             return undefined;
                         }
-                        if (element && element.value) { 
-                            element.value = x;
+                        if (input && input.value) { 
+                            input.value = x;
                             handleChange();
                         }
                         return this;
@@ -702,7 +750,17 @@
                 // Event handlers
                 
                 var inputChanged = function(ev) {
-                    console.log("new input value", ev);  
+                    // If every input has a valid value, we can enable the results
+                    var inputsReady = inputArray.every(function(i) {
+                            return typeof i.value() !== "undefined";
+                        }) && 
+                        [].slice.call(document.getElementsByTagName("form")).every(function(f) {
+                            return f.checkValidity();
+                        });
+
+                    // Add an attribute to the markup so that CSS rules can change
+                    // visibility appropriately.
+                    document.getElementsByTagName("body")[0].setAttribute("data-results-ready", inputsReady);
                 };
                 
                 
