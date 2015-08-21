@@ -39,6 +39,10 @@
                 margin-top: 1.5em;
             }
             
+            .mdl_card__supporting-text__note {
+                padding: 0 8px;
+            }
+            
             .mdl-textfield--floating-label.is-invalid .mdl-textfield__label {
                 top: 4px;
             }
@@ -138,6 +142,13 @@
             }
 
             body[data-results-ready="true"] .results__ready {
+                display: block;
+            }
+            
+            .results__suspect {
+                display: none;
+            }
+            body[data-results-suspect="true"] .results__suspect {
                 display: block;
             }
             
@@ -466,6 +477,31 @@
                                 </button>
                             </div>
                         </div>
+                        <div class="mdl-card mdl-shadow--2dp demo-card-event results__ready">
+                            <div class="mdl-card__title">
+                                <h2 class="mdl-card__title-text">Suggested Action</h2>
+                            </div>
+                            <div class="mdl-card__supporting-text results__suspect">
+                                <hr/>
+                                <p class="mdl_card__supporting-text__note">
+                                    <em>Note:</em> We can give you better advice if you pick a wider
+                                    range of values for your priorities. Would you like to review
+                                    them now?
+                                </p>
+                                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" data-onclick="priorities">
+                                    Review Priorities
+                                </a>
+                                <hr/>
+                            </div>
+                            <div class="mdl-card__supporting-text mdl-card--border">
+                                Actual results go here.
+                            </div>
+                            <div class="mdl-card__actions">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" data-onclick="details">
+                                    Details
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
@@ -478,7 +514,7 @@
                             </div>
                             <div class="mdl-card__supporting-text">
                                 <p>
-                                    Before we can provide detailed analysis, we need some 
+                                    Before we can provide a detailed analysis, we need some 
                                     basic medical information.
                                 </p>
                             </div>
@@ -529,11 +565,25 @@
     
                 // Global state for the application
                 var hasInputChanged = false,    // has the user changed *any* input?
-                    hasVisitedResults = false;  // has the user visisted a results panel?
+                    hasVisitedResults = false,  // has the user visisted a results panel?
+                    minRating,                  // minimum rating value
+                    maxRating,                  // maximum rating value
                     inputVars = {},             // hash of all input objects
                     inputs = [],                // array of all input objects
                     infos = [],                 // array of all info objects
                     ratings = [];               // array of all rating objects
+                    
+                // Application operations
+                var showResults = function() {
+                    
+                    // If the user hasn't used much of the rating range,
+                    // enable a note.
+                    document.getElementsByTagName("body")[0].setAttribute(
+                        "data-results-suspect", 
+                        ((maxRating - minRating) < 4)
+                    );
+                    
+                };
                 
     
                 // The Info object encapsulates the behavior
@@ -761,6 +811,11 @@
                         return this;
                     };
                     
+                    exports.required = function() {
+                        // Ratings are always (effectively) required
+                        return true;
+                    };
+                    
                     exports.value = function(x) {
                         if (!arguments.length) {
                             if (input && input.value) { 
@@ -794,9 +849,13 @@
                     // Note that the user has changed at least one input
                     hasInputChanged = true;
                     
-                    // If every input has a valid value, we can enable the results
+                    // Get the range of rating values
+                    minRating = Math.min.apply(null, ratings.map(function(r) {return r.value();}));
+                    maxRating = Math.max.apply(null, ratings.map(function(r) {return r.value();}));
+                    
+                    // If every required input has a valid value, we can enable the results
                     var allInputsReady = inputs.every(function(i) {
-                            return typeof i.value() !== "undefined";
+                            return !i.required() || typeof i.value() !== "undefined";
                         }) && 
                         [].slice.call(document.getElementsByTagName("form")).every(function(f) {
                             return f.checkValidity();
@@ -805,6 +864,12 @@
                     // Add an attribute to the markup so that CSS rules can change
                     // visibility appropriately.
                     document.getElementsByTagName("body")[0].setAttribute("data-results-ready", allInputsReady);
+                    
+                    // If inputs are there, show the results
+                    if (allInputsReady) {
+                        showResults();
+                    }
+
                 };
                 
                 var panelViewed = function(panel) {
@@ -837,14 +902,17 @@
                 // Look for all the `<button>` elements that have a `data-onclick`
                 // attribute (that will indicate a new section).
                 
-                [].slice.call(document.querySelectorAll("button[data-onclick]")).forEach(function(btn) {
-                    btn.addEventListener("click", function() {
+                [].slice.call(document.querySelectorAll("button[data-onclick], a[data-onclick]")).forEach(function(el) {
+                    el.addEventListener("click", function(ev) {
+                        
+                        // Don't process links, etc.
+                        ev.preventDefault();
                         
                         // When the user clicks on a button, simulate the effect of
                         // selecting the corresponding tab panel. Essentially that's
                         // nothing more than managing the `is-active` class on the
                         // tabs and the panels.
-                        var target = btn.getAttribute("data-onclick");
+                        var target = el.getAttribute("data-onclick");
                         [].slice.call(document.querySelectorAll(".mdl-layout__tab-bar a")).forEach(function(anchor) {
                             anchor.classList.remove("is-active");
                         });
