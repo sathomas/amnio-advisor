@@ -23,8 +23,8 @@
 
         <!-- External assets delivered by Content Distribution Networks -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.2/material.indigo-pink.min.css">
-        <script src="https://storage.googleapis.com/code.getmdl.io/1.0.2/material.min.js"></script>
+        <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
+        <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
         
         <!-- Local CSS styles and overrides -->
         <style>
@@ -527,6 +527,15 @@
 
 //            (function() {
     
+                // Global state for the application
+                var hasInputChanged = false,    // has the user changed *any* input?
+                    hasVisitedResults = false;  // has the user visisted a results panel?
+                    inputVars = {},             // hash of all input objects
+                    inputs = [],                // array of all input objects
+                    infos = [],                 // array of all info objects
+                    ratings = [];               // array of all rating objects
+                
+    
                 // The Info object encapsulates the behavior
                 // of an input element that accepts user input.
                 
@@ -535,10 +544,11 @@
                     // Private Properties and Attributes
                     // ---------------------------------
         
-                    var element,   // Containing element for the rating component
-                        input,     // Actual input control
-                        required,  // Is input required?
-                        callback;  // Callback for value changes
+                    var element,                // Containing element for the info component
+                        input,                  // Actual input control
+                        required = false,       // Is input required?
+                        validateOnBlur = false, // Force validation on blur?
+                        callback;               // Callback for value changes
 
                     // Private Methods and Functions
                     // -----------------------------
@@ -570,9 +580,11 @@
                         // to avoid a bunch of error messages on an
                         // empty form. But we will add the attribute
                         // after the user visits the input.
-                        if (requried) {
-                            input.setAttribute("required", "required");
-                            element.MaterialTextfield.checkValidity();
+                        if (required) {
+                            exports.markRequired();
+                        }
+                        if (validateOnBlur) {
+                            exports.checkValidity();
                         }
 
                     };
@@ -591,6 +603,10 @@
                         return this;
                     };
                                                 
+                    exports.checkValidity = function() {
+                        return element.MaterialTextfield.checkValidity();
+                    };
+                    
                     exports.element = function(el) {
                         if (!arguments.length) { return element; }
                         setElement(el);
@@ -600,6 +616,22 @@
                     exports.id = function(s) {
                         if (!arguments.length) { return input.getAttribute("id"); }
                         input.setAttribute("id", s);
+                        return this;
+                    };
+                    
+                    exports.markRequired = function() {
+                        input.setAttribute("required", "required");  
+                    };
+                    
+                    exports.required = function(b) {
+                        if (!arguments.length) { return required; }
+                        required = b;
+                        return this;
+                    };
+                    
+                    exports.validateOnBlur = function(b) {
+                        if (!arguments.length) { return validateOnBlur; }
+                        validateOnBlur = b;
                         return this;
                     };
                     
@@ -758,8 +790,12 @@
                 // Event handlers
                 
                 var inputChanged = function(ev) {
+                    
+                    // Note that the user has changed at least one input
+                    hasInputChanged = true;
+                    
                     // If every input has a valid value, we can enable the results
-                    var inputsReady = inputArray.every(function(i) {
+                    var allInputsReady = inputs.every(function(i) {
                             return typeof i.value() !== "undefined";
                         }) && 
                         [].slice.call(document.getElementsByTagName("form")).every(function(f) {
@@ -768,7 +804,31 @@
 
                     // Add an attribute to the markup so that CSS rules can change
                     // visibility appropriately.
-                    document.getElementsByTagName("body")[0].setAttribute("data-results-ready", inputsReady);
+                    document.getElementsByTagName("body")[0].setAttribute("data-results-ready", allInputsReady);
+                };
+                
+                var panelViewed = function(panel) {
+                    
+                    if (panel === "advice" || panel === "details") {
+
+                        // If the user is now viewing one of the results panels, note the fact.
+                        hasVisitedResults = true;
+                        
+                        // And if the user has changed at least one input, we can enable
+                        // validation so that missing values are highlighted. We only do
+                        // this if the user has changed an input in case she is just
+                        // checking out the various panels.
+                        if (hasInputChanged) {
+                            infos.forEach(function(info) {
+                                if (info.required()) {
+                                    info.markRequired();
+                                    info.checkValidity();
+                                }
+                            });
+                        }
+                        
+                    }
+
                 };
                 
                 
@@ -794,29 +854,35 @@
                         document.querySelector(".mdl-layout__tab-bar a[href='#" + target + "']").classList.add("is-active");
                         document.getElementById(target).classList.add("is-active");
                         
+                        panelViewed(target);
+                        
                         // Also, go ahead and position the window at the top
                         // of the new panel.
                         document.getElementsByTagName('main')[0].scrollTop = 0;
                     });
                 });
 
-                // Enable all the input components
-                
-                var inputs = {},
-                    inputArray = [];
-                
                 [].slice.call(document.getElementsByClassName("info")).forEach(function(el) {
-                    var obj = new Info(el);
-                    inputs[obj.id()] = obj;
-                    inputArray.push(obj);
+                    var obj = new Info(el).required(true);
+                    inputVars[obj.id()] = obj;
+                    inputs.push(obj);
+                    infos.push(obj);
                     obj.callback(inputChanged);
                 });
 
                 [].slice.call(document.getElementsByClassName("rating")).forEach(function(el) {
                     var obj = new Rating(el);
-                    inputs[obj.id()] = obj;
-                    inputArray.push(obj);
+                    inputVars[obj.id()] = obj;
+                    inputs.push(obj);
+                    ratings.push(obj);
                     obj.callback(inputChanged);
+                });
+                
+                [].slice.call(document.getElementsByClassName("mdl-layout__tab")).forEach(function(el) {
+                    var target = el.getAttribute("href");
+                    el.addEventListener("click", function(){
+                        panelViewed(target.substring(1));
+                    });
                 });
 
 //            }());
