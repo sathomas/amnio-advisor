@@ -101,6 +101,12 @@
                 width: calc(100% - 72px);
             }
             
+            .rating > .mdl-slider__container > .mdl-slider__background-flex {
+                -webkit-transform: translate(0,3px);
+                    -ms-transform: translate(0,3px);
+                        transform: translate(0,3px);
+            }
+            
             .rating > i {
                 position: relative;
                 top: 8px;
@@ -111,8 +117,8 @@
             }
             
             .rating input[type=range] {
-                position: relative;
-                top: -3px;
+                position: absolute;
+                top: 13px;
             }
 
             .rating > i:last-of-type {
