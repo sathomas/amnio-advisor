@@ -25,7 +25,10 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
         <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
+
+        <!-- Uncomment the following script to add a feedback button
         <script src='http://fast.eager.io/KBgHZ9aQoe.js'></script>
+        -->
         
         <!-- Local CSS styles and overrides -->
         <style>
@@ -575,17 +578,33 @@
                     ratings = [];               // array of all rating objects
                     
                 // Application operations
+
                 var showResults = function() {
                     
                     // If the user hasn't used much of the rating range,
                     // enable a note.
                     document.getElementsByTagName("body")[0].setAttribute(
                         "data-results-suspect", 
-                        ((maxRating - minRating) < 4)
+                        ((maxRating - minRating) < 4) ||
+                        ratings.every(function(r) {return r.value() < 1 || r.value() > 9;})
                     );
                     
                 };
                 
+                // Check for localStorage
+                
+                var storageAvailable = function() {
+                	try {
+                		var storage = window.localStorage,
+                			x = '__storage_test__';
+                		storage.setItem(x, x);
+                		storage.removeItem(x);
+                		return true;
+                	}
+                	catch(e) {
+                		return false;
+                	}
+                }
     
                 // The Info object encapsulates the behavior
                 // of an input element that accepts user input.
@@ -598,6 +617,7 @@
                     var element,                // Containing element for the info component
                         input,                  // Actual input control
                         required = false,       // Is input required?
+                        hasChanged = false,     // Has the user changed the input?
                         validateOnBlur = false, // Force validation on blur?
                         callback;               // Callback for value changes
 
@@ -620,6 +640,7 @@
                     // --------------
                     
                     var handleChange = function(ev) {
+                        hasChanged = true;
                         if (typeof callback === "function") {
                             callback(ev);
                         }
@@ -658,6 +679,10 @@
                         return element.MaterialTextfield.checkValidity();
                     };
                     
+                    exports.hasChanged = function() {
+                        return hasChanged;
+                    };
+                    
                     exports.element = function(el) {
                         if (!arguments.length) { return element; }
                         setElement(el);
@@ -693,8 +718,8 @@
                             }
                             return undefined;
                         }
-                        if (input && input.value) { 
-                            input.value = x;
+                        if (element) { 
+                            element.MaterialTextfield.change(x);
                             handleChange();
                         }
                         return this;
@@ -721,12 +746,14 @@
                     // Private Properties and Attributes
                     // ---------------------------------
         
-                    var element,   // Containing element for the rating component
-                        input,     // Actual input control
-                        lowIcon,   // Icon for low value
-                        highIcon,  // Icon for high value
-                        keys,      // Key values
-                        callback;  // Callback for value changes
+                    var element,             // Containing element for the rating component
+                        input,               // Actual input control
+                        lowIcon,             // Icon for low value
+                        highIcon,            // Icon for high value
+                        keys,                // Key values
+                        colorMin = false,    // Preserve color on minimum value?
+                        hasChanged = false,  // Has the user changed the input?
+                        callback;            // Callback for value changes
 
                     // Private Methods and Functions
                     // -----------------------------
@@ -769,14 +796,19 @@
                     // --------------
                     
                     var handleInput = function(ev) {
-                        // We don't want special styling on lowest value
-                        setTimeout(function() {
-                            input.classList.remove("is-lowest-value");
-                        }, 0);
+                        if (colorMin) {
+                            // We don't want special styling on lowest value
+                            setTimeout(function() {
+                                input.classList.remove("is-lowest-value");
+                            }, 0);
+                        }
                         update();
                     }
 
                     var handleChange = function(ev) {
+
+                        hasChanged = true;
+
                         // IE10 doesn't fire input events, so fire one for it
                         handleInput(ev);
                         
@@ -800,6 +832,16 @@
                         return this;
                     };
                                                 
+                    exports.hasChanged = function() {
+                        return hasChanged;
+                    };
+                    
+                    exports.colorMin = function(b) {
+                        if (!arguments.length) { return colorMin; }
+                        colorMin = b;
+                        return this;
+                    };
+
                     exports.element = function(el) {
                         if (!arguments.length) { return element; }
                         setElement(el);
@@ -824,7 +866,7 @@
                             }
                             return undefined;
                         }
-                        if (input && input.value) { 
+                        if (input) { 
                             input.MaterialSlider.change(x);
                             handleChange();
                         }
@@ -865,6 +907,15 @@
                     // Add an attribute to the markup so that CSS rules can change
                     // visibility appropriately.
                     document.getElementsByTagName("body")[0].setAttribute("data-results-ready", allInputsReady);
+                    
+                    // Save the current state in local storage
+                    if (storageAvailable()) {
+                        inputs.forEach(function(i) {
+                            if (typeof i.value() !== "undefined" && i.hasChanged()) {
+                                localStorage.setItem(i.id(), i.value());
+                            }
+                        })
+                    }
                     
                     // If inputs are there, show the results
                     if (allInputsReady) {
@@ -953,6 +1004,18 @@
                         panelViewed(target.substring(1));
                     });
                 });
+                
+                // Restore any values from previous session
+                if (storageAvailable()) {
+                    setTimeout(function() {
+                        inputs.forEach(function(i) {
+                            if (localStorage.getItem(i.id()) !== null) {
+                                i.value(localStorage.getItem(i.id()));
+                            }
+                        })
+                    }, 0);
+                }
+
 
 //            }());
             
