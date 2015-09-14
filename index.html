@@ -42,11 +42,14 @@
         <meta name="msapplication-TileColor" content="#3372DF">
 
         <!-- External assets delivered by Content Distribution Networks -->
+        <!-- Comment/Uncomment the following stylesheet to use Roboto font instead of Helvetica,Arial fallback -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+        <!--  -->        
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
         <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
 
-        <!-- Uncomment the following script to add a feedback button
+        <!-- Comment/Uncomment the following script to add a feedback button
         <script src='http://fast.eager.io/KBgHZ9aQoe.js'></script>
         -->
         
@@ -77,9 +80,6 @@
             }
             
             legend {
-                font-size: 18px;
-                font-weight: 400;
-                line-height: normal;
                 padding-top: 1em;
                 overflow: hidden;
             }
@@ -189,16 +189,18 @@
 
     </head>
     <body class="mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
-        <!--[if lt IE 8]>
+        <!--[if lt IE 9]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
         <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
 
-            <!-- Application navigation header -->
+            <!-- ================================================== -->
+            <!-- Application navigation header                      -->
+            <!-- ================================================== -->
 
             <header class="mdl-layout__header mdl-color--primary">
-                <nav class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
+                <nav class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark mdl-typography--body-2-force-preferred-font">
                     <a href="#welcome" class="mdl-layout__tab is-active">Welcome</a>
                     <a href="#info" class="mdl-layout__tab">Info</a>
                     <a href="#priorities" class="mdl-layout__tab">Priorities</a>
@@ -207,11 +209,15 @@
                 </nav>
             </header>
             
-            <!-- Application main content -->
+            <!-- ================================================== -->
+            <!-- Application main content                           -->
+            <!-- ================================================== -->
 
             <main class="mdl-layout__content">
-                
-                <!-- Welcome panel -->
+
+                <!------------------------------------------------- -->
+                <!-- Welcome panel                                  -->
+                <!------------------------------------------------- -->
 
                 <section class="mdl-layout__tab-panel is-active" id="welcome">
                     <div class="page-content">
@@ -220,21 +226,35 @@
                                 <h2 class="mdl-card__title-text">Amniocentesis Advisor</h2>
                             </div>
                             <div class="mdl-card__supporting-text">
-                                <p>
+                                <p class="mdl-typography--body-1-force-preferred-font">
                                     Welcome and introductory information here.
                                 </p>
-                                <p>
+                                <p class="mdl-typography--body-1-force-preferred-font">
                                     <em>If you have stumbled across this application on the
                                     internet, please note that this is a non-functioning
                                      prototype. It does <strong>not</strong> provide actual
                                      advice.</em>
                                 </p>
-                                <p>
+                				<p class="mdl-typography--body-1-force-preferred-font">
+                    				For more information, you can visit the following web sites:
+                                </p>
+                				<p>
+                    				<ul class="mdl-typography--body-1-force-preferred-font">
+                    					<li><a href="http://www.cdc.gov/ncbddd/birthdefects/features/key-findings-down-syndrome-prevalence.html">Prevalence of Down syndrome in the United States</a></li>
+                    					<li><a href="http://www.cdc.gov/ncbddd/birthdefects/diagnosis.html">Diagnosis for birth defects</a></li>
+                    					<li><a href="http://www.ndss.org/">National Down Syndrome Society</a></li>
+                    					<li><a href="http://www.ndsccenter.org/">National Down Syndrome Congress</a></li>
+                    					<li><a href="http://www.ds-int.org/">Down Syndrome International</a></li>
+                    					<li><a href="http://www.nlm.nih.gov/medlineplus/downsyndrome.html">Medline</a></li>
+                    					<li><a href="http://www.mayoclinic.org/diseases-conditions/down-syndrome/basics/definition/con-20020948">Mayo Clinic</a></li>
+                    				</ul>
+                				</p>
+                                <p class="mdl-typography--body-1-force-preferred-font">
                                     <em>Note:</em> Your information is completely private. We do
                                     not store or save any of your information on our servers.
                                     Nor do we use any cookies.
                                 </p>
-                                <p>
+                                <p class="mdl-typography--body-1-force-preferred-font">
                                     Get started by telling us some basic medical information.
                                 </p>
                             </div>
@@ -247,6 +267,10 @@
                     </div>
                 </section>
 
+                <!------------------------------------------------- -->
+                <!-- Medical information                            -->
+                <!------------------------------------------------- -->
+
                 <section class="mdl-layout__tab-panel" id="info">
                     <div class="page-content">
                         <div class="mdl-card mdl-shadow--2dp demo-card-event">
@@ -254,7 +278,7 @@
                                 <h2 class="mdl-card__title-text">Medical Information</h2>
                             </div>
                             <div class="mdl-card__supporting-text">
-                                <p>
+                                <p class="mdl-typography--body-1-force-preferred-font">
                                     In addition to some general information, we need to know the results from
                                     lab tests performed during your first and second trimesters. Your doctor
                                     can tell you the test result values.
@@ -263,60 +287,60 @@
                                 <form action="#">
 
                                     <fieldset>
-                                        <legend>General information:</legend>
+                                        <legend class="mdl-typography--subhead">General information:</legend>
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
                                             <input class="mdl-textfield__input" type="number" min="1" max="99" id="age" />
-                                            <label class="mdl-textfield__label" for="age">How old are you?</label>
-                                            <span class="mdl-textfield__error">Please enter a number between 1 and 99</span>
+                                            <label class="mdl-textfield__label mdl-typography--caption-force-preferred-font" for="age">How old are you?</label>
+                                            <span class="mdl-textfield__error mdl-typography--caption-force-preferred-font">Please enter a number between 1 and 99</span>
                                         </div>
                                     </fieldset>
 
                                     <fieldset>
-                                        <legend>First trimester lab test results:</legend>
+                                        <legend class="mdl-typography--subhead">First trimester lab test results:</legend>
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
                                             <input class="mdl-textfield__input" type="number" min="0.5" max="2.5" step="any" id="nt" />
-                                            <label class="mdl-textfield__label" for="nt">Nuchal Translucency (NT)</label>
-                                            <span class="mdl-textfield__error">Please enter a number between 0.5 and 2.5 (MoM)</span>
+                                            <label class="mdl-textfield__label mdl-typography--caption-force-preferred-font" for="nt">Nuchal Translucency (NT)</label>
+                                            <span class="mdl-textfield__error mdl-typography--caption-force-preferred-font">Please enter a number between 0.5 and 2.5 (MoM)</span>
                                         </div>
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
                                             <input class="mdl-textfield__input" type="number" min="0.2" max="3.0" step="any" id="pappa" />
-                                            <label class="mdl-textfield__label" for="pappa">PAPP-A</label>
-                                            <span class="mdl-textfield__error">Please enter a number between 0.2 and 3.0 (MoM)</span>
+                                            <label class="mdl-textfield__label mdl-typography--caption-force-preferred-font" for="pappa">PAPP-A</label>
+                                            <span class="mdl-textfield__error mdl-typography--caption-force-preferred-font">Please enter a number between 0.2 and 3.0 (MoM)</span>
                                         </div>
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
                                             <input class="mdl-textfield__input" type="number" min="0.3" max="5.0" step="any" id="fbhcg" />
-                                            <label class="mdl-textfield__label" for="fbhcg">fbhCG</label>
-                                            <span class="mdl-textfield__error">Please enter a number between 0.3 and 5.0 (MoM)</span>
+                                            <label class="mdl-textfield__label mdl-typography--caption-force-preferred-font" for="fbhcg">fbhCG</label>
+                                            <span class="mdl-textfield__error mdl-typography--caption-force-preferred-font">Please enter a number between 0.3 and 5.0 (MoM)</span>
                                         </div>
                                     </fieldset>
 
                                     <fieldset>
-                                        <legend>Second trimester lab test results:</legend>
+                                        <legend class="mdl-typography--subhead">Second trimester lab test results:</legend>
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
                                             <input class="mdl-textfield__input" type="number" min="0.4" max="3.0" step="any" id="afp" />
-                                            <label class="mdl-textfield__label" for="apf">Alpha-Feprotein (AFP)</label>
-                                            <span class="mdl-textfield__error">Please enter a number between 0.4 and 3.0 (MoM)</span>
+                                            <label class="mdl-textfield__label mdl-typography--caption-force-preferred-font" for="apf">Alpha-Feprotein (AFP)</label>
+                                            <span class="mdl-textfield__error mdl-typography--caption-force-preferred-font">Please enter a number between 0.4 and 3.0 (MoM)</span>
                                         </div>
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
                                             <input class="mdl-textfield__input" type="number" min="0.4" max="2.0" step="any" id="ue3" />
-                                            <label class="mdl-textfield__label" for="ue3">Unconjugated Estriol (uE3)</label>
-                                            <span class="mdl-textfield__error">Please enter a number between 0.4 and 2.0 (MoM)</span>
+                                            <label class="mdl-textfield__label mdl-typography--caption-force-preferred-font" for="ue3">Unconjugated Estriol (uE3)</label>
+                                            <span class="mdl-textfield__error mdl-typography--caption-force-preferred-font">Please enter a number between 0.4 and 2.0 (MoM)</span>
                                         </div>
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
                                             <input class="mdl-textfield__input" type="number" min="0.3" max="5.0" step="any" id="inhibina" />
-                                            <label class="mdl-textfield__label" for="inhibina">Inhibin-A</label>
-                                            <span class="mdl-textfield__error">Please enter a number between 0.3 and 5.0 (MoM)</span>
+                                            <label class="mdl-textfield__label mdl-typography--caption-force-preferred-font" for="inhibina">Inhibin-A</label>
+                                            <span class="mdl-textfield__error mdl-typography--caption-force-preferred-font">Please enter a number between 0.3 and 5.0 (MoM)</span>
                                         </div>
                                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
                                             <input class="mdl-textfield__input" type="number" min="0.4" max="5.0" step="any" id="hgc" />
-                                            <label class="mdl-textfield__label" for="hgc">Total hGC</label>
-                                            <span class="mdl-textfield__error">Please enter a number between 0.4 and 5.0 (MoM)</span>
+                                            <label class="mdl-textfield__label mdl-typography--caption-force-preferred-font" for="hgc">Total hGC</label>
+                                            <span class="mdl-textfield__error mdl-typography--caption-force-preferred-font">Please enter a number between 0.4 and 5.0 (MoM)</span>
                                         </div>
                                     </fieldset>
 
                                 </form>
 
-                                <p>
+                                <p class="mdl-typography--body-1-force-preferred-font">
                                     Next, help us understand your concerns and priorities.
                                 </p>
 
@@ -330,6 +354,10 @@
                     </div>
                 </section>
 
+                <!------------------------------------------------- -->
+                <!-- Your priorities                                -->
+                <!------------------------------------------------- -->
+
                 <section class="mdl-layout__tab-panel" id="priorities">
                     <div class="page-content">
                         <div class="mdl-card mdl-shadow--2dp demo-card-event">
@@ -337,7 +365,7 @@
                                 <h2 class="mdl-card__title-text">Your priorities</h2>
                             </div>
                             <div class="mdl-card__supporting-text">
-                                <p>
+                                <p class="mdl-typography--body-1-force-preferred-font">
                                     To help us understand your priorities, please tell us how you
                                     feel about the following possible outcomes.
                                 </p>
@@ -345,13 +373,13 @@
                                 <form action="#">
 
                                     <fieldset>
-                                        <legend>If you <strong>don't</strong> have an amniocentesis:</legend>
+                                        <legend class="mdl-typography--subhead">If you <strong>don't</strong> have an amniocentesis:</legend>
                                         <div class="rating">
-                                            <label for="notest_healthy">And the baby is born healthy</label>
+                                            <label for="notest_healthy" class="mdl-typography--caption-force-preferred-font">And the baby is born healthy</label>
                                             <i class="material-icons">mood_bad</i>
                                             <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="notest_healthy" />
                                             <i class="material-icons">mood</i>
-                                            <div class="rating--keys">
+                                            <div class="rating--keys mdl-typography--caption-force-preferred-font">
                                                 <span class="rating--key">Very Sad</span>
                                                 <span class="rating--key">Sad</span>
                                                 <span class="rating--key">Okay</span>
@@ -360,11 +388,11 @@
                                             </div>
                                         </div>
                                         <div class="rating">
-                                            <label for="notest_ds">And the baby is born with Down Syndrome</label>
+                                            <label for="notest_ds" class="mdl-typography--caption-force-preferred-font">And the baby is born with Down Syndrome</label>
                                             <i class="material-icons">mood_bad</i>
                                             <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="notest_ds" />
                                             <i class="material-icons">mood</i>
-                                            <div class="rating--keys">
+                                            <div class="rating--keys mdl-typography--caption-force-preferred-font">
                                                 <span class="rating--key">Very Sad</span>
                                                 <span class="rating--key">Sad</span>
                                                 <span class="rating--key">Okay</span>
@@ -373,11 +401,11 @@
                                             </div>
                                         </div>
                                         <div class="rating">
-                                            <label for="notest_still">And the baby has Down Syndrome but is stillborn</label>
+                                            <label for="notest_still" class="mdl-typography--caption-force-preferred-font">And the baby has Down Syndrome but is stillborn</label>
                                             <i class="material-icons">mood_bad</i>
                                             <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="notest_still" />
                                             <i class="material-icons">mood</i>
-                                            <div class="rating--keys">
+                                            <div class="rating--keys mdl-typography--caption-force-preferred-font">
                                                 <span class="rating--key">Very Sad</span>
                                                 <span class="rating--key">Sad</span>
                                                 <span class="rating--key">Okay</span>
@@ -388,13 +416,13 @@
                                     </fieldset>
 
                                     <fieldset>
-                                        <legend>If you have an amniocentesis that shows <strong>no</strong> Down Syndrome:</legend>
+                                        <legend class="mdl-typography--subhead">If you have an amniocentesis that shows <strong>no</strong> Down Syndrome:</legend>
                                         <div class="rating">
-                                            <label for="test_healthy">And the baby is born healthy</label>
+                                            <label for="test_healthy" class="mdl-typography--caption-force-preferred-font">And the baby is born healthy</label>
                                             <i class="material-icons">mood_bad</i>
                                             <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="test_healthy" />
                                             <i class="material-icons">mood</i>
-                                            <div class="rating--keys">
+                                            <div class="rating--keys mdl-typography--caption-force-preferred-font">
                                                 <span class="rating--key">Very Sad</span>
                                                 <span class="rating--key">Sad</span>
                                                 <span class="rating--key">Okay</span>
@@ -405,13 +433,13 @@
                                     </fieldset>
 
                                     <fieldset>
-                                        <legend>If you have an amniocentesis that shows Down Syndrome:</legend>
+                                        <legend class="mdl-typography--subhead">If you have an amniocentesis that shows Down Syndrome:</legend>
                                         <div class="rating">
-                                            <label for="test_term">And you terminate the pregnancy</label>
+                                            <label for="test_term" class="mdl-typography--caption-force-preferred-font">And you terminate the pregnancy</label>
                                             <i class="material-icons">mood_bad</i>
                                             <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="test_term" />
                                             <i class="material-icons">mood</i>
-                                            <div class="rating--keys">
+                                            <div class="rating--keys mdl-typography--caption-force-preferred-font">
                                                 <span class="rating--key">Very Sad</span>
                                                 <span class="rating--key">Sad</span>
                                                 <span class="rating--key">Okay</span>
@@ -420,11 +448,11 @@
                                             </div>
                                         </div>
                                         <div class="rating">
-                                            <label for="test_ds">And the baby is born with Down Syndrome</label>
+                                            <label for="test_ds" class="mdl-typography--caption-force-preferred-font">And the baby is born with Down Syndrome</label>
                                             <i class="material-icons">mood_bad</i>
                                             <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="test_ds" />
                                             <i class="material-icons">mood</i>
-                                            <div class="rating--keys">
+                                            <div class="rating--keys mdl-typography--caption-force-preferred-font">
                                                 <span class="rating--key">Very Sad</span>
                                                 <span class="rating--key">Sad</span>
                                                 <span class="rating--key">Okay</span>
@@ -433,11 +461,11 @@
                                             </div>
                                         </div>
                                         <div class="rating">
-                                            <label for="test_still">And the baby is stillborn</label>
+                                            <label for="test_still" class="mdl-typography--caption-force-preferred-font">And the baby is stillborn</label>
                                             <i class="material-icons">mood_bad</i>
                                             <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="test_still" />
                                             <i class="material-icons">mood</i>
-                                            <div class="rating--keys">
+                                            <div class="rating--keys mdl-typography--caption-force-preferred-font">
                                                 <span class="rating--key">Very Sad</span>
                                                 <span class="rating--key">Sad</span>
                                                 <span class="rating--key">Okay</span>
@@ -448,13 +476,13 @@
                                    </fieldset>
 
                                     <fieldset>
-                                        <legend>If you have an amniocentesis that results in a miscarriage:</legend>
+                                        <legend class="mdl-typography--subhead">If you have an amniocentesis that results in a miscarriage:</legend>
                                         <div class="rating">
                                             <label for="mis_ds">And the baby had Down Syndrome</label>
                                             <i class="material-icons">mood_bad</i>
                                             <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="mis_ds" />
                                             <i class="material-icons">mood</i>
-                                            <div class="rating--keys">
+                                            <div class="rating--keys mdl-typography--caption-force-preferred-font">
                                                 <span class="rating--key">Very Sad</span>
                                                 <span class="rating--key">Sad</span>
                                                 <span class="rating--key">Okay</span>
@@ -467,7 +495,7 @@
                                             <i class="material-icons">mood_bad</i>
                                             <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="mis_healthy" />
                                             <i class="material-icons">mood</i>
-                                            <div class="rating--keys">
+                                            <div class="rating--keys mdl-typography--caption-force-preferred-font">
                                                 <span class="rating--key">Very Sad</span>
                                                 <span class="rating--key">Sad</span>
                                                 <span class="rating--key">Okay</span>
@@ -479,7 +507,7 @@
 
                                 </form>
 
-                                <p>
+                                <p class="mdl-typography--body-1-force-preferred-font">
                                     Based on your information and priorities, we can offer some advice on an amniocentesis.
                                 </p>
                             </div>
@@ -492,6 +520,10 @@
                     </div>
                 </section>
 
+                <!------------------------------------------------- -->
+                <!-- Suggested action                               -->
+                <!------------------------------------------------- -->
+
                 <section class="mdl-layout__tab-panel" id="advice">
                     <div class="page-content">
                         <div class="mdl-card mdl-shadow--2dp demo-card-event results__notready">
@@ -499,7 +531,7 @@
                                 <h2 class="mdl-card__title-text">Suggested Action</h2>
                             </div>
                             <div class="mdl-card__supporting-text">
-                                <p>
+                                <p class="mdl-typography--body-1-force-preferred-font">
                                     Before we can offer any suggestions, we need some 
                                     basic medical information.
                                 </p>
@@ -516,7 +548,7 @@
                             </div>
                             <div class="mdl-card__supporting-text results__suspect">
                                 <hr/>
-                                <p class="mdl_card__supporting-text__note">
+                                <p class="mdl-typography--body-1-force-preferred-font mdl_card__supporting-text__note">
                                     <em>Note:</em> We can give you better advice if you pick a wider
                                     range of values for your priorities. Would you like to review
                                     them now?
@@ -526,7 +558,7 @@
                                 </a>
                                 <hr/>
                             </div>
-                            <div class="mdl-card__supporting-text mdl-card--border">
+                            <div class="mdl-typography--body-1-force-preferred-font mdl-card__supporting-text mdl-card--border">
                                 Actual results go here.
                             </div>
                             <div class="mdl-card__actions">
@@ -539,6 +571,10 @@
                 </section>
 
 
+                <!------------------------------------------------- -->
+                <!-- Detailed Analysis                              -->
+                <!------------------------------------------------- -->
+
                 <section class="mdl-layout__tab-panel" id="details">
                     <div class="page-content">
                         <div class="mdl-card mdl-shadow--2dp demo-card-event results__notready">
@@ -546,7 +582,7 @@
                                 <h2 class="mdl-card__title-text">Detailed Analysis</h2>
                             </div>
                             <div class="mdl-card__supporting-text">
-                                <p>
+                                <p class="mdl-typography--body-1-force-preferred-font">
                                     Before we can provide a detailed analysis, we need some 
                                     basic medical information.
                                 </p>
