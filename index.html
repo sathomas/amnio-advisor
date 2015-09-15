@@ -2,6 +2,10 @@
 <html lang="en">
 
     <!--
+    
+    # Amniocentesis Advisor
+    ==========================================================================================
+    
     Copyright (c) 2015 by Stephen Thomas. 
     Open sourced under [MIT License](http://opensource.org/licenses/MIT).
 
@@ -13,18 +17,21 @@
     Currently the application is implemented completely within a single `index.html`
     file. This optimizes performance, especially over mobile networks, by minimizing
     the number of network requests. As the app gets more complex, however, it will
-    likely be broken up into (at least) separate HTML, CSS, and JavaScript files.
+    likely be broken up into (at least) separate HTML, CSS, and JavaScript files. It may
+    also be beneficial to minimize the content (including removing comments).
     
     Note that the application does not use any templating for constructing the markup.
     This approach is also chosen to optimize performance, in this case to minimize time
     to full render.
+
     -->
     
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <title>Amniocentesis Advisor</title>
-        <meta name="description" content="Web application that uses decision theory to advise patients on amniocentesis testing">
+        <meta name="description" 
+              content="Web application that advises patients on amniocentesis testing">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!-- Add to homescreen for Chrome on Android -->
@@ -38,23 +45,76 @@
         <link rel="apple-touch-icon-precomposed" href="apple-touch-icon-precomposed.png">
     
         <!-- Tile icon for Win8 (144x144 + tile color) -->
-        <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+        <meta name="msapplication-TileImage" 
+              content="images/touch/ms-touch-icon-144x144-precomposed.png">
         <meta name="msapplication-TileColor" content="#3372DF">
 
-        <!-- External assets delivered by Content Distribution Networks -->
-        <!-- Comment/Uncomment the following stylesheet to use Roboto font instead of Helvetica,Arial fallback -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
-        <!--  -->        
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
-        <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
-
-        <!-- Comment/Uncomment the following script to add a feedback button
-        <script src='http://fast.eager.io/KBgHZ9aQoe.js'></script>
-        -->
+        <!--
+            
+        ## Styles
+        --------------------------------------------------------------------------------------
         
-        <!-- Local CSS styles and overrides -->
+        Most of the styles rely on standard Material Design Lite (MDL) stylesheets delivered
+        from Google's CDN; however, we do have some local style definitions and we need to
+        override a few of the MDL defaults.
+        
+        First we include the standard MDL font (Roboto) and the icon font. Those are followed
+        by a themed MDL stylesheet. Note that the Roboto font may be commented out and the
+        application will fall back to Helvetica on all devices except Andriod. This saves
+        a network request and about 1.3 MBytes (uncompressed) of download data.
+        
+        > Note: If the MDL style sheet is updated to a new version, the corresponding
+          script (see below) probably also needs updating.
+        
+        After the included style sheets we define our own local styles.
+        
+        -->
+
+        <link rel="stylesheet" type="text/css"
+              href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+        <link rel="stylesheet" type="text/css"
+              href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" type="text/css"
+              href="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.indigo-pink.min.css">
+        
         <style>
+            
+            /*
+             * ### Generic Styles
+             */
+
+            /*
+             * Tweak the display of `<legend>` elements, which we
+             * use as "super-labels" for fieldsets.
+             */
+            
+            legend {
+                padding-top: 1em;
+                overflow: hidden;
+            }
+            
+            /*
+             * Get rid of the spinners on number inputs.
+             */
+            
+            input[type=number]::-webkit-inner-spin-button,
+            input[type=number]::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            input[type=number] {
+                -moz-appearance:textfield;
+            }
+            
+            /*
+             * ### MDL Adjustments
+             */
+            
+            /*
+             * Adjust the margins and padding because all the content
+             * appears in cards,
+             */
             
             .mdl-card {
                 margin: 16px;
@@ -70,6 +130,11 @@
                 padding: 0 8px;
             }
             
+            /*
+             * Correct some problems with validation error messages
+             * on desktop Safari.
+             */
+            
             .mdl-textfield--floating-label.is-invalid .mdl-textfield__label {
                 top: 4px;
             }
@@ -79,24 +144,24 @@
                 top: 48px;
             }
             
-            legend {
-                padding-top: 1em;
-                overflow: hidden;
-            }
-            
-            input[type=number]::-webkit-inner-spin-button,
-            input[type=number]::-webkit-outer-spin-button {
-                -webkit-appearance: none;
-                margin: 0;
-            }
-
-            input[type=number] {
-                -moz-appearance:textfield;
-            }
-            
             .info {
                 margin-bottom: 5px;
             }
+            
+            /*
+             * ### Custom Components
+             */
+            
+            /*
+             * #### Rating Component
+             */
+            
+            /*
+             * The `rating` component is an enhanced version of the
+             * material design slider with several additional features.
+             * For details on the component, refer to the JavaScript
+             * code below. The unique styles for the component follow.
+             */
             
             fieldset div.rating {
                 padding-top: 0.5em;
@@ -161,6 +226,37 @@
                 text-align: center;
                 width: 20%;
             }
+            
+            /*
+             * ### Content Visibility
+             *
+             * Show/hide content based on the application state. There are three
+             * classes that determine content visibility:
+             *
+             * 1. `results__notready`: Content within a container with this
+             *    class is visible when the results are not ready. The content
+             *    is generally a prompt for the user to provide the information
+             *    needed to generate results.
+             * 2. `results__ready`: Content within a container with this class
+             *    is visible when the analysis is complete.
+             * 3. `results__suspect`: Content within a container with this
+             *    class is visible when analysis results are available but
+             *    could be improved with better input. The content is 
+             *    generally a suggestion to the user for improving the input.
+             *
+             * Initially, only the `results__notready` content is visible. To change
+             * the content visibility, JavaScript code adds appropriate `data-`
+             * attributes to the `<body>` element. (We use `data-` attributes
+             * instead of classes so that it's clear when a style is affected
+             * by JavaScript code. JavaScript only sets `data-` attributes; and
+             * only JavaScript sets `data-` attributes.)
+             *
+             * * `data-results`: set to `"true"` when results are available.
+             * * `data-suspect`: set to `"true"` if results are suspect.
+             *
+             * For completeness, we also support `data-results-notready` but its
+             * use is discouraged. 
+             */
 
             .results__notready {
                 display: block;
@@ -170,17 +266,20 @@
                 display: none;
             }
             
-            body[data-results-ready="true"] .results__notready {
-                display: none;                
-            }
-
-            body[data-results-ready="true"] .results__ready {
-                display: block;
-            }
-            
             .results__suspect {
                 display: none;
             }
+
+            body[data-results-ready="true"]     .results__notready,
+            body[data-results-notready="false"] .results__notready {
+                display: none;                
+            }
+
+            body[data-results-ready="true"]     .results__ready,
+            body[data-results-notready="false"] .results__ready {
+                display: block;
+            }
+            
             body[data-results-suspect="true"] .results__suspect {
                 display: block;
             }
@@ -188,19 +287,56 @@
         </style>
 
     </head>
+    
+    <!--
+        
+    ## Markup (HTML)
+    ------------------------------------------------------------------------------------------
+    
+    Not too much to say about the markup at a high level. It's pretty much standard
+    Material Design Lite. We are currently using the `-force-preferred-font` suffix
+    for typography classes to ensure that a consistent font is used throughout the
+    application. That may change if we get around to implementing conditional font-face
+    application based on available system fonts (which is ideal, but a lot of work).
+    
+    -->
+
     <body class="mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
+
+        <!--
+        
+        ### IE8 (and Older) Fallback
+            
+        Hopefully we don't have to worry about IE8 any more, but just in
+        case, we use conditional comments to detect it. If we do find
+        IE8, add a note suggesting that the user upgrade the browser.
+        We don't bother to spend any time formatting the note, etc.
+        
+        -->
+
         <!--[if lt IE 9]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+            <p class="browserupgrade">
+                You are using an <strong>outdated</strong> browser. Please 
+                <a href='http://browsehappy.com/'>upgrade your browser</a> 
+                to improve your experience.
+            </p>
         <![endif]-->
 
         <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
 
-            <!-- ================================================== -->
-            <!-- Application navigation header                      -->
-            <!-- ================================================== -->
+            <!--
+
+            ### Application Navigation Header
+            
+            Although MDL generally uses tabs as a component within a page, we're using
+            it for the overall application structure. For accessibility, we use semantic
+            elements instead of generic `<div>` tags.
+
+            -->
 
             <header class="mdl-layout__header mdl-color--primary">
-                <nav class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark mdl-typography--body-2-force-preferred-font">
+                <nav class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark 
+                            mdl-typography--body-2-force-preferred-font">
                     <a href="#welcome" class="mdl-layout__tab is-active">Welcome</a>
                     <a href="#info" class="mdl-layout__tab">Info</a>
                     <a href="#priorities" class="mdl-layout__tab">Priorities</a>
@@ -209,15 +345,16 @@
                 </nav>
             </header>
             
-            <!-- ================================================== -->
-            <!-- Application main content                           -->
-            <!-- ================================================== -->
-
             <main class="mdl-layout__content">
 
-                <!------------------------------------------------- -->
-                <!-- Welcome panel                                  -->
-                <!------------------------------------------------- -->
+                <!--
+
+                ### Welcome Panel
+                
+                The first tab panel is a general welcome screen. Like all panels, it is
+                implemented as a MDL card.
+
+                -->
 
                 <section class="mdl-layout__tab-panel is-active" id="welcome">
                     <div class="page-content">
@@ -240,26 +377,42 @@
                                 </p>
                 				<p>
                     				<ul class="mdl-typography--body-1-force-preferred-font">
-                    					<li><a href="http://www.cdc.gov/ncbddd/birthdefects/features/key-findings-down-syndrome-prevalence.html">Prevalence of Down syndrome in the United States</a></li>
-                    					<li><a href="http://www.cdc.gov/ncbddd/birthdefects/diagnosis.html">Diagnosis for birth defects</a></li>
-                    					<li><a href="http://www.ndss.org/">National Down Syndrome Society</a></li>
-                    					<li><a href="http://www.ndsccenter.org/">National Down Syndrome Congress</a></li>
-                    					<li><a href="http://www.ds-int.org/">Down Syndrome International</a></li>
-                    					<li><a href="http://www.nlm.nih.gov/medlineplus/downsyndrome.html">Medline</a></li>
-                    					<li><a href="http://www.mayoclinic.org/diseases-conditions/down-syndrome/basics/definition/con-20020948">Mayo Clinic</a></li>
+                    					<li><a href="http://www.cdc.gov/ncbddd/birthdefects/features/key-findings-down-syndrome-prevalence.html">
+                        					Prevalence of Down syndrome in the United States
+                        				</a></li>
+                    					<li><a href="http://www.cdc.gov/ncbddd/birthdefects/diagnosis.html">
+                        					Diagnosis for birth defects
+                        				</a></li>
+                    					<li><a href="http://www.ndss.org/">
+                        					National Down Syndrome Society
+                        				</a></li>
+                    					<li><a href="http://www.ndsccenter.org/">
+                        					National Down Syndrome Congress
+                        				</a></li>
+                    					<li><a href="http://www.ds-int.org/">
+                        					Down Syndrome International
+                        				</a></li>
+                    					<li><a href="http://www.nlm.nih.gov/medlineplus/downsyndrome.html">
+                        					Medline
+                        				</a></li>
+                    					<li><a href="http://www.mayoclinic.org/diseases-conditions/down-syndrome/basics/definition/con-20020948">
+                        					Mayo Clinic
+                        				</a></li>
                     				</ul>
                 				</p>
                                 <p class="mdl-typography--body-1-force-preferred-font">
-                                    <em>Note:</em> Your information is completely private. We do
-                                    not store or save any of your information on our servers.
-                                    Nor do we use any cookies.
+                                    <em>Note:</em> Your information is completely private. We
+                                    do not store or save any of your information on our
+                                     servers. Nor do we use any cookies.
                                 </p>
                                 <p class="mdl-typography--body-1-force-preferred-font">
                                     Get started by telling us some basic medical information.
                                 </p>
                             </div>
                             <div class="mdl-card__actions">
-                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" data-onclick="info">
+                                <button class="mdl-button mdl-js-button mdl-button--raised 
+                                               mdl-js-ripple-effect mdl-button--primary" 
+                                        data-onclick="info">
                                     Medical Info
                                 </button>
                             </div>
@@ -267,9 +420,14 @@
                     </div>
                 </section>
 
-                <!------------------------------------------------- -->
-                <!-- Medical information                            -->
-                <!------------------------------------------------- -->
+                <!--
+
+                ### Medical Information
+                
+                The next tab panel collects medical information. Like all panels, it is
+                implemented as a MDL card.
+
+                -->
 
                 <section class="mdl-layout__tab-panel" id="info">
                     <div class="page-content">
@@ -279,62 +437,149 @@
                             </div>
                             <div class="mdl-card__supporting-text">
                                 <p class="mdl-typography--body-1-force-preferred-font">
-                                    In addition to some general information, we need to know the results from
-                                    lab tests performed during your first and second trimesters. Your doctor
-                                    can tell you the test result values.
+                                    In addition to some general information, we need to know
+                                    the results from lab tests performed during your first
+                                    and second trimesters. Your doctor can tell you the test
+                                    result values.
                                 </p>
+
+                                <!--
+
+                                Enclose the inputs within a `<form>` element so that we
+                                can easily check validity of all inputs. See JavaScript
+                                below for details.
+                                
+                                -->
 
                                 <form action="#">
 
                                     <fieldset>
-                                        <legend class="mdl-typography--subhead">General information:</legend>
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
-                                            <input class="mdl-textfield__input" type="number" min="1" max="99" id="age" />
-                                            <label class="mdl-textfield__label mdl-typography--caption-force-preferred-font" for="age">How old are you?</label>
-                                            <span class="mdl-textfield__error mdl-typography--caption-force-preferred-font">Please enter a number between 1 and 99</span>
+                                        <legend class="mdl-typography--subhead">
+                                            General information:
+                                        </legend>
+                                        <div class="mdl-textfield mdl-js-textfield 
+                                                    mdl-textfield--floating-label info">
+                                            <input class="mdl-textfield__input" 
+                                                   type="number" min="1" max="99" id="age" />
+                                            <label class="mdl-textfield__label 
+                                                          mdl-typography--caption-force-preferred-font" 
+                                                   for="age">
+                                                How old are you?
+                                            </label>
+                                            <span class="mdl-textfield__error 
+                                                         mdl-typography--caption-force-preferred-font">
+                                                Please enter a number between 1 and 99
+                                            </span>
                                         </div>
                                     </fieldset>
 
                                     <fieldset>
-                                        <legend class="mdl-typography--subhead">First trimester lab test results:</legend>
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
-                                            <input class="mdl-textfield__input" type="number" min="0.5" max="2.5" step="any" id="nt" />
-                                            <label class="mdl-textfield__label mdl-typography--caption-force-preferred-font" for="nt">Nuchal Translucency (NT)</label>
-                                            <span class="mdl-textfield__error mdl-typography--caption-force-preferred-font">Please enter a number between 0.5 and 2.5 (MoM)</span>
+                                        <legend class="mdl-typography--subhead">
+                                            First trimester lab test results:
+                                        </legend>
+                                        <div class="mdl-textfield mdl-js-textfield 
+                                                    mdl-textfield--floating-label info">
+                                            <input class="mdl-textfield__input" type="number" 
+                                                min="0.5" max="2.5" step="any" id="nt" />
+                                            <label class="mdl-textfield__label 
+                                                          mdl-typography--caption-force-preferred-font"
+                                                   for="nt">
+                                                Nuchal Translucency (NT)
+                                            </label>
+                                            <span class="mdl-textfield__error 
+                                                         mdl-typography--caption-force-preferred-font">
+                                                Please enter a number between 0.5 and 2.5 (MoM)
+                                            </span>
                                         </div>
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
-                                            <input class="mdl-textfield__input" type="number" min="0.2" max="3.0" step="any" id="pappa" />
-                                            <label class="mdl-textfield__label mdl-typography--caption-force-preferred-font" for="pappa">PAPP-A</label>
-                                            <span class="mdl-textfield__error mdl-typography--caption-force-preferred-font">Please enter a number between 0.2 and 3.0 (MoM)</span>
+                                        <div class="mdl-textfield mdl-js-textfield 
+                                                    mdl-textfield--floating-label info">
+                                            <input class="mdl-textfield__input" type="number" 
+                                                   min="0.2" max="3.0" step="any" id="pappa" />
+                                            <label class="mdl-textfield__label 
+                                                          mdl-typography--caption-force-preferred-font" 
+                                                   for="pappa">
+                                                PAPP-A
+                                            </label>
+                                            <span class="mdl-textfield__error 
+                                                         mdl-typography--caption-force-preferred-font">
+                                                Please enter a number between 0.2 and 3.0 (MoM)
+                                            </span>
                                         </div>
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
-                                            <input class="mdl-textfield__input" type="number" min="0.3" max="5.0" step="any" id="fbhcg" />
-                                            <label class="mdl-textfield__label mdl-typography--caption-force-preferred-font" for="fbhcg">fbhCG</label>
-                                            <span class="mdl-textfield__error mdl-typography--caption-force-preferred-font">Please enter a number between 0.3 and 5.0 (MoM)</span>
+                                        <div class="mdl-textfield 
+                                                    mdl-js-textfield mdl-textfield--floating-label info">
+                                            <input class="mdl-textfield__input" type="number" 
+                                                   min="0.3" max="5.0" step="any" id="fbhcg" />
+                                            <label class="mdl-textfield__label
+                                                          mdl-typography--caption-force-preferred-font"
+                                                   for="fbhcg">
+                                                fbhCG
+                                            </label>
+                                            <span class="mdl-textfield__error 
+                                                         mdl-typography--caption-force-preferred-font">
+                                                Please enter a number between 0.3 and 5.0 (MoM)
+                                            </span>
                                         </div>
                                     </fieldset>
 
                                     <fieldset>
-                                        <legend class="mdl-typography--subhead">Second trimester lab test results:</legend>
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
-                                            <input class="mdl-textfield__input" type="number" min="0.4" max="3.0" step="any" id="afp" />
-                                            <label class="mdl-textfield__label mdl-typography--caption-force-preferred-font" for="apf">Alpha-Feprotein (AFP)</label>
-                                            <span class="mdl-textfield__error mdl-typography--caption-force-preferred-font">Please enter a number between 0.4 and 3.0 (MoM)</span>
+                                        <legend class="mdl-typography--subhead">
+                                            Second trimester lab test results:
+                                        </legend>
+                                        <div class="mdl-textfield mdl-js-textfield 
+                                                    mdl-textfield--floating-label info">
+                                            <input class="mdl-textfield__input" type="number" 
+                                                   min="0.4" max="3.0" step="any" id="afp" />
+                                            <label class="mdl-textfield__label 
+                                                          mdl-typography--caption-force-preferred-font" 
+                                                   for="apf">
+                                                Alpha-Feprotein (AFP)
+                                            </label>
+                                            <span class="mdl-textfield__error 
+                                                         mdl-typography--caption-force-preferred-font">
+                                                Please enter a number between 0.4 and 3.0 (MoM)
+                                            </span>
                                         </div>
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
-                                            <input class="mdl-textfield__input" type="number" min="0.4" max="2.0" step="any" id="ue3" />
-                                            <label class="mdl-textfield__label mdl-typography--caption-force-preferred-font" for="ue3">Unconjugated Estriol (uE3)</label>
-                                            <span class="mdl-textfield__error mdl-typography--caption-force-preferred-font">Please enter a number between 0.4 and 2.0 (MoM)</span>
+                                        <div class="info mdl-textfield 
+                                                    mdl-js-textfield mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="number" 
+                                                   min="0.4" max="2.0" step="any" id="ue3" />
+                                            <label class="mdl-textfield__label 
+                                                          mdl-typography--caption-force-preferred-font" 
+                                                   for="ue3">
+                                                Unconjugated Estriol (uE3)
+                                            </label>
+                                            <span class="mdl-textfield__error 
+                                                         mdl-typography--caption-force-preferred-font">
+                                                Please enter a number between 0.4 and 2.0 (MoM)
+                                            </span>
                                         </div>
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
-                                            <input class="mdl-textfield__input" type="number" min="0.3" max="5.0" step="any" id="inhibina" />
-                                            <label class="mdl-textfield__label mdl-typography--caption-force-preferred-font" for="inhibina">Inhibin-A</label>
-                                            <span class="mdl-textfield__error mdl-typography--caption-force-preferred-font">Please enter a number between 0.3 and 5.0 (MoM)</span>
+                                        <div class="info mdl-textfield mdl-js-textfield 
+                                                    mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="number" 
+                                                   min="0.3" max="5.0" step="any" id="inhibina" />
+                                            <label class="mdl-textfield__label 
+                                                          mdl-typography--caption-force-preferred-font"
+                                                   for="inhibina">
+                                                Inhibin-A
+                                            </label>
+                                            <span class="mdl-textfield__error
+                                                         mdl-typography--caption-force-preferred-font">
+                                                Please enter a number between 0.3 and 5.0 (MoM)
+                                            </span>
                                         </div>
-                                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label info">
-                                            <input class="mdl-textfield__input" type="number" min="0.4" max="5.0" step="any" id="hgc" />
-                                            <label class="mdl-textfield__label mdl-typography--caption-force-preferred-font" for="hgc">Total hGC</label>
-                                            <span class="mdl-textfield__error mdl-typography--caption-force-preferred-font">Please enter a number between 0.4 and 5.0 (MoM)</span>
+                                        <div class="info mdl-textfield mdl-js-textfield 
+                                                    mdl-textfield--floating-label">
+                                            <input class="mdl-textfield__input" type="number" 
+                                                   min="0.4" max="5.0" step="any" id="hgc" />
+                                            <label class="mdl-textfield__label
+                                                          mdl-typography--caption-force-preferred-font" 
+                                                   for="hgc">
+                                                   Total hGC
+                                            </label>
+                                            <span class="mdl-textfield__error 
+                                                         mdl-typography--caption-force-preferred-font">
+                                                Please enter a number between 0.4 and 5.0 (MoM)
+                                            </span>
                                         </div>
                                     </fieldset>
 
@@ -346,7 +591,9 @@
 
                             </div>
                             <div class="mdl-card__actions">
-                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" data-onclick="priorities">
+                                <button class="mdl-button mdl-js-button mdl-button--primary
+                                               mdl-button--raised mdl-js-ripple-effect" 
+                                        data-onclick="priorities">
                                     Priorities
                                 </button>
                             </div>
@@ -354,9 +601,14 @@
                     </div>
                 </section>
 
-                <!------------------------------------------------- -->
-                <!-- Your priorities                                -->
-                <!------------------------------------------------- -->
+                <!--
+
+                ### Patient Priorities
+                
+                The next tab panel accepts patient priority data. Like all panels, it is
+                implemented as a MDL card.
+
+                -->
 
                 <section class="mdl-layout__tab-panel" id="priorities">
                     <div class="page-content">
@@ -366,20 +618,37 @@
                             </div>
                             <div class="mdl-card__supporting-text">
                                 <p class="mdl-typography--body-1-force-preferred-font">
-                                    To help us understand your priorities, please tell us how you
-                                    feel about the following possible outcomes.
+                                    To help us understand your priorities, please tell us how
+                                    you feel about the following possible outcomes.
                                 </p>
+                                
+                                <!--
+
+                                Enclose the inputs within a `<form>` element so that we
+                                can easily check validity of all inputs. See JavaScript
+                                below for details.
+                                
+                                -->
 
                                 <form action="#">
 
                                     <fieldset>
-                                        <legend class="mdl-typography--subhead">If you <strong>don't</strong> have an amniocentesis:</legend>
+                                        <legend class="mdl-typography--subhead">
+                                            If you <strong>don't</strong> have an 
+                                            amniocentesis:
+                                        </legend>
                                         <div class="rating">
-                                            <label for="notest_healthy" class="mdl-typography--body-1-force-preferred-font">And the baby is born healthy</label>
+                                            <label for="notest_healthy" 
+                                                   class="mdl-typography--body-1-force-preferred-font">
+                                                And the baby is born healthy
+                                            </label>
                                             <i class="material-icons">mood_bad</i>
-                                            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="notest_healthy" />
+                                            <input class="mdl-slider mdl-js-slider" 
+                                                   type="range" min="0" max="10" step="0.01" 
+                                                   value="5" tabindex="0" id="notest_healthy" />
                                             <i class="material-icons">mood</i>
-                                            <div class="rating--keys mdl-typography--caption-force-preferred-font">
+                                            <div class="rating--keys 
+                                                        mdl-typography--caption-force-preferred-font">
                                                 <span class="rating--key">Very Sad</span>
                                                 <span class="rating--key">Sad</span>
                                                 <span class="rating--key">Okay</span>
@@ -388,11 +657,17 @@
                                             </div>
                                         </div>
                                         <div class="rating">
-                                            <label for="notest_ds" class="mdl-typography--body-1-force-preferred-font">And the baby is born with Down Syndrome</label>
+                                            <label for="notest_ds" 
+                                                   class="mdl-typography--body-1-force-preferred-font">
+                                                And the baby is born with Down Syndrome
+                                            </label>
                                             <i class="material-icons">mood_bad</i>
-                                            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="notest_ds" />
+                                            <input class="mdl-slider mdl-js-slider" 
+                                                   type="range" min="0" max="10" step="0.01" 
+                                                   value="5" tabindex="0" id="notest_ds" />
                                             <i class="material-icons">mood</i>
-                                            <div class="rating--keys mdl-typography--caption-force-preferred-font">
+                                            <div class="rating--keys 
+                                                        mdl-typography--caption-force-preferred-font">
                                                 <span class="rating--key">Very Sad</span>
                                                 <span class="rating--key">Sad</span>
                                                 <span class="rating--key">Okay</span>
@@ -401,11 +676,17 @@
                                             </div>
                                         </div>
                                         <div class="rating">
-                                            <label for="notest_still" class="mdl-typography--body-1-force-preferred-font">And the baby has Down Syndrome but is stillborn</label>
+                                            <label for="notest_still" 
+                                                   class="mdl-typography--body-1-force-preferred-font">
+                                                And the baby has Down Syndrome but is stillborn
+                                            </label>
                                             <i class="material-icons">mood_bad</i>
-                                            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="notest_still" />
+                                            <input class="mdl-slider mdl-js-slider" 
+                                                   type="range" min="0" max="10" step="0.01" 
+                                                   value="5" tabindex="0" id="notest_still" />
                                             <i class="material-icons">mood</i>
-                                            <div class="rating--keys mdl-typography--caption-force-preferred-font">
+                                            <div class="rating--keys 
+                                                        mdl-typography--caption-force-preferred-font">
                                                 <span class="rating--key">Very Sad</span>
                                                 <span class="rating--key">Sad</span>
                                                 <span class="rating--key">Okay</span>
@@ -416,13 +697,22 @@
                                     </fieldset>
 
                                     <fieldset>
-                                        <legend class="mdl-typography--subhead">If you have an amniocentesis that shows <strong>no</strong> Down Syndrome:</legend>
+                                        <legend class="mdl-typography--subhead">
+                                            If you have an amniocentesis that shows 
+                                            <strong>no</strong> Down Syndrome:
+                                        </legend>
                                         <div class="rating">
-                                            <label for="test_healthy" class="mdl-typography--body-1-force-preferred-font">And the baby is born healthy</label>
+                                            <label for="test_healthy" 
+                                                   class="mdl-typography--body-1-force-preferred-font">
+                                                And the baby is born healthy
+                                            </label>
                                             <i class="material-icons">mood_bad</i>
-                                            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="test_healthy" />
+                                            <input class="mdl-slider mdl-js-slider" 
+                                                   type="range" min="0" max="10" step="0.01" 
+                                                   value="5" tabindex="0" id="test_healthy" />
                                             <i class="material-icons">mood</i>
-                                            <div class="rating--keys mdl-typography--caption-force-preferred-font">
+                                            <div class="rating--keys 
+                                                        mdl-typography--caption-force-preferred-font">
                                                 <span class="rating--key">Very Sad</span>
                                                 <span class="rating--key">Sad</span>
                                                 <span class="rating--key">Okay</span>
@@ -433,13 +723,22 @@
                                     </fieldset>
 
                                     <fieldset>
-                                        <legend class="mdl-typography--subhead">If you have an amniocentesis that shows Down Syndrome:</legend>
+                                        <legend class="mdl-typography--subhead">
+                                            If you have an amniocentesis that shows 
+                                            Down Syndrome:
+                                        </legend>
                                         <div class="rating">
-                                            <label for="test_term" class="mdl-typography--body-1-force-preferred-font">And you terminate the pregnancy</label>
+                                            <label for="test_term" 
+                                                   class="mdl-typography--body-1-force-preferred-font">
+                                                And you terminate the pregnancy
+                                            </label>
                                             <i class="material-icons">mood_bad</i>
-                                            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="test_term" />
+                                            <input class="mdl-slider mdl-js-slider" 
+                                                   type="range" min="0" max="10" step="0.01" 
+                                                   value="5" tabindex="0" id="test_term" />
                                             <i class="material-icons">mood</i>
-                                            <div class="rating--keys mdl-typography--caption-force-preferred-font">
+                                            <div class="rating--keys 
+                                                        mdl-typography--caption-force-preferred-font">
                                                 <span class="rating--key">Very Sad</span>
                                                 <span class="rating--key">Sad</span>
                                                 <span class="rating--key">Okay</span>
@@ -448,11 +747,17 @@
                                             </div>
                                         </div>
                                         <div class="rating">
-                                            <label for="test_ds" class="mdl-typography--body-1-force-preferred-font">And the baby is born with Down Syndrome</label>
+                                            <label for="test_ds" 
+                                                   class="mdl-typography--body-1-force-preferred-font">
+                                                And the baby is born with Down Syndrome
+                                            </label>
                                             <i class="material-icons">mood_bad</i>
-                                            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="test_ds" />
+                                            <input class="mdl-slider mdl-js-slider" 
+                                                   type="range" min="0" max="10" step="0.01" 
+                                                   value="5" tabindex="0" id="test_ds" />
                                             <i class="material-icons">mood</i>
-                                            <div class="rating--keys mdl-typography--caption-force-preferred-font">
+                                            <div class="rating--keys 
+                                                        mdl-typography--caption-force-preferred-font">
                                                 <span class="rating--key">Very Sad</span>
                                                 <span class="rating--key">Sad</span>
                                                 <span class="rating--key">Okay</span>
@@ -461,11 +766,17 @@
                                             </div>
                                         </div>
                                         <div class="rating">
-                                            <label for="test_still" class="mdl-typography--body-1-force-preferred-font">And the baby is stillborn</label>
+                                            <label for="test_still" 
+                                                   class="mdl-typography--body-1-force-preferred-font">
+                                                And the baby is stillborn
+                                            </label>
                                             <i class="material-icons">mood_bad</i>
-                                            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="test_still" />
+                                            <input class="mdl-slider mdl-js-slider" 
+                                                   type="range" min="0" max="10" step="0.01" 
+                                                   value="5" tabindex="0" id="test_still" />
                                             <i class="material-icons">mood</i>
-                                            <div class="rating--keys mdl-typography--caption-force-preferred-font">
+                                            <div class="rating--keys 
+                                                        mdl-typography--caption-force-preferred-font">
                                                 <span class="rating--key">Very Sad</span>
                                                 <span class="rating--key">Sad</span>
                                                 <span class="rating--key">Okay</span>
@@ -476,13 +787,22 @@
                                    </fieldset>
 
                                     <fieldset>
-                                        <legend class="mdl-typography--subhead">If you have an amniocentesis that results in a miscarriage:</legend>
+                                        <legend class="mdl-typography--subhead">
+                                            If you have an amniocentesis that results in 
+                                            a miscarriage:
+                                        </legend>
                                         <div class="rating">
-                                            <label for="mis_ds" class="mdl-typography--body-1-force-preferred-font">And the baby had Down Syndrome</label>
+                                            <label for="mis_ds" 
+                                                   class="mdl-typography--body-1-force-preferred-font">
+                                                And the baby had Down Syndrome
+                                            </label>
                                             <i class="material-icons">mood_bad</i>
-                                            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="mis_ds" />
+                                            <input class="mdl-slider mdl-js-slider" 
+                                                   type="range" min="0" max="10" step="0.01" 
+                                                   value="5" tabindex="0" id="mis_ds" />
                                             <i class="material-icons">mood</i>
-                                            <div class="rating--keys mdl-typography--caption-force-preferred-font">
+                                            <div class="rating--keys 
+                                                        mdl-typography--caption-force-preferred-font">
                                                 <span class="rating--key">Very Sad</span>
                                                 <span class="rating--key">Sad</span>
                                                 <span class="rating--key">Okay</span>
@@ -491,11 +811,18 @@
                                             </div>
                                         </div>
                                         <div class="rating">
-                                            <label for="mis_healthy" class="mdl-typography--body-1-force-preferred-font">And the baby did <strong>not</strong> have Down Syndrome</label>
+                                            <label for="mis_healthy" 
+                                                   class="mdl-typography--body-1-force-preferred-font">
+                                                And the baby did <strong>not</strong> have
+                                                Down Syndrome
+                                            </label>
                                             <i class="material-icons">mood_bad</i>
-                                            <input class="mdl-slider mdl-js-slider" type="range" min="0" max="10" step="0.01" value="5" tabindex="0" id="mis_healthy" />
+                                            <input class="mdl-slider mdl-js-slider" 
+                                                   type="range" min="0" max="10" step="0.01" 
+                                                   value="5" tabindex="0" id="mis_healthy" />
                                             <i class="material-icons">mood</i>
-                                            <div class="rating--keys mdl-typography--caption-force-preferred-font">
+                                            <div class="rating--keys 
+                                                        mdl-typography--caption-force-preferred-font">
                                                 <span class="rating--key">Very Sad</span>
                                                 <span class="rating--key">Sad</span>
                                                 <span class="rating--key">Okay</span>
@@ -508,11 +835,14 @@
                                 </form>
 
                                 <p class="mdl-typography--body-1-force-preferred-font">
-                                    Based on your information and priorities, we can offer some advice on an amniocentesis.
+                                    Based on your information and priorities, we can
+                                    offer some advice on an amniocentesis.
                                 </p>
                             </div>
                             <div class="mdl-card__actions">
-                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" data-onclick="advice">
+                                <button class="mdl-button mdl-js-button mdl-button--raised 
+                                               mdl-js-ripple-effect mdl-button--primary" 
+                                        data-onclick="advice">
                                     Advice
                                 </button>
                             </div>
@@ -520,15 +850,24 @@
                     </div>
                 </section>
 
-                <!------------------------------------------------- -->
-                <!-- Suggested action                               -->
-                <!------------------------------------------------- -->
+
+                <!--
+
+                ### Suggested Action
+                
+                The next tab panel shows the suggested action (at a high level). Like all
+                panels, it is implemented as a MDL card.
+
+                -->
 
                 <section class="mdl-layout__tab-panel" id="advice">
                     <div class="page-content">
-                        <div class="mdl-card mdl-shadow--2dp demo-card-event results__notready">
+                        <div class="mdl-card mdl-shadow--2dp demo-card-event 
+                                    results__notready">
                             <div class="mdl-card__title">
-                                <h2 class="mdl-card__title-text">Suggested Action</h2>
+                                <h2 class="mdl-card__title-text">
+                                    Suggested Action
+                                </h2>
                             </div>
                             <div class="mdl-card__supporting-text">
                                 <p class="mdl-typography--body-1-force-preferred-font">
@@ -537,32 +876,42 @@
                                 </p>
                             </div>
                             <div class="mdl-card__actions">
-                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" data-onclick="info">
+                                <button class="mdl-button mdl-js-button mdl-button--raised
+                                               mdl-js-ripple-effect mdl-button--primary" 
+                                        data-onclick="info">
                                     Medical Info
                                 </button>
                             </div>
                         </div>
                         <div class="mdl-card mdl-shadow--2dp demo-card-event results__ready">
                             <div class="mdl-card__title">
-                                <h2 class="mdl-card__title-text">Suggested Action</h2>
+                                <h2 class="mdl-card__title-text">
+                                    Suggested Action
+                                </h2>
                             </div>
                             <div class="mdl-card__supporting-text results__suspect">
                                 <hr/>
-                                <p class="mdl-typography--body-1-force-preferred-font mdl_card__supporting-text__note">
-                                    <em>Note:</em> We can give you better advice if you pick a wider
-                                    range of values for your priorities. Would you like to review
-                                    them now?
+                                <p class="mdl-typography--body-1-force-preferred-font 
+                                          mdl_card__supporting-text__note">
+                                    <em>Note:</em> We can give you better advice if you 
+                                    pick a wider range of values for your priorities. Would
+                                    you like to review them now?
                                 </p>
-                                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" data-onclick="priorities">
+                                <a class="mdl-button mdl-button--colored mdl-js-button 
+                                          mdl-js-ripple-effect" 
+                                   data-onclick="priorities">
                                     Review Priorities
                                 </a>
                                 <hr/>
                             </div>
-                            <div class="mdl-typography--body-1-force-preferred-font mdl-card__supporting-text mdl-card--border">
+                            <div class="mdl-typography--body-1-force-preferred-font 
+                                        mdl-card__supporting-text mdl-card--border">
                                 Actual results go here.
                             </div>
                             <div class="mdl-card__actions">
-                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" data-onclick="details">
+                                <button class="mdl-button mdl-js-button mdl-button--raised 
+                                               mdl-js-ripple-effect mdl-button--primary" 
+                                        data-onclick="details">
                                     Details
                                 </button>
                             </div>
@@ -570,16 +919,23 @@
                     </div>
                 </section>
 
+                <!--
 
-                <!------------------------------------------------- -->
-                <!-- Detailed Analysis                              -->
-                <!------------------------------------------------- -->
+                ### Detailed Analysis
+                
+                The next tab panel provides details of the analysis. Like all panels, it is
+                implemented as a MDL card.
+
+                -->
 
                 <section class="mdl-layout__tab-panel" id="details">
                     <div class="page-content">
-                        <div class="mdl-card mdl-shadow--2dp demo-card-event results__notready">
+                        <div class="mdl-card mdl-shadow--2dp demo-card-event 
+                                    results__notready">
                             <div class="mdl-card__title">
-                                <h2 class="mdl-card__title-text">Detailed Analysis</h2>
+                                <h2 class="mdl-card__title-text">
+                                    Detailed Analysis
+                                </h2>
                             </div>
                             <div class="mdl-card__supporting-text">
                                 <p class="mdl-typography--body-1-force-preferred-font">
@@ -588,7 +944,9 @@
                                 </p>
                             </div>
                             <div class="mdl-card__actions">
-                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" data-onclick="info">
+                                <button class="mdl-button mdl-js-button mdl-button--raised 
+                                               mdl-js-ripple-effect mdl-button--primary" 
+                                        data-onclick="info">
                                     Medical Info
                                 </button>
                             </div>
@@ -597,8 +955,18 @@
                 </section>
             </main>
             
-            <!-- Application footer
+            <!--
 
+            ### Application Footer
+            
+            An optional application footer with links to, e.g., about the site,
+            privacy policy, etc. Currently, the welcome panel provides this
+            information, so no footer is necessary. In that case, the footer
+            can be commented out.
+
+            -->
+
+            <!--
             <footer class="mdl-mini-footer mdl-color--primary">
                 <div class="mdl-mini-footer__left-section">
                     <ul class="mdl-mini-footer__link-list">
@@ -607,471 +975,161 @@
                     </ul>
                 </div>
             </footer>
-            
              -->
 
         </div>
+        
+        <!--
+        
+        ## Scripts
+        --------------------------------------------------------------------------------------
+        
+        The only external script required by the application is the Material Design
+        Lite script, which we get from Google's CDN.
+        
+        > Note: If the MDL script file is updated to a newer version, the CSS style
+          sheet (see above) should probably also be updated to match.
+        
+        Code for some optional scripts is included below, though currently commented out.
+        
+        1. An in-app feedback option. Since this app has no server support, we
+           use an external service ([Eager](https://eager.io)) to add a feedback
+           option. Note that any feedback received is (currently) sent to me
+           (stephen@sathomas.me), so subsequent owners probably should update
+           the link to their own account.
+        
+        2. Standard Google Analytics boilerplate. There's no account (yet), so the site
+           ID is left unspecified in the commented out code.
+           
+        > Note: If either of these third party services (or any other, for that
+          matter) is enabled, the privacy statement on the welcome panel should
+          be updated appropriately. Third party services are almost certainly
+          collecting _some_ data.
+          
+        After loading the external script files, we define our own local code.
+        That code is really the heart of the application.
+        
+        -->
 
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. 
-         *** Re-visist the privacy statement/policy if this is enabled. ***
+        <script src="https://storage.googleapis.com/code.getmdl.io/1.0.4/material.min.js"></script>
+
+        <!-- Third party service that adds support for in-app feedback
+        <script src='http://fast.eager.io/KBgHZ9aQoe.js'></script>
+        -->
+
+        <!-- Google Analytics: change UA-XXXXX-X to actual site ID
         <script>
             (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
             function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
             e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src="https://www.google-analytics.com/analytics.js";
+            e.src='https://www.google-analytics.com/analytics.js';
             r.parentNode.insertBefore(e,r)}(window,document,"script","ga"));
             ga("create","UA-XXXXX-X","auto");ga("send","pageview");
         </script>
         -->
         
-        <!-- Local JavaScript -->
         <script>
-
-            // Avoid polluting the global name space by embedding all of our
-            // code in an IIFE.
-
-//            (function() {
+            
+            // ### Generic Utility Functions
     
-                // Global state for the application
-                var hasInputChanged = false,    // has the user changed *any* input?
-                    hasVisitedResults = false,  // has the user visisted a results panel?
-                    minRating,                  // minimum rating value
-                    maxRating,                  // maximum rating value
-                    inputVars = {},             // hash of all input objects
-                    inputs = [],                // array of all input objects
-                    infos = [],                 // array of all info objects
-                    ratings = [];               // array of all rating objects
-                    
-                // Application operations
+            // #### hasLocalStorage()
 
-                var showResults = function() {
-                    
-                    // If the user hasn't used much of the rating range,
-                    // enable a note.
+            // Check to see if HTML5 localStorage is available. Returns
+            // a boolean result.
+            
+            var hasLocalStorage = function() {
+            	try {
+            		var storage = window.localStorage,
+            			x = '__storage_test__';
+            		storage.setItem(x, x);
+            		storage.removeItem(x);
+            		return true;
+            	}
+            	catch(e) {
+            		return false;
+            	}
+            }
+
+            // ### Application State
+
+            // State of the overall application that is shared by multiple
+            // components.
+
+            var hasInputChanged = false,    // has the user changed *any* input?
+                hasVisitedResults = false,  // has the user visisted a results panel?
+                inputVars = {},             // hash of all input objects
+                inputs = [],                // array of all input objects
+                infos = [],                 // array of all info objects
+                ratings = [];               // array of all rating objects
+                
+            // ### Application-specific Utility Functions
+            
+            // #### updateContentVisibility()
+            
+            // Update the `data-` attributes that control content visibility.
+            // The update is based on the state of the input.
+
+            var updateContentVisibility = function() {
+                
+                // Get the range of rating values. We need this to determine whether
+                // or not the results are "suspect."
+                var minRating = Math.min.apply(null, ratings.map(function(r) {
+                    return r.value();})
+                );
+                var maxRating = Math.max.apply(null, ratings.map(function(r) {
+                    return r.value();})
+                );
+                                
+                // If every required input has a valid value, we can enable the results
+                var allInputsReady = inputs.every(function(i) {
+                        return !i.required() || typeof i.value() !== "undefined";
+                    }) && 
+                    [].slice.call(document.getElementsByTagName("form")).every(function(f) {
+                        return f.checkValidity();
+                    });
+
+                // Add an attribute to the markup so that CSS rules can change
+                // visibility appropriately.
+                document.getElementsByTagName("body")[0].setAttribute("data-results-ready", 
+                    allInputsReady);
+
+                // If the user hasn't used much of the rating range,
+                // enable a note.
+                if (allInputsReady) {
                     document.getElementsByTagName("body")[0].setAttribute(
                         "data-results-suspect", 
                         ((maxRating - minRating) < 4) ||
                         ratings.every(function(r) {return r.value() < 1 || r.value() > 9;})
                     );
-                    
-                };
-                
-                // Check for localStorage
-                
-                var storageAvailable = function() {
-                	try {
-                		var storage = window.localStorage,
-                			x = '__storage_test__';
-                		storage.setItem(x, x);
-                		storage.removeItem(x);
-                		return true;
-                	}
-                	catch(e) {
-                		return false;
-                	}
                 }
-    
-                // The Info object encapsulates the behavior
-                // of an input element that accepts user input.
-                
-                function Info(el) {
-
-                    // Private Properties and Attributes
-                    // ---------------------------------
-        
-                    var element,                // Containing element for the info component
-                        input,                  // Actual input control
-                        required = false,       // Is input required?
-                        hasChanged = false,     // Has the user changed the input?
-                        validateOnBlur = false, // Force validation on blur?
-                        callback;               // Callback for value changes
-
-                    // Private Methods and Functions
-                    // -----------------------------
-                    
-                    var setElement = function(el) {
-                        
-                        // Keep a reference to the various elements and sub-elements
-                        element = el,
-                        input = element.getElementsByTagName("input")[0];
-                        
-                        // Set/update event handlers
-                        input.addEventListener("change", handleChange);
-                        input.addEventListener("blur", handleBlur);
-
-                    };
-                    
-                    // Event Handlers
-                    // --------------
-                    
-                    var handleChange = function(ev) {
-                        hasChanged = true;
-                        if (typeof callback === "function") {
-                            callback(ev);
+            };
+            
+            // #### saveInputState()
+            
+            // Save the state of all inputs in local storage (so it can be restored
+            // if/when the user reloads the app).
+            
+            var saveInputState = function() {
+                if (hasLocalStorage()) {
+                    inputs.forEach(function(i) {
+                        if (typeof i.value() !== "undefined" && i.hasChanged()) {
+                            localStorage.setItem(i.id(), i.value());
                         }
-                    };
-                    
-                    var handleBlur = function(ev) {
-
-                        // We don't use `required` attributes initially
-                        // to avoid a bunch of error messages on an
-                        // empty form. But we will add the attribute
-                        // after the user visits the input.
-                        if (required) {
-                            exports.markRequired();
-                        }
-                        if (validateOnBlur) {
-                            exports.checkValidity();
-                        }
-
-                    };
-
-                    // Object to be Returned
-                    // ---------------------
-
-                    function exports() { };
-
-                    // Public API Methods
-                    // ------------------
-
-                    exports.callback = function(fn) {
-                        if (!arguments.length) { return callback; }
-                        callback = fn;
-                        return this;
-                    };
-                                                
-                    exports.checkValidity = function() {
-                        return element.MaterialTextfield.checkValidity();
-                    };
-                    
-                    exports.hasChanged = function() {
-                        return hasChanged;
-                    };
-                    
-                    exports.element = function(el) {
-                        if (!arguments.length) { return element; }
-                        setElement(el);
-                        return this;
-                    };
-                    
-                    exports.id = function(s) {
-                        if (!arguments.length) { return input.getAttribute("id"); }
-                        input.setAttribute("id", s);
-                        return this;
-                    };
-                    
-                    exports.markRequired = function() {
-                        input.setAttribute("required", "required");  
-                    };
-                    
-                    exports.required = function(b) {
-                        if (!arguments.length) { return required; }
-                        required = b;
-                        return this;
-                    };
-                    
-                    exports.validateOnBlur = function(b) {
-                        if (!arguments.length) { return validateOnBlur; }
-                        validateOnBlur = b;
-                        return this;
-                    };
-                    
-                    exports.value = function(x) {
-                        if (!arguments.length) {
-                            if (input && input.value) { 
-                                return parseFloat(input.value); 
-                            }
-                            return undefined;
-                        }
-                        if (element) { 
-                            element.MaterialTextfield.change(x);
-                            handleChange();
-                        }
-                        return this;
-                    };
-
-                    // Initialization
-                    // --------------
-
-                    if (arguments.length) {
-                        setElement(el);
-                    }
-
-                    return exports;
-
-                };
-
-                // The Rating object encapuslates the behavior of a
-                // rating component on the page. The optional input
-                // parameter of the constructor is the parent HTML
-                // element.
-
-                function Rating(el) {            
-
-                    // Private Properties and Attributes
-                    // ---------------------------------
-        
-                    var element,             // Containing element for the rating component
-                        input,               // Actual input control
-                        lowIcon,             // Icon for low value
-                        highIcon,            // Icon for high value
-                        keys,                // Key values
-                        colorMin = false,    // Preserve color on minimum value?
-                        hasChanged = false,  // Has the user changed the input?
-                        callback;            // Callback for value changes
-
-                    // Private Methods and Functions
-                    // -----------------------------
-                    
-                    var setElement = function(el) {
-                        
-                        // Keep a reference to the various elements and sub-elements
-                        element = el;
-                        input = element.getElementsByTagName("input")[0];
-                        lowIcon = element.getElementsByTagName("i")[0];
-                        highIcon = element.getElementsByTagName("i")[1];
-                        keys = [].slice.call(element.getElementsByClassName("rating--key"));
-                        
-                        // Set/update event handlers
-                        input.addEventListener("input", handleInput);
-                        input.addEventListener("change", handleChange);
-
-                    };
-                    
-                    var update = function() {
-                        // Cache the current value
-                        var value = parseFloat(input.value);
-                        
-                        // Update the icons
-                        lowIcon.style.opacity = value < 6 ? 1 : 0.25 + ((10 - value)/6);
-                        highIcon.style.opacity = value > 4 ? 1 : 0.25 + (value/6);                        
-
-                        // Update the keys
-                        keys.forEach(function(key, idx) {
-                            idx = 20/8 * idx;
-                            if (Math.abs(value - idx) < 2) {
-                                key.style.opacity = (2 - Math.abs(value - idx)) / 2;
-                            } else {
-                                key.style.opacity = 0;
-                            }
-                        })
-                    };
-
-                    // Event Handlers
-                    // --------------
-                    
-                    var handleInput = function(ev) {
-                        if (colorMin) {
-                            // We don't want special styling on lowest value
-                            setTimeout(function() {
-                                input.classList.remove("is-lowest-value");
-                            }, 0);
-                        }
-                        update();
-                    }
-
-                    var handleChange = function(ev) {
-
-                        hasChanged = true;
-
-                        // IE10 doesn't fire input events, so fire one for it
-                        handleInput(ev);
-                        
-                        if (typeof callback === "function") {
-                            callback(ev);
-                        }
-
-                    }
-
-                    // Object to be Returned
-                    // ---------------------
-
-                    function exports() { };
-
-                    // Public API Methods
-                    // ------------------
-
-                    exports.callback = function(fn) {
-                        if (!arguments.length) { return callback; }
-                        callback = fn;
-                        return this;
-                    };
-                                                
-                    exports.hasChanged = function() {
-                        return hasChanged;
-                    };
-                    
-                    exports.colorMin = function(b) {
-                        if (!arguments.length) { return colorMin; }
-                        colorMin = b;
-                        return this;
-                    };
-
-                    exports.element = function(el) {
-                        if (!arguments.length) { return element; }
-                        setElement(el);
-                        return this;
-                    };
-                    
-                    exports.id = function(s) {
-                        if (!arguments.length) { return input.getAttribute("id"); }
-                        input.setAttribute("id", s);
-                        return this;
-                    };
-                    
-                    exports.required = function() {
-                        // Ratings are always (effectively) required
-                        return true;
-                    };
-                    
-                    exports.value = function(x) {
-                        if (!arguments.length) {
-                            if (input && input.value) { 
-                                return parseFloat(input.value); 
-                            }
-                            return undefined;
-                        }
-                        if (input) { 
-                            input.MaterialSlider.change(x);
-                            handleChange();
-                        }
-                        return this;
-                    };
-
-                    // Initialization
-                    // --------------
-
-                    if (arguments.length) {
-                        setElement(el);
-                        update();
-                    }
-
-                    return exports;
-
-                };
-                
-                // Event handlers
-                
-                var inputChanged = function(ev) {
-                    
-                    // Note that the user has changed at least one input
-                    hasInputChanged = true;
-                    
-                    // Get the range of rating values
-                    minRating = Math.min.apply(null, ratings.map(function(r) {return r.value();}));
-                    maxRating = Math.max.apply(null, ratings.map(function(r) {return r.value();}));
-                    
-                    // If every required input has a valid value, we can enable the results
-                    var allInputsReady = inputs.every(function(i) {
-                            return !i.required() || typeof i.value() !== "undefined";
-                        }) && 
-                        [].slice.call(document.getElementsByTagName("form")).every(function(f) {
-                            return f.checkValidity();
-                        });
-
-                    // Add an attribute to the markup so that CSS rules can change
-                    // visibility appropriately.
-                    document.getElementsByTagName("body")[0].setAttribute("data-results-ready", allInputsReady);
-                    
-                    // Save the current state in local storage
-                    if (storageAvailable()) {
-                        inputs.forEach(function(i) {
-                            if (typeof i.value() !== "undefined" && i.hasChanged()) {
-                                localStorage.setItem(i.id(), i.value());
-                            }
-                        })
-                    }
-                    
-                    // If inputs are there, show the results
-                    if (allInputsReady) {
-                        showResults();
-                    }
-
-                };
-                
-                var panelViewed = function(panel) {
-                    
-                    if (panel === "advice" || panel === "details") {
-
-                        // If the user is now viewing one of the results panels, note the fact.
-                        hasVisitedResults = true;
-                        
-                        // And if the user has changed at least one input, we can enable
-                        // validation so that missing values are highlighted. We only do
-                        // this if the user has changed an input in case she is just
-                        // checking out the various panels.
-                        if (hasInputChanged) {
-                            infos.forEach(function(info) {
-                                if (info.required()) {
-                                    info.markRequired();
-                                    info.checkValidity();
-                                }
-                            });
-                        }
-                        
-                    }
-
-                };
-                
-                
-                // Set up all the behaviors.
-                
-                // Look for all the `<button>` elements that have a `data-onclick`
-                // attribute (that will indicate a new section).
-                
-                [].slice.call(document.querySelectorAll("button[data-onclick], a[data-onclick]")).forEach(function(el) {
-                    el.addEventListener("click", function(ev) {
-                        
-                        // Don't process links, etc.
-                        ev.preventDefault();
-                        
-                        // When the user clicks on a button, simulate the effect of
-                        // selecting the corresponding tab panel. Essentially that's
-                        // nothing more than managing the `is-active` class on the
-                        // tabs and the panels.
-                        var target = el.getAttribute("data-onclick");
-                        [].slice.call(document.querySelectorAll(".mdl-layout__tab-bar a")).forEach(function(anchor) {
-                            anchor.classList.remove("is-active");
-                        });
-                        [].slice.call(document.querySelectorAll(".mdl-layout__tab-panel")).forEach(function(section) {
-                            section.classList.remove("is-active");
-                        });
-                        document.querySelector(".mdl-layout__tab-bar a[href='#" + target + "']").classList.add("is-active");
-                        document.getElementById(target).classList.add("is-active");
-                        
-                        panelViewed(target);
-                        
-                        // Also, go ahead and position the window at the top
-                        // of the new panel.
-                        document.getElementsByTagName('main')[0].scrollTop = 0;
-                    });
-                });
-
-                [].slice.call(document.getElementsByClassName("info")).forEach(function(el) {
-                    var obj = new Info(el).required(true);
-                    inputVars[obj.id()] = obj;
-                    inputs.push(obj);
-                    infos.push(obj);
-                    obj.callback(inputChanged);
-                });
-
-                [].slice.call(document.getElementsByClassName("rating")).forEach(function(el) {
-                    var obj = new Rating(el);
-                    inputVars[obj.id()] = obj;
-                    inputs.push(obj);
-                    ratings.push(obj);
-                    obj.callback(inputChanged);
-                });
-                
-                [].slice.call(document.getElementsByClassName("mdl-layout__tab")).forEach(function(el) {
-                    var target = el.getAttribute("href");
-                    el.addEventListener("click", function(){
-                        panelViewed(target.substring(1));
-                    });
-                });
-                
-                // Restore any values from previous session
-                if (storageAvailable()) {
+                    })
+                }
+            };
+            
+            // #### restoreInputState()
+            
+            // Restore previously saved input state (if it's available in
+            // local storage).
+            
+            var restoreInputState = function() {
+                if (hasLocalStorage()) {
+                    // We defer execution of the actual restore code
+                    // until the stack has unwound. That avoids any
+                    // race condition between this function and the
+                    // initialization of the input components.
                     setTimeout(function() {
                         inputs.forEach(function(i) {
                             if (localStorage.getItem(i.id()) !== null) {
@@ -1080,10 +1138,452 @@
                         })
                     }, 0);
                 }
-
-
-//            }());
+            }
             
+            // ### Components
+            
+            // #### Info
+            
+            // The Info object encapsulates the behavior
+            // of an input element that accepts user input.
+            
+            function Info(el) {
+
+                // ##### Private Properties and Attributes
+    
+                var element,                // Containing element for the info component
+                    input,                  // Actual input control
+                    required = false,       // Is input required?
+                    hasChanged = false,     // Has the user changed the input?
+                    validateOnBlur = false, // Force validation on blur?
+                    callback;               // Callback for value changes
+
+                // ##### Private Methods and Functions
+                
+                var setElement = function(el) {
+                    
+                    // Keep a reference to the various elements and sub-elements
+                    element = el,
+                    input = element.getElementsByTagName("input")[0];
+                    
+                    // Set/update event handlers
+                    input.addEventListener("change", handleChange);
+                    input.addEventListener("blur", handleBlur);
+
+                };
+                
+                // ##### Event Handlers
+                
+                var handleChange = function(ev) {
+                    hasChanged = true;
+                    if (typeof callback === "function") {
+                        callback(ev);
+                    }
+                };
+                
+                var handleBlur = function(ev) {
+
+                    // We don't use `required` attributes initially
+                    // to avoid a bunch of error messages on an
+                    // empty form. But we will add the attribute
+                    // after the user visits the input.
+                    if (required) {
+                        exports.markRequired();
+                    }
+                    if (validateOnBlur) {
+                        exports.checkValidity();
+                    }
+
+                };
+
+                // ##### Object to be Returned
+
+                function exports() { };
+
+                // ##### Public API Methods
+
+                exports.callback = function(fn) {
+                    if (!arguments.length) { return callback; }
+                    callback = fn;
+                    return this;
+                };
+                                            
+                exports.checkValidity = function() {
+                    return element.MaterialTextfield.checkValidity();
+                };
+                
+                exports.hasChanged = function() {
+                    return hasChanged;
+                };
+                
+                exports.element = function(el) {
+                    if (!arguments.length) { return element; }
+                    setElement(el);
+                    return this;
+                };
+                
+                exports.id = function(s) {
+                    if (!arguments.length) { return input.getAttribute("id"); }
+                    input.setAttribute("id", s);
+                    return this;
+                };
+                
+                exports.markRequired = function() {
+                    input.setAttribute("required", "required");  
+                };
+                
+                exports.required = function(b) {
+                    if (!arguments.length) { return required; }
+                    required = b;
+                    return this;
+                };
+                
+                exports.validateOnBlur = function(b) {
+                    if (!arguments.length) { return validateOnBlur; }
+                    validateOnBlur = b;
+                    return this;
+                };
+                
+                exports.value = function(x) {
+                    if (!arguments.length) {
+                        if (input && input.value) { 
+                            return parseFloat(input.value); 
+                        }
+                        return undefined;
+                    }
+                    if (element) { 
+                        element.MaterialTextfield.change(x);
+                        handleChange();
+                    }
+                    return this;
+                };
+
+                // ##### Initialization
+
+                if (arguments.length) {
+                    setElement(el);
+                }
+
+                return exports;
+
+            };
+            
+            // #### Rating
+
+            // The Rating object encapuslates the behavior of a
+            // rating component on the page. The optional input
+            // parameter of the constructor is the parent HTML
+            // element.
+
+            function Rating(el) {            
+
+                // ##### Private Properties and Attributes
+    
+                var element,             // Containing element for the rating component
+                    input,               // Actual input control
+                    lowIcon,             // Icon for low value
+                    highIcon,            // Icon for high value
+                    keys,                // Key values
+                    colorMin = false,    // Preserve color on minimum value?
+                    hasChanged = false,  // Has the user changed the input?
+                    callback;            // Callback for value changes
+
+                // ##### Private Methods and Functions
+                
+                var setElement = function(el) {
+                    
+                    // Keep a reference to the various elements and sub-elements
+                    element = el;
+                    input = element.getElementsByTagName("input")[0];
+                    lowIcon = element.getElementsByTagName("i")[0];
+                    highIcon = element.getElementsByTagName("i")[1];
+                    keys = [].slice.call(element.getElementsByClassName("rating--key"));
+                    
+                    // Set/update event handlers
+                    input.addEventListener("input", handleInput);
+                    input.addEventListener("change", handleChange);
+
+                };
+                
+                var update = function() {
+                    // Cache the current value
+                    var value = parseFloat(input.value);
+                    
+                    // Update the icons
+                    lowIcon.style.opacity = value < 6 ? 1 : 0.25 + ((10 - value)/6);
+                    highIcon.style.opacity = value > 4 ? 1 : 0.25 + (value/6);                        
+
+                    // Update the keys
+                    keys.forEach(function(key, idx) {
+                        idx = 20/8 * idx;
+                        if (Math.abs(value - idx) < 2) {
+                            key.style.opacity = (2 - Math.abs(value - idx)) / 2;
+                        } else {
+                            key.style.opacity = 0;
+                        }
+                    })
+                };
+
+                // ##### Event Handlers
+                
+                var handleInput = function(ev) {
+                    if (colorMin) {
+                        // We don't want special styling on lowest value
+                        setTimeout(function() {
+                            input.classList.remove("is-lowest-value");
+                        }, 0);
+                    }
+                    update();
+                }
+
+                var handleChange = function(ev) {
+
+                    hasChanged = true;
+
+                    // IE10 doesn't fire input events, so fire one for it
+                    handleInput(ev);
+                    
+                    if (typeof callback === "function") {
+                        callback(ev);
+                    }
+
+                }
+
+                // ##### Object to be Returned
+
+                function exports() { };
+
+                // ##### Public API Methods
+
+                exports.callback = function(fn) {
+                    if (!arguments.length) { return callback; }
+                    callback = fn;
+                    return this;
+                };
+                                            
+                exports.hasChanged = function() {
+                    return hasChanged;
+                };
+                
+                exports.colorMin = function(b) {
+                    if (!arguments.length) { return colorMin; }
+                    colorMin = b;
+                    return this;
+                };
+
+                exports.element = function(el) {
+                    if (!arguments.length) { return element; }
+                    setElement(el);
+                    return this;
+                };
+                
+                exports.id = function(s) {
+                    if (!arguments.length) { return input.getAttribute("id"); }
+                    input.setAttribute("id", s);
+                    return this;
+                };
+                
+                exports.required = function() {
+                    // Ratings are always (effectively) required
+                    return true;
+                };
+                
+                exports.value = function(x) {
+                    if (!arguments.length) {
+                        if (input && input.value) { 
+                            return parseFloat(input.value); 
+                        }
+                        return undefined;
+                    }
+                    if (input) { 
+                        input.MaterialSlider.change(x);
+                        handleChange();
+                    }
+                    return this;
+                };
+
+                // ##### Initialization
+
+                if (arguments.length) {
+                    setElement(el);
+                    update();
+                }
+
+                return exports;
+
+            };
+            
+            // ### High Level Event Handlers
+            
+            // #### inputChanged()
+            
+            // The user has changed an input's value.
+ 
+            var inputChanged = function(ev) {
+
+                // Note the fact that the user has changed an input.                
+                hasInputChanged = true;
+
+                // Whenever the user updates an input, we save the new
+                // state (in local storage) and update the visibility
+                // of content as appropriate.
+                saveInputState();
+                updateContentVisibility();
+            };
+            
+            // #### panelViewed()
+            
+            // The user has viewed a panel in the tab navigation of the
+            // app. The input paramter is a string with the hashtag value
+            // of the viewed panel.
+            
+            var panelViewed = function(panel) {
+                
+                // There are two specific panels that we want to watch
+                // for. Both are panels that show analysis results.
+                if (panel === "advice" || panel === "details") {
+
+                    // If the user is now viewing one of the results panels, note the fact.
+                    hasVisitedResults = true;
+                    
+                    // And if the user has changed at least one input, we can enable
+                    // validation so that missing values are highlighted. We only do
+                    // this if the user has changed an input in case she is just
+                    // checking out the various panels.
+                    if (hasInputChanged) {
+                        infos.forEach(function(info) {
+                            if (info.required()) {
+                                info.markRequired();
+                                info.checkValidity();
+                            }
+                        });
+                    }
+                    
+                }
+
+            };
+            
+            // ### Behavior Initialization
+            
+            // #### Buttons and Anchor tags that Change Tab Panels
+                        
+            // Look for all the `<button>` and `<a> elements that have a `data-onclick`
+            // attribute (that will indicate a new section). Those are buttons and links
+            // that (are intended to) take the user to a different tab panel. Since MDL
+            // doesn't have support for handling this function, we create our own event
+            // handler forthem and force a change of panel.
+            
+            [].slice.call(document.querySelectorAll("button[data-onclick], a[data-onclick]")).
+                forEach(function(el) {
+                    el.addEventListener("click", function(ev) {
+                        
+                        // Don't process links, etc.
+                        ev.preventDefault();
+
+                        // What panel is the user navigating to?
+                        var target = el.getAttribute("data-onclick");                        
+
+                        // Note that this panel has now been viewed by the user. (Well,
+                        // it will have been viewed once we finish this handler.)
+                        panelViewed(target);
+                        
+                        // When the user clicks on a button, simulate the effect of
+                        // selecting the corresponding tab panel. Essentially that's
+                        // nothing more than managing the `is-active` class on the
+                        // tabs and the panels. The MDL style transitions take care
+                        // of the rest.
+                        
+                        // First we remove the `is-active` class from all the tabs 
+                        // and panels.
+                        [].slice.call(document.querySelectorAll(".mdl-layout__tab-bar a")).
+                            forEach(function(anchor) {
+                                anchor.classList.remove("is-active");
+                            }
+                        );
+                        [].slice.call(document.querySelectorAll(".mdl-layout__tab-panel")).
+                            forEach(function(section) {
+                                section.classList.remove("is-active");
+                            }
+                        );
+                        
+                        // Now we add the `is-active` class back to the targeted tab
+                        // and panel.
+                        document.querySelector(".mdl-layout__tab-bar a[href='#"+target+"']").
+                            classList.add("is-active");
+                        document.getElementById(target).classList.add("is-active");
+                        
+                        // Also, go ahead and position the window at the top
+                        // of the new panel. If we don't take this action, some
+                        // browsers leave the scroll position as-is (i.e. as it
+                        // was in the old tab panel). That is not good.
+                        document.getElementsByTagName('main')[0].scrollTop = 0;
+                    });
+                }
+            );
+            
+            // #### Hook Changes to Active Tab Panel
+            
+            // We need to spy on changes to the active tab panel in order to 
+            // update the page intelligently.
+
+            [].slice.call(document.getElementsByClassName("mdl-layout__tab")).
+                forEach(function(el) {
+                var target = el.getAttribute("href");
+                el.addEventListener("click", function(){
+                    panelViewed(target.substring(1));
+                });
+                }
+            );
+            
+            // ### Component Initialization
+            
+            // Unlike traditional JavaScript MV* frameworks/libraries, we
+            // don't rely on templates to dynamically render content. Instead
+            // we "pre-render" the content by creating it within the static
+            // markup. This approach, in effect, is the same as server-side
+            // rendering for the initial state, and it make the page render
+            // significantly faster.
+            
+            // #### Initialize Info Components
+
+            [].slice.call(document.getElementsByClassName("info")).forEach(function(el) {
+                
+                // Note that all Info components are required.
+                var obj = new Info(el).required(true);
+                
+                // Now that we have an Info component, add it to the application
+                // state as appropriate. It's both a generic input (so it goes
+                // in the `inputVars` object and the `inputs` array), and a
+                // specific Info object.
+                inputVars[obj.id()] = obj;
+                inputs.push(obj);
+                infos.push(obj);
+                
+                // Register our event handler if the user changes the input.
+                obj.callback(inputChanged);
+            });
+            
+            // #### Initialize Rating Components
+
+            [].slice.call(document.getElementsByClassName("rating")).forEach(function(el) {
+                var obj = new Rating(el);
+
+                // Now that we have a Rating component, add it to the application
+                // state as appropriate. It's both a generic input (so it goes
+                // in the `inputVars` object and the `inputs` array), and a
+                // specific Rating object.
+                inputVars[obj.id()] = obj;
+                inputs.push(obj);
+                ratings.push(obj);
+
+                // Register our event handler if the user changes the input.
+                obj.callback(inputChanged);
+            });
+            
+            // ### Restore Input State
+            
+            restoreInputState();
+
         </script>
 
     </body>
