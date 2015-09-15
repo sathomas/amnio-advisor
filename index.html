@@ -1094,7 +1094,8 @@
                     allInputsReady);
 
                 // If the user hasn't used much of the rating range,
-                // enable a note.
+                // or if the user has pushed all sliders to their minimum
+                // or maximum values, the results are suspect.
                 if (allInputsReady) {
                     document.getElementsByTagName("body")[0].setAttribute(
                         "data-results-suspect", 
