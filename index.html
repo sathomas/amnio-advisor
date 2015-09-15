@@ -228,6 +228,77 @@
             }
             
             /*
+             * #### Gauge Component
+             */
+             
+            .gauge {
+                height: calc(150px + 3em);
+            }
+
+            .gauge--container {
+            	margin: 0;
+            	padding: 0;
+            	width: 300px;
+            	height: 150px;
+            	position: absolute;
+            	left: 50%;
+            	overflow: hidden;
+            	text-align: center;
+            	-webkit-transform: translateX(-50%);
+            	   -moz-transform: translateX(-50%);
+            	    -ms-transform: translateX(-50%);
+            	     -o-transform: translateX(-50%);
+            	        transform: translateX(-50%);
+            }
+            
+            .gauge--background {
+            	z-index: 1;
+            	position: absolute;
+            	background-color: #9FA8DA;
+            	width: 300px;
+            	height: 150px;
+            	top: 0;
+            	border-radius: 250px 250px 0 0;
+            }
+
+            .gauge--center {
+            	z-index: 3;
+            	position: absolute;
+            	background-color: #fff;
+            	width: 180px;
+            	height: 90px;
+            	top: 60px;
+            	margin-left: 60px;
+            	margin-right: auto;
+            	border-radius:250px 250px 0 0;
+            }
+
+            .gauge--data {
+            	z-index: 2;
+            	position: absolute;
+            	background-color: #3F51B5;
+            	width: 300px;
+            	height: 150px;
+            	top: 150px;
+            	margin-left: auto;
+            	margin-right: auto;
+            	border-radius: 0 0 200px 200px ;
+                -webkit-transform-origin: center top;
+                   -moz-transform-origin: center top;
+                    -ms-transform-origin: center top;
+                     -o-transform-origin: center top;
+                        transform-origin: center top;
+            }
+
+.gauge--data {
+-webkit-transform: rotate(.25turn);
+-moz-transform: rotate(.25turn);
+-ms-transform: rotate(.25turn);
+-o-transform: rotate(.25turn);
+transform: rotate(.25turn);
+}
+
+            /*
              * ### Content Visibility
              *
              * Show/hide content based on the application state. There are three
@@ -906,7 +977,17 @@
                             </div>
                             <div class="mdl-typography--body-1-force-preferred-font 
                                         mdl-card__supporting-text mdl-card--border">
-                                Actual results go here.
+                            	<div class="gauge">
+                                	<div class="gauge--container">
+                                		<div class="gauge--background"></div>
+                                		<div class="gauge--center"></div>
+                                		<div class="gauge--data"></div>
+                                	</div>
+                            	</div>
+                                <p class="mdl-typography--body-1-force-preferred-font">
+                                    You can look at the details to understand how
+                                    we came to this suggestion.
+                                </p>
                             </div>
                             <div class="mdl-card__actions">
                                 <button class="mdl-button mdl-js-button mdl-button--raised 
