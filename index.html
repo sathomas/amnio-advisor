@@ -90,7 +90,6 @@
             
             legend {
                 padding-top: 1em;
-                overflow: hidden;
             }
             
             /*
@@ -229,18 +228,38 @@
             
             /*
              * #### Gauge Component
+             *
+             * The standard markup for the component is:
+             *
+             *      <div class="gauge">
+             *          <div class="gauge--container">
+             *              <div class="gauge--marker"></div>
+             *              <div class="gauge--background"></div>
+             *              <div class="gauge--center"></div>
+             *              <div class="gauge--data"></div>
+             *              <div class="gauge--needle"></div>
+             *          </div>
+             *          <div class="gauge--labels">
+             *              <span class="gauge--label__low">No</span>
+             *              <span class="gauge--label__spacer"></span>
+             *              <span class="gauge--label__high">Yes</span>
+             *          </div>
+             *      </div>
              */
              
+            /*
+             * First define all of the relevant rules that aren't dependent
+             * on the size of the gauge. We want to collect the size-depenent
+             * rules in one place to make it easier to adjust the size.
+             */
+
             .gauge {
-                height: calc(150px + 3em);
                 position: relative;
             }
 
             .gauge--container {
             	margin: 0;
             	padding: 0;
-            	width: 300px;
-            	height: 150px;
             	position: absolute;
             	left: 50%;
             	overflow: hidden;
@@ -252,111 +271,161 @@
             	        transform: translateX(-50%);
             }
             
+            .gauge--marker {
+                background-color: #fff;
+                position: absolute;
+                width: 1px;
+                z-index: 4;
+            }
+            
             .gauge--background {
             	z-index: 1;
             	position: absolute;
             	background-color: #9FA8DA;
-            	width: 300px;
-            	height: 150px;
             	top: 0;
-            	border-radius: 250px 250px 0 0;
+            	border-radius: 300px 300px 0 0;
             }
 
             .gauge--center {
             	z-index: 3;
             	position: absolute;
             	background-color: #fff;
-            	width: 180px;
-            	height: 90px;
-            	top: 60px;
-            	margin-left: 60px;
             	margin-right: auto;
-            	border-radius:250px 250px 0 0;
+            	border-radius: 300px 300px 0 0;
             }
 
             .gauge--data {
             	z-index: 2;
             	position: absolute;
             	background-color: #3F51B5;
-            	width: 300px;
-            	height: 150px;
-            	top: 150px;
             	margin-left: auto;
             	margin-right: auto;
-            	border-radius: 0 0 200px 200px ;
+            	border-radius: 0 0 300px 300px ;
                 -webkit-transform-origin: center top;
                    -moz-transform-origin: center top;
                     -ms-transform-origin: center top;
                      -o-transform-origin: center top;
                         transform-origin: center top;
             }
-
-            .gauge--data__liveupdate {
-                -webkit-transition: all 1.3s ease-in-out;
-                   -moz-transition: all 1.3s ease-in-out;
-                    -ms-transition: all 1.3s ease-in-out;
-                     -o-transition: all 1.3s ease-in-out;
-                        transition: all 1.3s ease-in-out;
-            }
             
             .gauge--needle {
                 background-color: #E91E63;
                 height: 3px;
-                left: 150px;
                 position: absolute;
-                top: 147px;
-                width: 150px;
                 z-index: 5;
-                -webkit-transform-origin: left bottom;
-                   -moz-transform-origin: left bottom;
-                    -ms-transform-origin: left bottom;
-                     -o-transform-origin: left bottom;
-                        transform-origin: left bottom;
-                -webkit-transform: rotate(-.17turn);
-                   -moz-transform: rotate(-.17turn);
-                    -ms-transform: rotate(-.17turn);
-                     -o-transform: rotate(-.17turn);
-                        transform: rotate(-.17turn);
+                -webkit-transform-origin: left center;
+                   -moz-transform-origin: left center;
+                    -ms-transform-origin: left center;
+                     -o-transform-origin: left center;
+                        transform-origin: left center;
             }
-            
+
             .gauge--labels {
                 display: table;
                 margin: 0 auto;
                 position: relative;
-                top: 150px;
-                width: 300px;
             }
             
             .gauge--label__low {
                 display: table-cell;
                 text-align: center;
-                width: 60px;
             }
             
             .gauge--label__spacer {
                 display: table-cell;
-                width: 180px;
             }
             
             .gauge--label__high {
                 display: table-cell;
                 text-align: center;
-                width: 60px;
             }
             
-.gauge--data {
+            /*
+             * Now define the rules that depend on the size of
+             * the gauge. We start with sizing for a small mobile
+             * device.
+             */
+
+            .gauge { height: calc(120px + 3em); }
+            .gauge--container { width: 240px; height: 120px; }
+            .gauge--marker { height: 120px; left: 119.5px; }
+            .gauge--background { width: 240px; height: 120px; }
+            .gauge--center { width: 144px; height: 72px; top: 48px; margin-left: 48px; }
+            .gauge--data { width: 240px; height: 120px; top: 120px; }
+            .gauge--needle { left: 120px; top: 117px; width: 120px; }
+            .gauge--labels { top: 120px; width: 240px; }
+            .gauge--label__low { width: 48px; }
+            .gauge--label__spacer { width: 144px; }
+            .gauge--label__high { width: 48px; }
+
+            /*
+             * Increase the gauge size slightly on larger viewports.
+             */
+
+             @media only screen and (min-width: 400px) {
+                .gauge { height: calc(150px + 3em); }
+                .gauge--container { width: 300px; height: 150px; }
+                .gauge--marker { height: 150px; left: 149.5px; }
+                .gauge--background { width: 300px; height: 150px; }
+                .gauge--center { width: 180px; height: 90px; top: 60px; margin-left: 60px; }
+                .gauge--data { width: 300px; height: 150px; top: 150px; }
+                .gauge--needle { left: 150px; top: 147px; width: 150px; }
+                .gauge--labels { top: 150px; width: 300px; }
+                .gauge--label__low { width: 60px; }
+                .gauge--label__spacer { width: 180px; }
+                .gauge--label__high { width: 60px; }
+            }
+
+            /*
+             * As an option, the `gauge__liveupdate` class can be added
+             * to the main gauge element. When this class is present,
+             * we add a transition that animates any changes to the gauge
+             * value. Currently, the app does not use this option because
+             * all the inputs that can change gauge values are present
+             * on tab panels that are different from the gauge itself.
+             * Therefore, users won't be able to see any gauge changes
+             * when they make input changes. The code is available, though,
+             * should this change.
+             */
+
+            .gauge__liveupdate .gauge--data,
+            .gauge__liveupdate .gauge--needle {
+                -webkit-transition: all 1.5s ease-in-out;
+                   -moz-transition: all 1.5s ease-in-out;
+                    -ms-transition: all 1.5s ease-in-out;
+                     -o-transition: all 1.5s ease-in-out;
+                        transition: all 1.5s ease-in-out;
+            }            
+
+            /*
+             * For a given gauge value, x, ranging from 0.0 to 1.0, set
+             * the `transform: rotate()` property according to the
+             * following equations:
+             *
+             * - `.gauge--data`: 0.5x turns
+             * - `.gauge--needle`: -0.5 + 0.5x turns
+             */
+
+            .gauge--data {
 -webkit-transform: rotate(.33turn);
--moz-transform: rotate(.33turn);
--ms-transform: rotate(.33turn);
--o-transform: rotate(.33turn);
-transform: rotate(.33turn);
-}
+                   -moz-transform: rotate(0turn);
+                    -ms-transform: rotate(0turn);
+                     -o-transform: rotate(0turn);
+                        transform: rotate(0turn);
+            }
+            .gauge--needle {
+-webkit-transform: rotate(-.17turn);
+                   -moz-transform: rotate(-.50turn);
+                    -ms-transform: rotate(-.50turn);
+                     -o-transform: rotate(-.50turn);
+                        transform: rotate(-.50turn);
+            }
 
             /*
              * ### Content Visibility
              *
              * Show/hide content based on the application state. There are three
-             * classes that determine content visibility:
+             * classes that determine main content visibility:
              *
              * 1. `results__notready`: Content within a container with this
              *    class is visible when the results are not ready. The content
@@ -380,7 +449,17 @@ transform: rotate(.33turn);
              * * `data-suspect`: set to `"true"` if results are suspect.
              *
              * For completeness, we also support `data-results-notready` but its
-             * use is discouraged. 
+             * use is discouraged.
+             *
+             * There are also distinct classes to mark content based on whether
+             * or not an amniocentesis is advisable. Those classes are:
+             *
+             * - `amnio-false` if amniocentesis is not advised, and
+             * - `amnio-true` if amniocentesis is advised.
+             *
+             * Initially, both content types are hidden. The appropriate content
+             * can be revealed by setting the `data-amnio` attribute on the
+             * `<body>` tag to be "true" or "false".
              */
 
             .results__notready {
@@ -409,6 +488,17 @@ transform: rotate(.33turn);
                 display: block;
             }
             
+            .amnio-false, .amnio-true {
+                display: none;
+            }
+            
+            body[data-amnio="true"] .amnio-true {
+                display: block;
+            }
+
+            body[data-amnio="false"] .amnio-false {
+                display: block;
+            }
         </style>
 
     </head>
@@ -1031,8 +1121,9 @@ transform: rotate(.33turn);
                             </div>
                             <div class="mdl-typography--body-1-force-preferred-font 
                                         mdl-card__supporting-text mdl-card--border">
-                            	<div class="gauge">
+                            	<div class="gauge" id="result">
                                 	<div class="gauge--container">
+                                		<div class="gauge--marker"></div>
                                 		<div class="gauge--background"></div>
                                 		<div class="gauge--center"></div>
                                 		<div class="gauge--data"></div>
@@ -1044,6 +1135,20 @@ transform: rotate(.33turn);
                                     	<span class="gauge--label__high">Yes</span>
                                 	</div>
                             	</div>
+                                <p class="amnio-true 
+                                          mdl-typography--body-1-force-preferred-font">
+                                    Based on your priorities and medical information,
+                                    an amniocentesis will improve your chances of
+                                    a preferable outcome. We suggest that you have
+                                    the procedure.
+                                </p>
+                                <p class="amnio-false 
+                                          mdl-typography--body-1-force-preferred-font">
+                                    Based on your priorities and medical information,
+                                    an amniocentesis will not improve your chances of
+                                    a preferable outcome. We suggest that you do
+                                    <strong>not</strong> have the procedure.
+                                </p>
                                 <p class="mdl-typography--body-1-force-preferred-font">
                                     You can look at the details to understand how
                                     we came to this suggestion.
@@ -1198,6 +1303,13 @@ transform: rotate(.33turn);
 
             var hasInputChanged = false,    // has the user changed *any* input?
                 hasVisitedResults = false,  // has the user visisted a results panel?
+                areInputsValid = false,     // are all inputs valid?
+                areInputsSuspect = false,   // are inputs suspect?
+                weights = {
+                    amnio: 0,               // weighted value of procedure
+                    noAmnio: 0              // weighted value of no procedure
+                },
+                resultGauge,                // the result gauge object
                 inputVars = {},             // hash of all input objects
                 inputs = [],                // array of all input objects
                 infos = [],                 // array of all info objects
@@ -1205,13 +1317,12 @@ transform: rotate(.33turn);
                 
             // ### Application-specific Utility Functions
             
-            // #### updateContentVisibility()
+            // #### evaluateInputs()
             
-            // Update the `data-` attributes that control content visibility.
-            // The update is based on the state of the input.
+            // Evaluate the user inputs, updating application state as appropriate.
 
-            var updateContentVisibility = function() {
-                
+            var evaluateInputs = function() {
+
                 // Get the range of rating values. We need this to determine whether
                 // or not the results are "suspect."
                 var minRating = Math.min.apply(null, ratings.map(function(r) {
@@ -1221,29 +1332,58 @@ transform: rotate(.33turn);
                     return r.value();})
                 );
                                 
-                // If every required input has a valid value, we can enable the results
-                var allInputsReady = inputs.every(function(i) {
+                // Are all the inputs ready and valid?
+                areInputsValid = inputs.every(function(i) {
+                        // If an input is required, its value can't be undefined.
                         return !i.required() || typeof i.value() !== "undefined";
                     }) && 
                     [].slice.call(document.getElementsByTagName("form")).every(function(f) {
+                        // And, in addition, all form elements should validate.
                         return f.checkValidity();
                     });
+                
+                // Two conditions cause suspect inputs:
+                //   1. The range of values for min and max ratings are limited
+                //   2. Every rating is an extreme.
+                areInputsSuspect = ((maxRating - minRating) < 4) ||
+                    ratings.every(function(r) {return r.value() < 1 || r.value() > 9;});
 
+            };
+            
+            // #### calculateResults()
+            
+            // Run the algorithm to calculate results
+            
+            var calculateResults = function() {
+                
+                weights.amnio = Math.random()*10;
+                weights.noAmnio = Math.random()*10;
+
+            };
+            
+            // #### updateResults()
+            
+            // Update the results from the calculations
+            
+            var updateResults = function() {
+                
+                // Update the main gauge.
+                resultGauge.value((10 + (weights.amnio - weights.noAmnio))/20);
+            };
+
+            // #### updateContentVisibility()
+            
+            // Update the `data-` attributes that control content visibility.
+
+            var updateContentVisibility = function() {
+                
                 // Add an attribute to the markup so that CSS rules can change
                 // visibility appropriately.
-                document.getElementsByTagName("body")[0].setAttribute("data-results-ready", 
-                    allInputsReady);
+                var body = document.getElementsByTagName("body")[0];
+                body.setAttribute("data-results-ready", areInputsValid);
+                body.setAttribute("data-results-suspect", areInputsValid && areInputsSuspect);
+                body.setAttribute("data-amnio", weights.Amnio > weights.NoAmnio);
 
-                // If the user hasn't used much of the rating range,
-                // or if the user has pushed all sliders to their minimum
-                // or maximum values, the results are suspect.
-                if (allInputsReady) {
-                    document.getElementsByTagName("body")[0].setAttribute(
-                        "data-results-suspect", 
-                        ((maxRating - minRating) < 4) ||
-                        ratings.every(function(r) {return r.value() < 1 || r.value() > 9;})
-                    );
-                }
             };
             
             // #### saveInputState()
@@ -1267,20 +1407,56 @@ transform: rotate(.33turn);
             // local storage).
             
             var restoreInputState = function() {
-                if (hasLocalStorage()) {
-                    // We defer execution of the actual restore code
-                    // until the stack has unwound. That avoids any
-                    // race condition between this function and the
-                    // initialization of the input components.
-                    setTimeout(function() {
-                        inputs.forEach(function(i) {
-                            if (localStorage.getItem(i.id()) !== null) {
-                                i.value(localStorage.getItem(i.id()));
-                            }
-                        })
-                    }, 0);
-                }
+                inputs.forEach(function(i) {
+                    if (localStorage.getItem(i.id()) !== null) {
+                        i.value(localStorage.getItem(i.id()));
+                    }
+                })
             }
+            
+            // #### setTabPanel()
+            
+            // Make a specific tab panel active. The input parameter
+            // is a string that corresponds to the href hash for
+            // the desired panel.
+            
+            var setTabPanel = function(panel) {
+
+                    // Note that this panel has now been viewed by the user. (Well,
+                    // it will have been viewed once we finish this handler.)
+                    panelViewed(panel);
+                    
+                    // Simulate the effect of selecting the corresponding tab panel
+                    // using the tabs themselves. Essentially that's nothing
+                    // more than managing the `is-active` class on the tabs
+                    // and the panels. The MDL style transitions take care
+                    // of the rest.
+                    
+                    // First we remove the `is-active` class from all the tabs 
+                    // and panels.
+                    [].slice.call(document.querySelectorAll(".mdl-layout__tab-bar a")).
+                        forEach(function(anchor) {
+                            anchor.classList.remove("is-active");
+                        }
+                    );
+                    [].slice.call(document.querySelectorAll(".mdl-layout__tab-panel")).
+                        forEach(function(section) {
+                            section.classList.remove("is-active");
+                        }
+                    );
+                    
+                    // Now we add the `is-active` class back to the targeted tab
+                    // and panel.
+                    document.querySelector(".mdl-layout__tab-bar a[href='#" + panel + "']").
+                        classList.add("is-active");
+                    document.getElementById(panel).classList.add("is-active");
+                    
+                    // Also, go ahead and position the window at the top
+                    // of the new panel. If we don't take this action, some
+                    // browsers leave the scroll position as-is (i.e. as it
+                    // was in the old tab panel). That is not good.
+                    document.getElementsByTagName('main')[0].scrollTop = 0;
+            };
             
             // ### Components
             
@@ -1555,6 +1731,73 @@ transform: rotate(.33turn);
 
             };
             
+            // #### Gauge
+            
+            // The Gauge object encapsulates the behavior
+            // of simple gauge. Most of the implementation
+            // is in the CSS rules, but we do have a bit
+            // of JavaScript to set or read the gauge value
+            
+            function Gauge(el) {
+
+                // ##### Private Properties and Attributes
+    
+                var element,      // Containing element for the info component
+                    data,         // `.gauge--data` element
+                    needle,       // `.gauge--needle` element
+                    value = 0.0,  // Current gauge value from 0 to 1
+                    prop;         // Style for transform
+
+                // ##### Private Methods and Functions
+                
+                var setElement = function(el) {
+                    // Keep a reference to the various elements and sub-elements
+                    element = el;
+                    data = element.querySelector(".gauge--data");
+                    needle = element.querySelector(".gauge--needle");
+                };
+                
+                var setValue = function(x) {
+                    value = x;
+                    data.style[prop] = "rotate(" + (x * 0.5) + "turn)";
+                    needle.style[prop] = "rotate(" + (-0.5 + (x * 0.5)) + "turn)";
+                };
+
+                // ##### Object to be Returned
+
+                function exports() { };
+
+                // ##### Public API Methods
+
+                exports.element = function(el) {
+                    if (!arguments.length) { return element; }
+                    setElement(el);
+                    return this;
+                };
+                
+                exports.value = function(x) {
+                    if (!arguments.length) { return value; }
+                    setValue(x);
+                    return this;
+                };
+
+                // ##### Initialization
+                
+                var body = document.getElementsByTagName("body")[0];
+                ["webkitTransform", "mozTransform", "msTransform", "oTransform", "transform"].
+                    forEach(function(p) {
+                        if (typeof body.style[p] !== "undefined") { prop = p; }
+                    }
+                );
+
+                if (arguments.length) {
+                    setElement(el);
+                }
+
+                return exports;
+
+            };
+
             // ### High Level Event Handlers
             
             // #### inputChanged()
@@ -1570,6 +1813,9 @@ transform: rotate(.33turn);
                 // state (in local storage) and update the visibility
                 // of content as appropriate.
                 saveInputState();
+                evaluateInputs();
+                calculateResults();
+                updateResults();
                 updateContentVisibility();
             };
             
@@ -1605,126 +1851,121 @@ transform: rotate(.33turn);
 
             };
             
-            // ### Behavior Initialization
+            // ### Initialization
             
-            // #### Buttons and Anchor tags that Change Tab Panels
-                        
-            // Look for all the `<button>` and `<a> elements that have a `data-onclick`
-            // attribute (that will indicate a new section). Those are buttons and links
-            // that (are intended to) take the user to a different tab panel. Since MDL
-            // doesn't have support for handling this function, we create our own event
-            // handler forthem and force a change of panel.
-            
-            [].slice.call(document.querySelectorAll("button[data-onclick], a[data-onclick]")).
-                forEach(function(el) {
-                    el.addEventListener("click", function(ev) {
-                        
-                        // Don't process links, etc.
-                        ev.preventDefault();
+            // Start initialization once the window is loaded.
 
-                        // What panel is the user navigating to?
-                        var target = el.getAttribute("data-onclick");                        
-
-                        // Note that this panel has now been viewed by the user. (Well,
-                        // it will have been viewed once we finish this handler.)
-                        panelViewed(target);
-                        
-                        // When the user clicks on a button, simulate the effect of
-                        // selecting the corresponding tab panel. Essentially that's
-                        // nothing more than managing the `is-active` class on the
-                        // tabs and the panels. The MDL style transitions take care
-                        // of the rest.
-                        
-                        // First we remove the `is-active` class from all the tabs 
-                        // and panels.
-                        [].slice.call(document.querySelectorAll(".mdl-layout__tab-bar a")).
-                            forEach(function(anchor) {
-                                anchor.classList.remove("is-active");
-                            }
-                        );
-                        [].slice.call(document.querySelectorAll(".mdl-layout__tab-panel")).
-                            forEach(function(section) {
-                                section.classList.remove("is-active");
-                            }
-                        );
-                        
-                        // Now we add the `is-active` class back to the targeted tab
-                        // and panel.
-                        document.querySelector(".mdl-layout__tab-bar a[href='#"+target+"']").
-                            classList.add("is-active");
-                        document.getElementById(target).classList.add("is-active");
-                        
-                        // Also, go ahead and position the window at the top
-                        // of the new panel. If we don't take this action, some
-                        // browsers leave the scroll position as-is (i.e. as it
-                        // was in the old tab panel). That is not good.
-                        document.getElementsByTagName('main')[0].scrollTop = 0;
-                    });
-                }
-            );
+            window.addEventListener('load', function() { 
             
-            // #### Hook Changes to Active Tab Panel
+                // #### Behavior Initialization
             
-            // We need to spy on changes to the active tab panel in order to 
-            // update the page intelligently.
-
-            [].slice.call(document.getElementsByClassName("mdl-layout__tab")).
-                forEach(function(el) {
-                var target = el.getAttribute("href");
-                el.addEventListener("click", function(){
-                    panelViewed(target.substring(1));
+                // ##### Buttons and Anchor tags that Change Tab Panels
+                            
+                // Look for all the `<button>` and `<a> elements that have a `data-onclick`
+                // attribute (that will indicate a new section). Those are buttons and links
+                // that (are intended to) take the user to a different tab panel. Since MDL
+                // doesn't have support for handling this function, we create our own event
+                // handler forthem and force a change of panel.
+                
+                [].slice.call(document.querySelectorAll("button[data-onclick], a[data-onclick]")).
+                    forEach(function(el) {
+                        el.addEventListener("click", function(ev) {
+                            
+                            // Don't process links, etc.
+                            ev.preventDefault();
+    
+                            // What panel is the user navigating to?
+                            var target = el.getAttribute("data-onclick");
+                            
+                            // Make the desired panel active.
+                            setTabPanel(target);
+    
+                        });
+                    }
+                );
+                
+                // ##### Hook Changes to Active Tab Panel
+                
+                // We need to spy on changes to the active tab panel in order to 
+                // update the page intelligently.
+    
+                [].slice.call(document.getElementsByClassName("mdl-layout__tab")).
+                    forEach(function(el) {
+                        var target = el.getAttribute("href");
+                        el.addEventListener("click", function(){
+                            panelViewed(target.substring(1));
+                        });
+                    }
+                );
+                
+                // #### Component Initialization
+                
+                // Unlike traditional JavaScript MV* frameworks/libraries, we
+                // don't rely on templates to dynamically render content. Instead
+                // we "pre-render" the content by creating it within the static
+                // markup. This approach, in effect, is the same as server-side
+                // rendering for the initial state, and it make the page render
+                // significantly faster.
+                
+                // ##### Initialize Info Components
+    
+                [].slice.call(document.getElementsByClassName("info")).forEach(function(el) {
+                    
+                    // Note that all Info components are required.
+                    var obj = new Info(el).required(true);
+                    
+                    // Now that we have an Info component, add it to the application
+                    // state as appropriate. It's both a generic input (so it goes
+                    // in the `inputVars` object and the `inputs` array), and a
+                    // specific Info object.
+                    inputVars[obj.id()] = obj;
+                    inputs.push(obj);
+                    infos.push(obj);
+                    
+                    // Register our event handler if the user changes the input.
+                    obj.callback(inputChanged);
                 });
-                }
-            );
-            
-            // ### Component Initialization
-            
-            // Unlike traditional JavaScript MV* frameworks/libraries, we
-            // don't rely on templates to dynamically render content. Instead
-            // we "pre-render" the content by creating it within the static
-            // markup. This approach, in effect, is the same as server-side
-            // rendering for the initial state, and it make the page render
-            // significantly faster.
-            
-            // #### Initialize Info Components
-
-            [].slice.call(document.getElementsByClassName("info")).forEach(function(el) {
                 
-                // Note that all Info components are required.
-                var obj = new Info(el).required(true);
+                // ##### Initialize Rating Components
+    
+                [].slice.call(document.getElementsByClassName("rating")).
+                    forEach(function(el) {
+                        var obj = new Rating(el);
+        
+                        // Now that we have a Rating component, add it to the application
+                        // state as appropriate. It's both a generic input (so it goes
+                        // in the `inputVars` object and the `inputs` array), and a
+                        // specific Rating object.
+                        inputVars[obj.id()] = obj;
+                        inputs.push(obj);
+                        ratings.push(obj);
+        
+                        // Register our event handler if the user changes the input.
+                        obj.callback(inputChanged);
+                    }
+                );
                 
-                // Now that we have an Info component, add it to the application
-                // state as appropriate. It's both a generic input (so it goes
-                // in the `inputVars` object and the `inputs` array), and a
-                // specific Info object.
-                inputVars[obj.id()] = obj;
-                inputs.push(obj);
-                infos.push(obj);
+                // ##### Initialize Result Gauge Component
                 
-                // Register our event handler if the user changes the input.
-                obj.callback(inputChanged);
+                resultGauge = new Gauge(document.getElementById("result"));
+                
+                // #### Restore Input State
+                
+                // We defer execution of the actual restore code
+                // until the stack has unwound. That avoids any
+                // race condition between this function and the
+                // initialization of the input components. Once the
+                // values are restored, we can evaluate them and
+                // update the app as appropriate.
+                setTimeout(function() {
+                    restoreInputState();
+                    evaluateInputs();
+                    calculateResults();
+                    updateResults();
+                    updateContentVisibility();
+                }, 0);
+                
             });
-            
-            // #### Initialize Rating Components
-
-            [].slice.call(document.getElementsByClassName("rating")).forEach(function(el) {
-                var obj = new Rating(el);
-
-                // Now that we have a Rating component, add it to the application
-                // state as appropriate. It's both a generic input (so it goes
-                // in the `inputVars` object and the `inputs` array), and a
-                // specific Rating object.
-                inputVars[obj.id()] = obj;
-                inputs.push(obj);
-                ratings.push(obj);
-
-                // Register our event handler if the user changes the input.
-                obj.callback(inputChanged);
-            });
-            
-            // ### Restore Input State
-            
-            restoreInputState();
 
         </script>
 
