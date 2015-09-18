@@ -70,8 +70,10 @@
         
         -->
 
+        <!--
         <link rel="stylesheet" type="text/css"
               href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+         -->
         <link rel="stylesheet" type="text/css"
               href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" type="text/css"
@@ -422,17 +424,17 @@
             }
 
             /*
-             * #### Prob Component
+             * #### Bar Component
              */
 
-             .prob {
+             .bar {
                  position: relative;
                  left: 8px;
                  height: calc(2em + 16px);
                  width: calc(100% - 16px);
              }
              
-             .prob--bar {
+             .bar--background {
                  background-color: #C5CAE9;
                  height: 16px;
                  position: absolute;
@@ -441,7 +443,7 @@
                  width: 100%;
              }
              
-            .prob--data {
+            .bar--data {
                 background-color: #3F51B5;
                 border-right: 1px solid #E91E63;
                 box-shadow: -1px 0px 0px 0 #E91E63 inset;
@@ -449,15 +451,15 @@
                 top: 0;
                 left: 0;
                 height: 100%;
-width: 25%;
+                width: 0%;
                 z-index: 1;
             }
             
-            .prob--value {
+            .bar--text {
                 display: inline-block;
                 position: absolute;
                 top: 16px;
-left: calc(25% - 12px);
+                left: calc(0% - 8.5px);
             }
 
             /*
@@ -714,7 +716,7 @@ left: calc(25% - 12px);
                                         <div class="mdl-textfield mdl-js-textfield 
                                                     mdl-textfield--floating-label info">
                                             <input class="mdl-textfield__input" 
-                                                   type="number" min="1" max="99" id="age" />
+                                                   type="number" min="1" max="99" id="infoAge" />
                                             <label class="mdl-textfield__label 
                                                           mdl-typography--caption-force-preferred-font" 
                                                    for="age">
@@ -734,7 +736,7 @@ left: calc(25% - 12px);
                                         <div class="mdl-textfield mdl-js-textfield 
                                                     mdl-textfield--floating-label info">
                                             <input class="mdl-textfield__input" type="number" 
-                                                min="0.5" max="2.5" step="any" id="nt" />
+                                                min="0.5" max="2.5" step="any" id="infoNt" />
                                             <label class="mdl-textfield__label 
                                                           mdl-typography--caption-force-preferred-font"
                                                    for="nt">
@@ -748,7 +750,7 @@ left: calc(25% - 12px);
                                         <div class="mdl-textfield mdl-js-textfield 
                                                     mdl-textfield--floating-label info">
                                             <input class="mdl-textfield__input" type="number" 
-                                                   min="0.2" max="3.0" step="any" id="pappa" />
+                                                   min="0.2" max="3.0" step="any" id="infoPappa" />
                                             <label class="mdl-textfield__label 
                                                           mdl-typography--caption-force-preferred-font" 
                                                    for="pappa">
@@ -762,7 +764,7 @@ left: calc(25% - 12px);
                                         <div class="mdl-textfield 
                                                     mdl-js-textfield mdl-textfield--floating-label info">
                                             <input class="mdl-textfield__input" type="number" 
-                                                   min="0.3" max="5.0" step="any" id="fbhcg" />
+                                                   min="0.3" max="5.0" step="any" id="infoFbhcg" />
                                             <label class="mdl-textfield__label
                                                           mdl-typography--caption-force-preferred-font"
                                                    for="fbhcg">
@@ -782,7 +784,7 @@ left: calc(25% - 12px);
                                         <div class="mdl-textfield mdl-js-textfield 
                                                     mdl-textfield--floating-label info">
                                             <input class="mdl-textfield__input" type="number" 
-                                                   min="0.4" max="3.0" step="any" id="afp" />
+                                                   min="0.4" max="3.0" step="any" id="infoAfp" />
                                             <label class="mdl-textfield__label 
                                                           mdl-typography--caption-force-preferred-font" 
                                                    for="apf">
@@ -796,7 +798,7 @@ left: calc(25% - 12px);
                                         <div class="info mdl-textfield 
                                                     mdl-js-textfield mdl-textfield--floating-label">
                                             <input class="mdl-textfield__input" type="number" 
-                                                   min="0.4" max="2.0" step="any" id="ue3" />
+                                                   min="0.4" max="2.0" step="any" id="infoUe3" />
                                             <label class="mdl-textfield__label 
                                                           mdl-typography--caption-force-preferred-font" 
                                                    for="ue3">
@@ -810,7 +812,7 @@ left: calc(25% - 12px);
                                         <div class="info mdl-textfield mdl-js-textfield 
                                                     mdl-textfield--floating-label">
                                             <input class="mdl-textfield__input" type="number" 
-                                                   min="0.3" max="5.0" step="any" id="inhibina" />
+                                                   min="0.3" max="5.0" step="any" id="infoInhibina" />
                                             <label class="mdl-textfield__label 
                                                           mdl-typography--caption-force-preferred-font"
                                                    for="inhibina">
@@ -824,7 +826,7 @@ left: calc(25% - 12px);
                                         <div class="info mdl-textfield mdl-js-textfield 
                                                     mdl-textfield--floating-label">
                                             <input class="mdl-textfield__input" type="number" 
-                                                   min="0.4" max="5.0" step="any" id="hgc" />
+                                                   min="0.4" max="5.0" step="any" id="infoHgc" />
                                             <label class="mdl-textfield__label
                                                           mdl-typography--caption-force-preferred-font" 
                                                    for="hgc">
@@ -899,7 +901,7 @@ left: calc(25% - 12px);
                                             <i class="material-icons">mood_bad</i>
                                             <input class="mdl-slider mdl-js-slider" 
                                                    type="range" min="0" max="10" step="0.01" 
-                                                   value="5" tabindex="0" id="notest_healthy" />
+                                                   value="5" tabindex="0" id="ratingNotest_healthy" />
                                             <i class="material-icons">mood</i>
                                             <div class="rating--keys 
                                                         mdl-typography--caption-force-preferred-font">
@@ -918,7 +920,7 @@ left: calc(25% - 12px);
                                             <i class="material-icons">mood_bad</i>
                                             <input class="mdl-slider mdl-js-slider" 
                                                    type="range" min="0" max="10" step="0.01" 
-                                                   value="5" tabindex="0" id="notest_ds" />
+                                                   value="5" tabindex="0" id="ratingNotest_ds" />
                                             <i class="material-icons">mood</i>
                                             <div class="rating--keys 
                                                         mdl-typography--caption-force-preferred-font">
@@ -937,7 +939,7 @@ left: calc(25% - 12px);
                                             <i class="material-icons">mood_bad</i>
                                             <input class="mdl-slider mdl-js-slider" 
                                                    type="range" min="0" max="10" step="0.01" 
-                                                   value="5" tabindex="0" id="notest_still" />
+                                                   value="5" tabindex="0" id="ratingNotest_still" />
                                             <i class="material-icons">mood</i>
                                             <div class="rating--keys 
                                                         mdl-typography--caption-force-preferred-font">
@@ -963,7 +965,7 @@ left: calc(25% - 12px);
                                             <i class="material-icons">mood_bad</i>
                                             <input class="mdl-slider mdl-js-slider" 
                                                    type="range" min="0" max="10" step="0.01" 
-                                                   value="5" tabindex="0" id="test_healthy" />
+                                                   value="5" tabindex="0" id="ratingTest_healthy" />
                                             <i class="material-icons">mood</i>
                                             <div class="rating--keys 
                                                         mdl-typography--caption-force-preferred-font">
@@ -989,7 +991,7 @@ left: calc(25% - 12px);
                                             <i class="material-icons">mood_bad</i>
                                             <input class="mdl-slider mdl-js-slider" 
                                                    type="range" min="0" max="10" step="0.01" 
-                                                   value="5" tabindex="0" id="test_term" />
+                                                   value="5" tabindex="0" id="ratingTest_term" />
                                             <i class="material-icons">mood</i>
                                             <div class="rating--keys 
                                                         mdl-typography--caption-force-preferred-font">
@@ -1008,7 +1010,7 @@ left: calc(25% - 12px);
                                             <i class="material-icons">mood_bad</i>
                                             <input class="mdl-slider mdl-js-slider" 
                                                    type="range" min="0" max="10" step="0.01" 
-                                                   value="5" tabindex="0" id="test_ds" />
+                                                   value="5" tabindex="0" id="ratingTest_ds" />
                                             <i class="material-icons">mood</i>
                                             <div class="rating--keys 
                                                         mdl-typography--caption-force-preferred-font">
@@ -1027,7 +1029,7 @@ left: calc(25% - 12px);
                                             <i class="material-icons">mood_bad</i>
                                             <input class="mdl-slider mdl-js-slider" 
                                                    type="range" min="0" max="10" step="0.01" 
-                                                   value="5" tabindex="0" id="test_still" />
+                                                   value="5" tabindex="0" id="ratingTest_still" />
                                             <i class="material-icons">mood</i>
                                             <div class="rating--keys 
                                                         mdl-typography--caption-force-preferred-font">
@@ -1053,7 +1055,7 @@ left: calc(25% - 12px);
                                             <i class="material-icons">mood_bad</i>
                                             <input class="mdl-slider mdl-js-slider" 
                                                    type="range" min="0" max="10" step="0.01" 
-                                                   value="5" tabindex="0" id="mis_ds" />
+                                                   value="5" tabindex="0" id="ratingMis_ds" />
                                             <i class="material-icons">mood</i>
                                             <div class="rating--keys 
                                                         mdl-typography--caption-force-preferred-font">
@@ -1073,7 +1075,7 @@ left: calc(25% - 12px);
                                             <i class="material-icons">mood_bad</i>
                                             <input class="mdl-slider mdl-js-slider" 
                                                    type="range" min="0" max="10" step="0.01" 
-                                                   value="5" tabindex="0" id="mis_healthy" />
+                                                   value="5" tabindex="0" id="ratingMis_healthy" />
                                             <i class="material-icons">mood</i>
                                             <div class="rating--keys 
                                                         mdl-typography--caption-force-preferred-font">
@@ -1160,7 +1162,7 @@ left: calc(25% - 12px);
                             </div>
                             <div class="mdl-typography--body-1-force-preferred-font 
                                         mdl-card__supporting-text mdl-card--border">
-                            	<div class="gauge" id="result">
+                            	<div class="gauge" id="gaugeResult">
                                 	<div class="gauge--container">
                                 		<div class="gauge--marker"></div>
                                 		<div class="gauge--background"></div>
@@ -1263,11 +1265,11 @@ left: calc(25% - 12px);
                                           mdl_card__supporting-text__note">
                                     First we estimate the chance of a Down Syndrome
                                     pregnancy for an average women of your age:
-                                    <div id="pBaseline" class="prob">
-                                        <div class="prob--bar">
-                                            <div class="prob--data"></div>
+                                    <div id="barBaseline" class="bar">
+                                        <div class="bar--background">
+                                            <div class="bar--data"></div>
                                         </div>
-                                        <span class="prob--value">25%</span>
+                                        <span class="bar--text">0%</span>
                                     </div>
                                 </p>
                                 <p class="mdl-typography--body-1-force-preferred-font
@@ -1394,11 +1396,15 @@ left: calc(25% - 12px);
                     amnio: 0,               // weighted value of procedure
                     noAmnio: 0              // weighted value of no procedure
                 },
-                resultGauge,                // the result gauge object
+                bars = {
+                    barBaseline: 0          // probability for baselien
+                },
                 inputVars = {},             // hash of all input objects
                 inputs = [],                // array of all input objects
                 infos = [],                 // array of all info objects
-                ratings = [];               // array of all rating objects
+                ratings = [],               // array of all rating objects
+                resultGauge,                // the result gauge object
+                barVars = {};               // hash of all bar objects
                 
             // ### Application-specific Utility Functions
             
@@ -1443,6 +1449,10 @@ left: calc(25% - 12px);
                 
                 weights.amnio = Math.random()*10;
                 weights.noAmnio = Math.random()*10;
+                
+                for (bar in bars) {
+                    bars[bar] = Math.random();
+                }
 
             };
             
@@ -1454,6 +1464,12 @@ left: calc(25% - 12px);
                 
                 // Update the main gauge.
                 resultGauge.value((10 + (weights.amnio - weights.noAmnio))/20);
+                
+                // Update the probability bars.
+                for (bar in barVars) {
+                    barVars[bar].value(bars[bar]);
+                }
+
             };
 
             // #### updateContentVisibility()
@@ -1479,8 +1495,12 @@ left: calc(25% - 12px);
             var saveInputState = function() {
                 if (hasLocalStorage()) {
                     inputs.forEach(function(i) {
-                        if (typeof i.value() !== "undefined" && i.hasChanged()) {
-                            localStorage.setItem(i.id(), i.value());
+                        if (i.hasChanged()) {
+                            if (typeof(i.value()) === "undefined") {
+                                localStorate.removeItem(i.id());
+                            } else {
+                                localStorage.setItem(i.id(), i.value());
+                            }
                         }
                     })
                 }
@@ -1883,6 +1903,104 @@ left: calc(25% - 12px);
 
             };
 
+            // #### Bar
+            
+            // The Bar object encapsulates the behavior of a
+            // simple, single bar. Most of the implementation
+            // is in the CSS rules, but we do have a bit
+            // of JavaScript to set or read the bar value
+            
+            function Bar(el) {
+
+                // ##### Private Properties and Attributes
+    
+                var element,           // Containing element for the info component
+                    data,              // `.bar--data` element
+                    text,              // `.bar--text` element
+                    value = 0.0,       // Current bar value from 0 to 1
+                    confidence = 0.0;  // Confidence interval for value (0-1)
+
+                // ##### Private Methods and Functions
+                
+                var getTextValue = function() {
+                    if (value >= 0.10) {
+                        return Math.round(value * 100) + "%";
+                    } else if (value >= 0.01) {
+                        return (Math.round(value * 1000) / 10) + "%";
+                    } else {
+                        return (Math.round(value * 10000) / 100) + "%";
+                    }
+                };
+
+                var updateBar = function() {
+                    text.textContent = getTextValue();
+                    data.style.width = (value * 100) + "%";
+                    text.style.left = "calc(" + (value * 100) + "% - " + 
+                        (text.offsetWidth/2 - 2) + "px)";
+                };
+
+                var setElement = function(el) {
+                    // Keep a reference to the various elements and sub-elements
+                    element = el;
+                    data = element.querySelector(".bar--data");
+                    text = element.querySelector(".bar--text");
+                };
+                
+                var setValue = function(x) {
+                    value = x;
+                    updateBar();
+                };
+                    
+                var setConfidence = function(x) {
+                    confidence = x;
+                    updateBar();
+                };
+                    
+                // ##### Object to be Returned
+
+                function exports() { };
+
+                // ##### Public API Methods
+
+                exports.element = function(el) {
+                    if (!arguments.length) { return element; }
+                    setElement(el);
+                    return this;
+                };
+                
+                exports.id = function(s) {
+                    if (!arguments.length) { return el.getAttribute("id"); }
+                    el.setAttribute("id", s);
+                    return this;
+                };
+                
+                exports.update = function() {
+                    updateBar();
+                    return this;
+                };
+                
+                exports.value = function(x) {
+                    if (!arguments.length) { return value; }
+                    setValue(x);
+                    return this;
+                };
+
+                exports.confidence = function(x) {
+                    if (!arguments.length) { return confidence; }
+                    setConfidence(x);
+                    return this;
+                };
+
+                // ##### Initialization
+                
+                if (arguments.length) {
+                    setElement(el);
+                }
+
+                return exports;
+
+            };
+
             // ### High Level Event Handlers
             
             // #### inputChanged()
@@ -1932,6 +2050,16 @@ left: calc(25% - 12px);
                         });
                     }
                     
+                }
+                
+                // If the new panel is the details panel, we need to update
+                // the bar values. If the text position of the values was set
+                // while the panel was hidden, it may be incorrect because the
+                // size of the text label wasn't accurately known.
+                if (panel === "details") {
+                    for (bar in barVars) {
+                        barVars[bar].update();
+                    }
                 }
 
             };
@@ -2032,8 +2160,20 @@ left: calc(25% - 12px);
                 
                 // ##### Initialize Result Gauge Component
                 
-                resultGauge = new Gauge(document.getElementById("result"));
+                resultGauge = new Gauge(document.getElementById("gaugeResult"));
                 
+                // ##### Initialize Bar Components
+    
+                [].slice.call(document.getElementsByClassName("bar")).
+                    forEach(function(el) {
+                        var obj = new Bar(el);
+        
+                        // Now that we have a Bar component, add it to the application
+                        // state as appropriate.
+                        barVars[obj.id()] = obj;
+                    }
+                );
+
                 // #### Restore Input State
                 
                 // We defer execution of the actual restore code
