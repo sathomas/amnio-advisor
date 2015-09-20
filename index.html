@@ -463,6 +463,24 @@
             }
 
             /*
+             * #### Results Table Component
+             */
+            
+            /*
+             * Minor tweaks to a standard MDL `<table>` that's
+             * used to present detailed results of the analysis.
+             */
+
+            .results-table {
+                margin: 0 8px;
+            }
+            
+            .mdl-data-table td.results-table--name {
+                padding-bottom: 6px;
+                vertical-align: bottom;
+            }
+            
+            /*
              * ### Content Visibility
              *
              * Show/hide content based on the application state. There are three
@@ -1284,6 +1302,64 @@
                                         <span class="bar--text">0%</span>
                                     </div>
                                 </p>
+                                <p class="mdl-typography--body-1-force-preferred-font 
+                                          mdl_card__supporting-text__note">
+                                    We also estimate the chance that Down Syndrome
+                                    results in a still birth:
+                                    <div id="barStill" class="bar">
+                                        <div class="bar--background">
+                                            <div class="bar--data"></div>
+                                        </div>
+                                        <span class="bar--text">0%</span>
+                                    </div>
+                                </p>
+                                <p class="mdl-typography--body-1-force-preferred-font 
+                                          mdl_card__supporting-text__note">
+                                    And we estimate the chance that an Amniocentesis
+                                    results in a miscarriage:
+                                    <div id="barMis" class="bar">
+                                        <div class="bar--background">
+                                            <div class="bar--data"></div>
+                                        </div>
+                                        <span class="bar--text">0%</span>
+                                    </div>
+                                </p>
+                                <p class="mdl-typography--body-1-force-preferred-font 
+                                          mdl_card__supporting-text__note">
+                                    Using those estimates and the priorities you
+                                    have provided, we calculate a “score” for 
+                                    <strong>not</strong> having an amniocentesis 
+                                    and a “score” for having an amniocentesis:
+                                    <table class="mdl-data-table mdl-js-data-table
+                                                  results-table">
+                                        <tr>
+                                            <td class="mdl-data-table__cell--non-numeric
+                                                       results-table--name">
+                                                <strong>No</strong> Amniocentesis:
+                                            </td>
+                                            <td class="mdl-typography--display-1
+                                                       results-table--value"
+                                                id="results-no-amnio">
+                                                0.00
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="mdl-data-table__cell--non-numeric
+                                                       results-table--name">
+                                                Amniocentesis:
+                                            </td>
+                                            <td class="mdl-typography--display-1
+                                                       results-table--value"
+                                                id="results-amnio">
+                                                0.0034
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </p>
+                                <p class="mdl-typography--body-1-force-preferred-font
+                                          mdl_card__supporting-text__note">
+                                    We suggest the choice with the highest “score.”
+                                </p>
                                 <p class="mdl-typography--body-1-force-preferred-font
                                           mdl_card__supporting-text__note">
                                     If you wish, you can adjust your priorities to see
@@ -1408,9 +1484,32 @@
             	catch(e) {
             		return false;
             	}
-            }
+            };
+            
+            // #### formatNumber()
+            
+            // Format a number to the specified number of
+            // decimal places.
+
+            var formatNumber = function(x, decimals) {
+                var s = "" + Math.round(x * Math.pow(10, decimals)) / Math.pow(10, decimals);
+                
+                if (decimals) {
+                    if (s.indexOf(".") === -1) { s += "."; }
+                    for (var r = s.split(".")[1].length; r < decimals; r++) {
+                        s += "0";                        
+                    }
+                }
+                
+                return s;
+            };
 
             // ### Application State
+
+            // Constants shared by multiple functions
+            
+            var DSSTILLBIRTHRATE = 0.23,
+                AMNIOLOSSRATE = 0.003;
 
             // State of the overall application that is shared by multiple
             // components.
@@ -1425,7 +1524,9 @@
                 },
                 bars = {
                     barBaseline: 0,         // probability for baseline risk
-                    barRisk: 0              // probability for estimated risk
+                    barRisk: 0,             // probability for estimated risk
+                    barStill: DSSTILLBIRTHRATE,
+                    barMis: AMNIOLOSSRATE
                 },
                 inputVars = {},             // hash of all input objects
                 inputs = [],                // array of all input objects
@@ -1433,7 +1534,7 @@
                 ratings = [],               // array of all rating objects
                 resultGauge,                // the result gauge object
                 barVars = {};               // hash of all bar objects
-                
+            
             // ### Application-specific Math Functions
             
             // Calculate baseline risk based solely on maternal age
@@ -1470,8 +1571,7 @@
                         [  1.68,    0.6377, -13.344,   -5.1355,   1.345,  -9.3419,  32.2184 ]
                     ],
                     sqrtDetCovAff = 0.000010903,
-                    sqrtDetCovUna = 0.0000049201,
-                    dSStillBirthRate = 0.23;
+                    sqrtDetCovUna = 0.0000049201;
                 
                 var ageRisk = baselineRisk(age),
                     ageOdds = ageRisk/(1 - ageRisk);
@@ -1493,9 +1593,30 @@
                 
                 var odds = ( ( Math.exp( -0.5 * valueAff) / sqrtDetCovAff ) / 
                              ( Math.exp( -0.5 * valueUna) / sqrtDetCovUna ) ) * 
-                            ageOdds / ( 1 - dSStillBirthRate);
+                            ageOdds / ( 1 - DSSTILLBIRTHRATE);
                 
                 return odds / (1 + odds);
+            };
+            
+            // Calculate ultimate decision weights given estimated risk and
+            // priority ratings.
+            //     priorities = [misDs, misHealthy, testTerm, testStill, testDs, 
+            //                   testHealthy, notestStill, notestDs, notestHealthy];
+            //     returns [amnio, noAmnio]
+
+            var calcWeights = function(risk, priorities) {
+
+                var amnio = AMNIOLOSSRATE * risk * priorities[0] +
+                            AMNIOLOSSRATE * (1-risk) * priorities[1] +
+                            (1-AMNIOLOSSRATE) * risk * Math.max( priorities[2], 
+                                DSSTILLBIRTHRATE * priorities[3] + 
+                                    (1-DSSTILLBIRTHRATE) * priorities[4])  + 
+                            (1-AMNIOLOSSRATE) * (1-risk) * priorities[5];
+                var noAmnio = risk * DSSTILLBIRTHRATE * priorities[6] + 
+                              risk * (1-DSSTILLBIRTHRATE) * priorities[7] +
+                              (1-risk) * priorities[8];
+                return [amnio, noAmnio];                
+
             };
             
             // ### Application-specific Utility Functions
@@ -1549,13 +1670,25 @@
                     inputVars.infoInhibina.value(), 
                     inputVars.infoHgc.value()
                 ];
-                
-                weights.amnio = Math.random()*10;
-                weights.noAmnio = Math.random()*10;
-                
+                var priorities = [
+                    inputVars.ratingMis_ds.value(), 
+                    inputVars.ratingMis_healthy.value(), 
+                    inputVars.ratingTest_term.value(), 
+                    inputVars.ratingTest_still.value(), 
+                    inputVars.ratingTest_ds.value(), 
+                    inputVars.ratingTest_healthy.value(), 
+                    inputVars.ratingNotest_still.value(), 
+                    inputVars.ratingNotest_ds.value(), 
+                    inputVars.ratingNotest_healthy.value()
+                ];                
+
                 bars.barBaseline = baselineRisk(age);
                 bars.barRisk     = estimatedRisk(age, markers);
+                
+                var w = calcWeights(bars.barRisk, priorities)
 
+                weights.amnio = w[0];
+                weights.noAmnio = w[1];
             };
             
             // #### updateResults()
@@ -1571,6 +1704,12 @@
                 for (bar in barVars) {
                     barVars[bar].value(bars[bar]);
                 }
+                
+                // Update the results table.
+                document.getElementById("results-no-amnio").textContent = 
+                    formatNumber(weights.noAmnio,2);
+                document.getElementById("results-amnio").textContent = 
+                    formatNumber(weights.amnio,2);
 
             };
 
@@ -2299,27 +2438,42 @@
             
             var test = function() {
             
-                // #### Tests for estimatedRisk ()
+                // #### Tests for estimatedRisk()
                 
-                console.log(estimatedRisk(30, [ 1.5,3.0,4.9,3.0,0.4,0.3,0.5 ] ), 
+                console.log(estimatedRisk(30, [1.5,3.0,4.9,3.0,0.4,0.3,0.5]), 
                     "should be 0.005042677866648");
-                console.log(estimatedRisk(30, [ 0.5,0.2,0.3,0.4,0.4,0.3,0.4 ] ), 
+                console.log(estimatedRisk(30, [0.5,0.2,0.3,0.4,0.4,0.3,0.4]), 
                     "should be 3.436517371529128e-05");
-                console.log(estimatedRisk(30, [ 2.5,3.0,5.0,3.0,2.0,5.0,5.0 ] ), 
+                console.log(estimatedRisk(30, [2.5,3.0,5.0,3.0,2.0,5.0,5.0]), 
                     "should be 1.128942262511341e-06");
-                console.log(estimatedRisk(30, [ 2.5,0.2,5.0,0.4,0.4,5.0,5.0 ] ), 
+                console.log(estimatedRisk(30, [2.5,0.2,5.0,0.4,0.4,5.0,5.0]), 
                     "should be 0.999995045281023");
-                console.log(estimatedRisk(30, [ 0.5,3.0,0.3,3.0,2.0,0.3,0.4 ] ), 
+                console.log(estimatedRisk(30, [0.5,3.0,0.3,3.0,2.0,0.3,0.4]), 
                     "should be 1.200434076898316e-08");
-                console.log(estimatedRisk(30, [ 2.1294,2.7362,0.8968,2.7748,1.4118,0.7584,1.6811 ] ), 
+                console.log(estimatedRisk(30, [2.1294,2.7362,0.8968,2.7748,1.4118,0.7584,1.6811]), 
                     "should be 3.447781779787803e-06");
-                console.log(estimatedRisk(20, [ 2.5,0.2,5.0,0.4,0.4,5.0,5.0 ] ), 
+                console.log(estimatedRisk(20, [2.5,0.2,5.0,0.4,0.4,5.0,5.0]), 
                     "should be 0.999992199210378");
-                console.log(estimatedRisk(40, [ 0.5,3.0,0.3,3.0,2.0,0.3,0.4 ] ), 
+                console.log(estimatedRisk(40, [0.5,3.0,0.3,3.0,2.0,0.3,0.4]), 
                     "should be 1.324037738264033e-07");
-                console.log(estimatedRisk(45, [ 2.23,1.54,4.30,1.25,1.03,4.37,3.33 ] ), 
+                console.log(estimatedRisk(45, [2.23,1.54,4.30,1.25,1.03,4.37,3.33]), 
                     "should be 0.387268998361568");
 
+                // #### Tests for weights()
+
+                console.log(calcWeights(0.005,   [7.2,6.0,7.5,6.4,7.8,10.0,6.8,6.2,9.1 ]),
+                    "should be 9.975555499999999,9.086189999999998");
+                console.log(calcWeights(0.005,   [8.0,8.0,9.0,8.0,6.0,10.0,8.0,7.0,10.0]),
+                    "should be 9.989015000000000, 9.986149999999999");
+                console.log(calcWeights(0.99,    [8.0,8.0,9.0,8.0,6.0,10.0,8.0,7.0,10.0]),
+                    "should be 9.006969999999999,7.257700000000000");
+                console.log(calcWeights(0.00001, [8.0,8.0,9.0,8.0,6.0,10.0,8.0,7.0,10.0]),
+                    "should be 9.993990030000001, 9.999972300000000");
+                console.log(calcWeights(0.5,     [6.0,6.0,9.0,6.0,9.2,10.0,6.0,9.2,10.0]),
+                    "should be 9.489500000000000, 9.231999999999999");
+                console.log(calcWeights(0.1,     [6.0,6.0,9.0,6.0,9.2,10.0,6.0,9.2,10.0]),
+                   "should be 9.888299999999999, 9.846399999999999");
+                
             };
 
         </script>
