@@ -713,8 +713,10 @@
                                 <p class="mdl-typography--body-1-force-preferred-font">
                                     In addition to some general information, we need to know
                                     the results from lab tests performed during your first
-                                    and second trimesters. Your doctor can tell you the test
-                                    result values.
+                                    and second trimesters. If you have results from both
+                                    trimesters, please enter them below. If you only have
+                                    results for one trimester, just enter those values.
+                                    Your doctor can help you find the right values.
                                 </p>
 
                                 <!--
@@ -1561,7 +1563,7 @@
             //
             // > Note: No error or bounds checking currently implemented
             
-            sandwich = function(v, m) {
+            quadraticForm = function(v, m) {
                 return v.reduce(function(sum, s, i) {
                     return sum + s * v.reduce(function(inner, t, j) {
                         return inner + t * m[i][j];
@@ -1611,8 +1613,7 @@
 
             // Constants shared by multiple functions
             
-            var DSSTILLBIRTHRATE = 0.23,
-                AMNIOLOSSRATE = 0.003;
+            var AMNIOLOSSRATE = 0.003;
 
             // State of the overall application that is shared by multiple
             // components.
@@ -1628,7 +1629,8 @@
                 ratings = [],               // array of all rating objects
                 resultGauge,                // the result gauge object
                 bars = {},                  // hash of bar values
-                weights = {};               // hash of weight values
+                weights = {},               // hash of weight values
+                dsStillBirthRate = 0.23;    // stillbirth rate for DS
             
             // ### Application-specific Math Functions
             
@@ -1640,34 +1642,150 @@
 
             };
             
-            // Calculate specific risk based on age and lab results
-            // markers = [NT; PAPPA; FBHCG1; AFP; UE3; INHIBINA; THCG]
+            // Are markers ready? Returns empty string if not; otherwise returned
+            // string indicates type of analysis that is available. Possible values:
+            // "all", "integrated", "quadruple", and "combined".
             
-            var estimatedRisk = function(age, markers) {
-                // Calculation constants
-                var meanAff = [ 0.2922, -0.3768, 0.2878, -0.1308, -0.1549, 0.3384, 0.3118 ],
-                    meanUna = [ 0, 0, 0, 0, 0, 0, 0 ],
-                    inverseCovarianceAff = [
-                        [ 20.9798,  3.8504,  -3.0081, -3.22,    -9.9803, -3.6164,  1.6674 ],
-                        [  3.8504, 16.2433,	 -2.9975, -4.8633, -14.3813,  0.4282,  3.1796 ],
-                        [ -3.0081, -2.9975,	 21.2946,  2.4591,  12.3187, -1.2296, -8.4456 ],
-                        [ -3.22,   -4.8633,   2.4591, 55.5283,   6.7838, -3.016,  -5.8457 ],
-                        [ -9.9803, -14.3813, 12.3187,  6.7838,  98.2807,  7.5609,  5.5478 ],
-                        [ -3.6164,   0.4282, -1.2296, -3.016,    7.5609, 18.6246, -6.0332 ],
-                        [  1.6674,   3.1796, -8.4456, -5.8457,   5.5478, -6.0332, 26.9573 ]
-                    ],
-                    inverseCovarianceUna = [
-                        [ 48.832,   1.5771,  -0.188,    0.1483,  -3.879,   0.7162,   1.68   ],
-                        [  1.5771, 16.8675,  -2.6161,  -3.0731,  -3.8668,  0.4896,   0.6377 ],
-                        [ -0.188,  -2.6161,  21.4729,   3.9484,  -0.4467, -2.2651, -13.344  ],
-                        [  0.1483, -3.0731,   3.9484,  57.5189, -14.5487, -7.5444,  -5.1355 ],
-                        [ -3.879,  -3.8668,  -0.4467, -14.5487,  82.48,    5.4684,   1.345  ],
-                        [  0.7162,  0.4896,  -2.2651,  -7.5444,   5.4684, 29.7061,  -9.3419 ],
-                        [  1.68,    0.6377, -13.344,   -5.1355,   1.345,  -9.3419,  32.2184 ]
-                    ],
-                    sqrtDetCovAff = 0.000010903,
-                    sqrtDetCovUna = 0.0000049201;
-                
+            var analysisAvailable = function() {
+                if (["infoNt", "infoPappa", "infoFbhcg", "infoAfp", "infoUe3", 
+                     "infoInhibina", "infoHgc"].every(function(marker) {
+                    return typeof inputObjs[marker].value() !== "undefined";
+                })) {
+                    return "all";
+                } else if (["infoNt", "infoPappa", "infoAfp", "infoUe3", "infoInhibina",
+                            "infoHgc"].every(function(marker) {
+                    return typeof inputObjs[marker].value() !== "undefined";
+                })) {
+                    return "integrated";
+                } else if (["infoAfp", "infoUe3", "infoInhibina", 
+                            "infoHgc"].every(function(marker) {
+                    return typeof inputObjs[marker].value() !== "undefined";
+                })) {
+                    return "quadruple";
+                } else if (["infoNt", "infoPappa", "infoFbhcg"].every(function(marker) {
+                    return typeof inputObjs[marker].value() !== "undefined";
+                })) {
+                    return "combined";
+                } else {
+                    return "";
+                }                    
+            }
+            
+            // Calculate specific risk based on age and lab results.
+            // markers = [NT; PAPPA; FBHCG1; AFP; UE3; INHIBINA; THCG]
+            // The optional third parameter forces a specific analysis.
+            
+            var estimatedRisk = function(age, markers, analysis) {
+
+                // Define variables we need for the calculation. We'll
+                // set their values depending on the markers that are
+                // available.
+                var meanAff, meanUna, inverseCovarianceAff, inverseCovarianceUna, 
+                    sqrtDetCovAff, sqrtDetCovUna;
+
+                switch (analysis || analysisAvailable()) {
+                    case "": 
+
+                        // Oops. Nothing to calculate.
+                        return 0;
+
+                    case "all":
+
+                        dsStillBirthRate = 0.23;
+                        meanAff = [ 0.2922, -0.3768, 0.2878, -0.1308, -0.1549, 0.3384, 0.3118 ],
+                        meanUna = [ 0, 0, 0, 0, 0, 0, 0 ],
+                        inverseCovarianceAff = [
+                            [ 20.9798,  3.8504,  -3.0081, -3.22,    -9.9803, -3.6164,  1.6674 ],
+                            [  3.8504, 16.2433,	 -2.9975, -4.8633, -14.3813,  0.4282,  3.1796 ],
+                            [ -3.0081, -2.9975,	 21.2946,  2.4591,  12.3187, -1.2296, -8.4456 ],
+                            [ -3.22,   -4.8633,   2.4591, 55.5283,   6.7838, -3.016,  -5.8457 ],
+                            [ -9.9803, -14.3813, 12.3187,  6.7838,  98.2807,  7.5609,  5.5478 ],
+                            [ -3.6164,   0.4282, -1.2296, -3.016,    7.5609, 18.6246, -6.0332 ],
+                            [  1.6674,   3.1796, -8.4456, -5.8457,   5.5478, -6.0332, 26.9573 ]
+                        ],
+                        inverseCovarianceUna = [
+                            [ 48.832,   1.5771,  -0.188,    0.1483,  -3.879,   0.7162,   1.68   ],
+                            [  1.5771, 16.8675,  -2.6161,  -3.0731,  -3.8668,  0.4896,   0.6377 ],
+                            [ -0.188,  -2.6161,  21.4729,   3.9484,  -0.4467, -2.2651, -13.344  ],
+                            [  0.1483, -3.0731,   3.9484,  57.5189, -14.5487, -7.5444,  -5.1355 ],
+                            [ -3.879,  -3.8668,  -0.4467, -14.5487,  82.48,    5.4684,   1.345  ],
+                            [  0.7162,  0.4896,  -2.2651,  -7.5444,   5.4684, 29.7061,  -9.3419 ],
+                            [  1.68,    0.6377, -13.344,   -5.1355,   1.345,  -9.3419,  32.2184 ]
+                        ],
+                        sqrtDetCovAff = 0.000010903,
+                        sqrtDetCovUna = 0.0000049201;
+                        break;
+
+                    case "integrated":
+
+                        dsStillBirthRate = 0.23;
+                        markers.splice(2,1);
+                        meanAff = [ 0.2922, -0.3010, -0.1308, -0.1549, 0.3384, 0.3118 ];
+                        meanUna = [ 0, 0, 0, 0, 0, 0 ];
+                        inverseCovarianceAff = [
+                            [ 20.554880240537493,   3.426920428921216,  -2.872626262440822,  -8.240143407329521,  -3.790139512835841,   0.474378122622916 ],
+                            [  3.426920428921216,  15.821371095506429,  -4.517108233290250, -12.647324627206020,   0.255157918471607,   1.990788732636366 ],
+                            [ -2.872626262440822,  -4.517108233290250,  55.244292495460165,   5.361210199803712,  -2.874027057560135,  -4.870423974946864 ],
+                            [ -8.240143407329521, -12.647324627206018,   5.361210199803711,  91.154514825055131,   8.272229531575455,  10.433432349542748 ],
+                            [ -3.790139512835842,   0.255157918471607,  -2.874027057560137,   8.272229531575455,  18.553617181968647,  -6.520846471664629 ],
+                            [  0.474378122622916,   1.990788732636366,  -4.870423974946863,  10.433432349542748,  -6.520846471664631,  23.607740696076391 ]
+                        ];
+                        inverseCovarianceUna = [
+                            [ 57.358365961752945,  1.826316161214356,   0.215312293560837,  -4.559359610577901,   0.816111474811734,   1.837785150484615 ],
+                            [ 1.826316161214356,  16.557460826361925,  -2.590991736098649,  -3.942799962120657,   0.217416458407900,  -0.979293197601671 ],
+                            [ 0.215312293560837,  -2.590991736098649,  56.792997411878638, -14.469163578571125,  -7.127396773434530,  -2.680740597953040 ],
+                            [ -4.559359610577900, -3.942799962120657, -14.469163578571127,  82.524331883598336,   5.411821855504203,   1.045645564606566 ],
+                            [ 0.816111474811734,   0.217416458407899,  -7.127396773434532,   5.411821855504204,  29.468883687242776, -10.745723981046623 ],
+                            [ 1.837785150484616,  -0.979293197601670,  -2.680740597953040,   1.045645564606565, -10.745723981046625,  23.934767642862120 ]
+                        ];
+                        sqrtDetCovAff = 5.031194646938435e-5;
+                        sqrtDetCovUna = 2.103634472974705e-5;
+                        break;
+
+                    case "quadruple":
+
+                        dsStillBirthRate = 0.23;
+                        markers = markers.slice(3);
+                        meanAff = [ -0.1308, -0.1549, 0.3384, 0.3118 ];
+                        meanUna = [ 0, 0, 0, 0 ];
+                        inverseCovarianceAff = [
+                            [ 53.773527794679616,   1.224407779523546,  -3.168824296555949,  -4.297912838981690 ],
+                            [  1.224407779523548,  79.517259387930125,   7.408568888627167,  12.036819827272375 ],
+                            [ -3.168824296555949,   7.408568888627167,  17.803151377283651,  -6.544573585366461 ],
+                            [ -4.297912838981688,  12.036819827272375,  -6.544573585366462,  23.357147489000226 ]
+                        ];
+                        inverseCovarianceUna = [
+                            [  56.383153220250158, -15.049992266679251,  -7.100319112508539,  -2.851044283837526 ],
+                            [ -15.049992266679252,  81.287817109645474,   5.520755231464582,   0.952857913147896 ],
+                            [  -7.100319112508540,   5.520755231464582,  29.455050761869895, -10.759831476140802 ],
+                            [  -2.851044283837525,   0.952857913147895, -10.759831476140803,  23.810605916644072 ]
+                        ];
+                        sqrtDetCovAff = 8.907667313707855e-4;
+                        sqrtDetCovUna = 6.471449357233173e-4;
+                        break;
+
+                    case "combined":
+
+                        dsStillBirthRate = 0.43;
+                        markers = markers.slice(0,3);
+                        meanAff = [ 0.2922, -0.3010, 0.3404 ];
+                        meanUna = [ 0, 0, 0 ];
+                        inverseCovarianceAff = [
+                            [ 19.314547490997647,  2.292959915632461, -1.705040857351463 ],
+                            [  2.292959915632461, 13.070398578561802,  0.763541772277445 ],
+                            [ -1.705040857351463,  0.763541772277445, 15.375487566749186 ]
+                        ];
+                        inverseCovarianceUna = [
+                            [ 56.864138408748879,  1.544508530420665,  1.003072106525415 ],
+                            [  1.544508530420665, 16.424960968013934, -2.123697304646387 ],
+                            [  1.003072106525415, -2.123697304646387, 14.529295377184575 ]
+                        ];
+                        sqrtDetCovAff = 0.016339833569356;
+                        sqrtDetCovUna = 0.008685476472149;
+                        break;
+
+                };
+
                 var ageRisk = baselineRisk(age),
                     ageOdds = ageRisk/(1 - ageRisk);
                 
@@ -1683,16 +1801,17 @@
                     return markers[idx]- una;
                 });
                 
-                var valueAff = sandwich(diffAff, inverseCovarianceAff),
-                    valueUna = sandwich(diffUna, inverseCovarianceUna);
+                var valueAff = quadraticForm(diffAff, inverseCovarianceAff),
+                    valueUna = quadraticForm(diffUna, inverseCovarianceUna);
                 
                 var odds = ( ( Math.exp( -0.5 * valueAff) / sqrtDetCovAff ) / 
                              ( Math.exp( -0.5 * valueUna) / sqrtDetCovUna ) ) * 
-                            ageOdds / ( 1 - DSSTILLBIRTHRATE);
+                            ageOdds / ( 1 - dsStillBirthRate);
                 
                 return odds / (1 + odds);
+
             };
-            
+
             // Calculate ultimate decision weights given estimated risk and
             // priority ratings.
             //     priorities = [misDs, misHealthy, testTerm, testStill, testDs, 
@@ -1704,11 +1823,11 @@
                 var amnio = AMNIOLOSSRATE * risk * priorities[0] +
                             AMNIOLOSSRATE * (1-risk) * priorities[1] +
                             (1-AMNIOLOSSRATE) * risk * Math.max( priorities[2], 
-                                DSSTILLBIRTHRATE * priorities[3] + 
-                                    (1-DSSTILLBIRTHRATE) * priorities[4])  + 
+                                dsStillBirthRate * priorities[3] + 
+                                    (1-dsStillBirthRate) * priorities[4])  + 
                             (1-AMNIOLOSSRATE) * (1-risk) * priorities[5];
-                var noAmnio = risk * DSSTILLBIRTHRATE * priorities[6] + 
-                              risk * (1-DSSTILLBIRTHRATE) * priorities[7] +
+                var noAmnio = risk * dsStillBirthRate * priorities[6] + 
+                              risk * (1-dsStillBirthRate) * priorities[7] +
                               (1-risk) * priorities[8];
                 return [amnio, noAmnio];                
 
@@ -1737,9 +1856,9 @@
                         return !i.required() || typeof i.value() !== "undefined";
                     }) && 
                     [].slice.call(document.getElementsByTagName("form")).every(function(f) {
-                        // And, in addition, all form elements should validate.
+                        // All form elements should validate.
                         return f.checkValidity();
-                    });
+                    }) && (analysisAvailable() !== "");
                 
                 // Two conditions cause suspect inputs:
                 //   1. The range of values for min and max ratings are limited
@@ -1779,7 +1898,7 @@
 
                 bars.barBaseline = baselineRisk(age);
                 bars.barRisk     = estimatedRisk(age, markers);
-                bars.barStill    = DSSTILLBIRTHRATE;
+                bars.barStill    = dsStillBirthRate;
                 bars.barMis      = AMNIOLOSSRATE;
                 
                 var w = calcWeights(bars.barRisk, priorities)
@@ -1835,7 +1954,7 @@
                     inputs.forEach(function(i) {
                         if (i.hasChanged()) {
                             if (typeof(i.value()) === "undefined") {
-                                localStorate.removeItem(i.id());
+                                localStorage.removeItem(i.id());
                             } else {
                                 localStorage.setItem(i.id(), i.value());
                             }
@@ -2461,9 +2580,12 @@
                 // ##### Initialize Info Components
     
                 [].slice.call(document.getElementsByClassName("info")).forEach(function(el) {
+                    var obj = new Info(el);
                     
-                    // Note that all Info components are required.
-                    var obj = new Info(el).required(true);
+                    // Age information is required in all cases.
+                    if (obj.id() === "infoAge") {
+                        obj.required(true).validateOnBlur(true);
+                    }
                     
                     // Now that we have an Info component, add it to the application
                     // state as appropriate. It's both a generic input (so it goes
@@ -2537,24 +2659,42 @@
             
                 // #### Tests for estimatedRisk()
                 
-                console.log(estimatedRisk(30, [1.5,3.0,4.9,3.0,0.4,0.3,0.5]), 
+                console.log(estimatedRisk(30, [1.5,3.0,4.9,3.0,0.4,0.3,0.5], "all"), 
                     "should be 0.005042677866648");
-                console.log(estimatedRisk(30, [0.5,0.2,0.3,0.4,0.4,0.3,0.4]), 
+                console.log(estimatedRisk(30, [0.5,0.2,0.3,0.4,0.4,0.3,0.4], "all"), 
                     "should be 3.436517371529128e-05");
-                console.log(estimatedRisk(30, [2.5,3.0,5.0,3.0,2.0,5.0,5.0]), 
+                console.log(estimatedRisk(30, [2.5,3.0,5.0,3.0,2.0,5.0,5.0], "all"), 
                     "should be 1.128942262511341e-06");
-                console.log(estimatedRisk(30, [2.5,0.2,5.0,0.4,0.4,5.0,5.0]), 
+                console.log(estimatedRisk(30, [2.5,0.2,5.0,0.4,0.4,5.0,5.0], "all"), 
                     "should be 0.999995045281023");
-                console.log(estimatedRisk(30, [0.5,3.0,0.3,3.0,2.0,0.3,0.4]), 
+                console.log(estimatedRisk(30, [0.5,3.0,0.3,3.0,2.0,0.3,0.4], "all"), 
                     "should be 1.200434076898316e-08");
-                console.log(estimatedRisk(30, [2.1294,2.7362,0.8968,2.7748,1.4118,0.7584,1.6811]), 
+                console.log(estimatedRisk(30, [2.1294,2.7362,0.8968,2.7748,1.4118,0.7584,1.6811], "all"), 
                     "should be 3.447781779787803e-06");
-                console.log(estimatedRisk(20, [2.5,0.2,5.0,0.4,0.4,5.0,5.0]), 
+                console.log(estimatedRisk(20, [2.5,0.2,5.0,0.4,0.4,5.0,5.0], "all"), 
                     "should be 0.999992199210378");
-                console.log(estimatedRisk(40, [0.5,3.0,0.3,3.0,2.0,0.3,0.4]), 
+                console.log(estimatedRisk(40, [0.5,3.0,0.3,3.0,2.0,0.3,0.4], "all"), 
                     "should be 1.324037738264033e-07");
-                console.log(estimatedRisk(45, [2.23,1.54,4.30,1.25,1.03,4.37,3.33]), 
+                console.log(estimatedRisk(45, [2.23,1.54,4.30,1.25,1.03,4.37,3.33], "all"), 
                     "should be 0.387268998361568");
+                console.log(estimatedRisk(30, [2.5,3.0,0,3.0,2.0,5.0,5.0], "integrated"), 
+                    "should be 1.610812901764032e-05");
+                console.log(estimatedRisk(30, [2.1294,2.7362,0,2.7748,1.4118,0.7584,1.6811], "integrated"), 
+                    "should be 7.937697582244133e-06");
+                console.log(estimatedRisk(45, [2.23,1.54,0,1.25,1.03,4.37,3.33], "integrated"), 
+                    "should be 0.685650139633800");
+                console.log(estimatedRisk(30, [0,0,0,0.4,0.4,0.3,0.4], "quadruple"), 
+                    "should be 3.514910936568825e-05");
+                console.log(estimatedRisk(30, [0,0,0,3.0,2.0,0.3,0.4], "quadruple"), 
+                    "should be 2.065668589689288e-08");
+                console.log(estimatedRisk(40, [0,0,0,3.0,2.0,0.3,0.4], "quadruple"), 
+                    "should be 2.278361621669848e-07");
+                console.log(estimatedRisk(30, [1.5,3.0,4.9,0,0,0,0], "combined"), 
+                    "should be 0.001933011307172");
+                console.log(estimatedRisk(30, [2.5,0.2,5.0,0,0,0,0], "combined"), 
+                    "should be 0.984876005589030");
+                console.log(estimatedRisk(20, [2.5,0.2,5.0,0,0,0,0], "combined"), 
+                    "should be 0.976393552861281");
 
                 // #### Tests for weights()
 
