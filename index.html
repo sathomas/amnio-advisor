@@ -846,11 +846,11 @@
                                         <div class="info mdl-textfield mdl-js-textfield 
                                                     mdl-textfield--floating-label">
                                             <input class="mdl-textfield__input" type="number" 
-                                                   min="0.4" max="5.0" step="any" id="infoHgc" />
+                                                   min="0.4" max="5.0" step="any" id="infoHcg" />
                                             <label class="mdl-textfield__label
                                                           mdl-typography--caption-force-preferred-font" 
-                                                   for="hgc">
-                                                   Total hGC
+                                                   for="hcg">
+                                                   Total hCG
                                             </label>
                                             <span class="mdl-textfield__error 
                                                          mdl-typography--caption-force-preferred-font">
@@ -1648,17 +1648,17 @@
             
             var analysisAvailable = function() {
                 if (["infoNt", "infoPappa", "infoFbhcg", "infoAfp", "infoUe3", 
-                     "infoInhibina", "infoHgc"].every(function(marker) {
+                     "infoInhibina", "infoHcg"].every(function(marker) {
                     return typeof inputObjs[marker].value() !== "undefined";
                 })) {
                     return "all";
                 } else if (["infoNt", "infoPappa", "infoAfp", "infoUe3", "infoInhibina",
-                            "infoHgc"].every(function(marker) {
+                            "infoHcg"].every(function(marker) {
                     return typeof inputObjs[marker].value() !== "undefined";
                 })) {
                     return "integrated";
                 } else if (["infoAfp", "infoUe3", "infoInhibina", 
-                            "infoHgc"].every(function(marker) {
+                            "infoHcg"].every(function(marker) {
                     return typeof inputObjs[marker].value() !== "undefined";
                 })) {
                     return "quadruple";
@@ -1882,7 +1882,7 @@
                     inputObjs.infoAfp.value(), 
                     inputObjs.infoUe3.value(), 
                     inputObjs.infoInhibina.value(), 
-                    inputObjs.infoHgc.value()
+                    inputObjs.infoHcg.value()
                 ];
                 var priorities = [
                     inputObjs.ratingMisDs.value(), 
