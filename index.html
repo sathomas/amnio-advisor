@@ -91,6 +91,7 @@
              */
             
             legend {
+                display: table; /* needed to force IE to word-wrap */
                 padding-top: 1em;
             }
             
@@ -183,7 +184,7 @@
             }
             
             .rating .mdl-slider__container,
-            .rating .mdl-slider__ie_container {
+            .rating .mdl-slider__ie-container {
                 float: left;
                 top: 6px;
                 width: calc(100% - 72px);
@@ -231,7 +232,7 @@
                 width: calc(100% + 16px - 72px);
             }
             
-            .rating .mdl-slider__ie_container .rating--keys {
+            .rating .mdl-slider__ie-container .rating--keys {
                 left: 16px;
             }
             
