@@ -1844,12 +1844,19 @@
             //
             // > Note: No error or bounds checking currently implemented
             
-            quadraticForm = function(v, m) {
+            var quadraticForm = function(v, m) {
                 return v.reduce(function(sum, s, i) {
                     return sum + s * v.reduce(function(inner, t, j) {
                         return inner + t * m[i][j];
                     }, 0);
                 }, 0);                
+            };
+            
+            // Compare two arrays for equality
+            
+            var areArraysSame = function (a,b) {
+                return (a.length === b.length) &&
+                    a.every(function(ai, i) {return ai === b[i];});
             };
             
             // #### Application-Specific Calculations
@@ -1861,7 +1868,14 @@
                 stillBirthRate,
                 risk,
                 amnioLossRate,
-                weights;
+                weights,
+                interval;
+            
+            // Also cache the prior input values.
+            
+            var prevAge,
+                prevMarkers = [],
+                prevPriorities = [];
 
             // Calculate baseline risk based solely on maternal age
             
@@ -1896,7 +1910,7 @@
             //   * 4 markers = quadruple  [AFP; UE3; INHIBINA; THCG]
             //   * 3 markers = combined   [NT; PAPPA; FBHCG1]
             
-            var estimateRisk = function(age, markers) {
+            var estimateRisk = function(age, markers, stillBirthRate) {
 
                 // Define variables we need for the calculation. We'll
                 // set their values depending on the markers that are
@@ -2027,7 +2041,7 @@
                 
                 var odds = ( ( Math.exp( -0.5 * valueAff) / sqrtDetCovAff ) / 
                              ( Math.exp( -0.5 * valueUna) / sqrtDetCovUna ) ) * 
-                            ageOdds / ( 1 - estimateStillBirthRate(markers));
+                            ageOdds / ( 1 - stillBirthRate);
                 
                 return odds / (1 + odds);
                 
@@ -2058,6 +2072,67 @@
 
             };
             
+            // Estimate a confidence interval using statistical bootstrapping.
+            // Inputs are the same as `estimateRisk()`
+            
+            estimateConfidence = function(age, markers, stillBirthRate) {
+                
+                // Number of bootstrap samples to synthesize
+                var numBootstrap = 10000;
+
+                // Coefficient of variation
+                var cv = 0.05;
+                
+                // Determine the upper and lower bounds based on the
+                // type of test results available.
+                var numMarkers = markers.length,
+                    lower = [0.5, 0.2, 0.3, 0.4, 0.4, 0.3, 0.4],
+                    upper = [2.5, 3.0, 5.0, 3.0, 2.0, 5.0, 5.0];
+
+                switch (numMarkers) {
+                    // all test results
+                    case 7:
+                        break;
+                    // integrated test results
+                    case 6:
+                        lower.splice(2,1);
+                        upper.splice(2,1);
+                        break;
+                    // quadruple test results
+                    case 4:
+                        lower = lower.slice(3);
+                        upper = upper.slice(3);
+                        break;
+                    // combined test results
+                    case 3:
+                        lower = lower.slice(0,3);
+                        upper = upper.slice(0,3);
+                        break;
+                    // unexppected input
+                    default:
+                        return [0,0];
+
+                }
+
+                for (var i=numBootstrap, samples=[]; i > 0; i--) {
+                    var sample = markers.map(function(marker, idx) {
+                        var x, s2 = marker*marker*cv*cv;
+                        do {
+                            x = randNorm(marker, s2);
+                        } while (x < lower[idx] || x > upper[idx]);
+                        return x;
+                    });
+                    samples.push(estimateRisk(age, sample, stillBirthRate));
+                }
+                
+                samples.sort(function(a, b) {
+                    return a - b;
+                });
+                
+                return [samples[0.025 * numBootstrap], samples[0.975 * numBootstrap]];
+                
+            };
+            
             // #### Main Processing Loop for Compute Worker
 
             // This thread is driven by messages from the parent, so
@@ -2071,17 +2146,29 @@
                 // numbers are the marker values.
                 var data = JSON.parse(ev.data);
 
-                // Calculate the estimated risk values.
-// TODO: only calculate changed values.
-                baselineRisk   = estimateBaselineRisk(data.age);
-                risk           = estimateRisk(data.age, data.markers);
-                stillBirthRate = estimateStillBirthRate(data.markers);
+                // Calculate the various values, but only if any of the
+                // relevant inputs have changed.
+                if (data.age !== prevAge) {
+                    baselineRisk = estimateBaselineRisk(data.age);
+                }
+                if (!areArraysSame(data.markers, prevMarkers)) {
+                    stillBirthRate = estimateStillBirthRate(data.markers);
+                }
+                if ((data.age !== prevAge) || !areArraysSame(data.markers, prevMarkers)) {
+                    risk = estimateRisk(data.age, data.markers, stillBirthRate);
+                    interval = estimateConfidence(data.age, data.markers, stillBirthRate);
+                }
                 amnioLossRate  = estimateAmnioLossRate();
-                weights        = calcWeights(risk, stillBirthRate, amnioLossRate, data.priorities);
+                if ((data.age !== prevAge) || !areArraysSame(data.markers, prevMarkers) ||
+                    !areArraysSame(data.priorities, prevPriorities)) {
+                    weights = calcWeights(risk, stillBirthRate, amnioLossRate, data.priorities);
+                }
                 
-// TODO: actual CI calculation
-var interval = [Math.max(0,risk - 0.1), Math.min(1,risk + 0.2)];
-                
+                // Cache the input for future calls.
+                prevAge = data.age;
+                prevMarkers = data.markers.slice(0);
+                prevPriorities = data.priorities.slice(0);
+
                 // Return the result to the parent script.
                 self.postMessage(JSON.stringify({
                     'baselineRisk': baselineRisk,
