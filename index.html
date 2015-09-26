@@ -1407,7 +1407,7 @@
                                     It looks like you were able to enter
                                     some values for your first trimester lab results.
                                     If you can enter the remaining values, we can
-                                    provide better advice. Would you like to 
+                                    give you better advice. Would you like to 
                                     update those values now?
                                 </p>
                                 <a class="mdl-button mdl-button--colored mdl-js-button 
@@ -1425,7 +1425,7 @@
                                     It looks like you were able to enter
                                     some values for your second trimester lab results.
                                     If you can enter the remaining values, we can
-                                    provide better advice. Would you like to 
+                                    give you better advice. Would you like to 
                                     update those values now?
                                 </p>
                                 <a class="mdl-button mdl-button--colored mdl-js-button 
@@ -1517,7 +1517,7 @@
                             </div>
                             <div class="mdl-card__supporting-text">
                                 <p class="mdl-typography--body-1-force-preferred-font">
-                                    Before we can provide a detailed analysis, we need some 
+                                    Before we can give you a detailed analysis, we need some 
                                     basic medical information.
                                 </p>
                             </div>
@@ -1561,7 +1561,7 @@
                                     It looks like you were able to enter
                                     some values for your first trimester lab results.
                                     If you can enter the remaining values, we can
-                                    provide better advice. Would you like to 
+                                    give you better advice. Would you like to 
                                     update those values now?
                                 </p>
                                 <a class="mdl-button mdl-button--colored mdl-js-button 
@@ -1579,7 +1579,7 @@
                                     It looks like you were able to enter
                                     some values for your second trimester lab results.
                                     If you can enter the remaining values, we can
-                                    provide better advice. Would you like to 
+                                    give you better advice. Would you like to 
                                     update those values now?
                                 </p>
                                 <a class="mdl-button mdl-button--colored mdl-js-button 
@@ -1644,7 +1644,7 @@
                                           mdl_card__supporting-text__note lab-first
                                           p__continued">
                                     <em>Note:</em>
-                                    If you can provide results
+                                    If you can give us results
                                     from second trimester lab tests, we can improve
                                     that estimate.
                                 </p>
@@ -1652,7 +1652,7 @@
                                           mdl_card__supporting-text__note lab-second
                                           p__continued">
                                     <em>Note:</em>
-                                    If you can provide results
+                                    If you can give us results
                                     from first trimester lab tests, we can improve
                                     that estimate.
                                 </p>
@@ -2339,7 +2339,7 @@
                     inputObjs.ratingNotestDs.value(), 
                     inputObjs.ratingNotestHealthy.value()
                 ];
-//return;                
+
                 // Keep track of how many computing threads are
                 // active so we'll know when they're all done.
                 var body = document.getElementsByTagName("body")[0],
@@ -3022,7 +3022,9 @@
                 // of our inputs, and revise the calculations.
                 saveInputState();
                 evaluateInputs();
-                startCompute();
+                if (areInputsValid) {
+                    startCompute();
+                }
             };
             
             // #### panelViewed()
@@ -3195,7 +3197,9 @@
                 setTimeout(function() {
                     restoreInputState();
                     evaluateInputs();
-                    startCompute();
+                    if (areInputsValid) {
+                        startCompute();
+                    }
                 }, 0);
                 
             });
