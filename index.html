@@ -2339,7 +2339,7 @@
                     inputObjs.ratingNotestDs.value(), 
                     inputObjs.ratingNotestHealthy.value()
                 ];
-                
+//return;                
                 // Keep track of how many computing threads are
                 // active so we'll know when they're all done.
                 var body = document.getElementsByTagName("body")[0],
@@ -2474,11 +2474,10 @@
                     body.setAttribute("data-lab-partial", "first");
                 }
                 if (hasVisitedResults &&
-                    (analysis === "combined") && (["infoNt", "infoPappa", "infoFbhcg"].
-                        some(function(marker) {
+                    (analysis === "combined") && 
+                    (["infoAfp", "infoUe3", "infoInhibina", "infoHcg"].some(function(marker) {
                             return typeof inputObjs[marker].value() !== "undefined";
-                        }))
-                    ) {
+                    }))) {
                     body.setAttribute("data-lab-partial", "second");
                 }
                 
