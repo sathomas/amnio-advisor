@@ -2154,6 +2154,11 @@
             // message from the parent is in `ev.data`.
             
             self.addEventListener('message', function(ev) {
+                
+                if (ev.data === "test") {
+                    test();
+                    return;
+                }
 
                 // Extract the inputs as an array of numbers. The
                 // first number is the maternal age and the remaining
@@ -2186,7 +2191,7 @@
                 // Return the result to the parent script.
                 self.postMessage(JSON.stringify({
                     'baselineRisk': baselineRisk,
-                    'estimatedRisk': {
+                    'estimateRisk': {
                         'low':  interval[0], 
                         'mean': risk, 
                         'high': interval[1]
@@ -2197,6 +2202,87 @@
                 }));
                 
             }, false);
+
+            // ### Test Code
+            
+            var test = function() {
+            
+                // #### Tests for estimated risk
+                
+                console.log(estimateRisk(30, [1.5,3.0,4.9,3.0,0.4,0.3,0.5], 0.23), 
+                    "should be 0.005042677866648");
+                console.log(estimateRisk(30, [0.5,0.2,0.3,0.4,0.4,0.3,0.4], 0.23), 
+                    "should be 3.436517371529128e-05");
+                console.log(estimateRisk(30, [2.5,3.0,5.0,3.0,2.0,5.0,5.0], 0.23), 
+                    "should be 1.128942262511341e-06");
+                console.log(estimateRisk(30, [2.5,0.2,5.0,0.4,0.4,5.0,5.0], 0.23), 
+                    "should be 0.999995045281023");
+                console.log(estimateRisk(30, [0.5,3.0,0.3,3.0,2.0,0.3,0.4], 0.23), 
+                    "should be 1.200434076898316e-08");
+                console.log(estimateRisk(30, [2.1294,2.7362,0.8968,2.7748,1.4118,0.7584,1.6811], 0.23), 
+                    "should be 3.447781779787803e-06");
+                console.log(estimateRisk(20, [2.5,0.2,5.0,0.4,0.4,5.0,5.0], 0.23), 
+                    "should be 0.999992199210378");
+                console.log(estimateRisk(40, [0.5,3.0,0.3,3.0,2.0,0.3,0.4], 0.23), 
+                    "should be 1.324037738264033e-07");
+                console.log(estimateRisk(45, [2.23,1.54,4.30,1.25,1.03,4.37,3.33], 0.23), 
+                    "should be 0.387268998361568");
+                console.log(estimateRisk(30, [2.5,3.0,3.0,2.0,5.0,5.0], 0.23), 
+                    "should be 1.610812901764032e-05");
+                console.log(estimateRisk(30, [2.1294,2.7362,2.7748,1.4118,0.7584,1.6811], 0.23), 
+                    "should be 7.937697582244133e-06");
+                console.log(estimateRisk(45, [2.23,1.54,1.25,1.03,4.37,3.33], 0.23), 
+                    "should be 0.685650139633800");
+                console.log(estimateRisk(30, [0.4,0.4,0.3,0.4], 0.23), 
+                    "should be 3.514910936568825e-05");
+                console.log(estimateRisk(30, [3.0,2.0,0.3,0.4], 0.23), 
+                    "should be 2.065668589689288e-08");
+                console.log(estimateRisk(40, [3.0,2.0,0.3,0.4], 0.23), 
+                    "should be 2.278361621669848e-07");
+                console.log(estimateRisk(30, [1.5,3.0,4.9], 0.43), 
+                    "should be 0.001933011307172");
+                console.log(estimateRisk(30, [2.5,0.2,5.0], 0.43), 
+                    "should be 0.984876005589030");
+                console.log(estimateRisk(20, [2.5,0.2,5.0], 0.43), 
+                    "should be 0.976393552861281");
+                    
+                // #### Tests for confidence intervals
+
+                console.log(estimateConfidence(30, [1.5,3.0,4.9], 0.43),
+                    "should be about 0.0012, 0.0034");
+                console.log(estimateConfidence(30, [0.4,0.4,0.3,0.4], 0.23),
+                    "should be about 0.3266e-04, 0.5465e-04");
+                console.log(estimateConfidence(30, [2.5,3.0,3.0,2.0,5.0,5.0], 0.23),
+                    "should be about 0.0602e-04, 0.4647e-04");
+                console.log(estimateConfidence(30, [2.5,0.2,5.0], 0.43),
+                    "should be about 0.9562, 0.9849");
+                console.log(estimateConfidence(30, [3.0,2.0,0.3,0.4], 0.23),
+                    "should be about 0.1897e-07, 0.3976e-07");
+                console.log(estimateConfidence(30, [2.1294,2.7362,2.7748,1.4118,0.7584,1.6811], 0.23),
+                    "should be about 0.0278e-04, 0.2365e-04");
+                console.log(estimateConfidence(20, [2.5,0.2,5.0], 0.43),
+                    "should be about 0.9327, 0.9764");
+                console.log(estimateConfidence(40, [3.0,2.0,0.3,0.4], 0.23),
+                    "should be about 0.2093e-06, 0.4385e-06");
+                console.log(estimateConfidence(45, [2.23,1.54,1.25,1.03,4.37,3.33], 0.23),
+                     "should be 0.3911, 0.8806");
+
+                // #### Tests for weights
+
+                console.log(calcWeights(0.005, 0.23, 0.003, [7.2,6.0,7.5,6.4,7.8,10.0,6.8,6.2,9.1 ]),
+                    "should be 9.975555499999999,9.086189999999998");
+                console.log(calcWeights(0.005, 0.23, 0.003, [8.0,8.0,9.0,8.0,6.0,10.0,8.0,7.0,10.0]),
+                    "should be 9.989015000000000, 9.986149999999999");
+                console.log(calcWeights(0.99, 0.23, 0.003, [8.0,8.0,9.0,8.0,6.0,10.0,8.0,7.0,10.0]),
+                    "should be 9.006969999999999,7.257700000000000");
+                console.log(calcWeights(0.00001, 0.23, 0.003, [8.0,8.0,9.0,8.0,6.0,10.0,8.0,7.0,10.0]),
+                    "should be 9.993990030000001, 9.999972300000000");
+                console.log(calcWeights(0.5, 0.23, 0.003, [6.0,6.0,9.0,6.0,9.2,10.0,6.0,9.2,10.0]),
+                    "should be 9.489500000000000, 9.231999999999999");
+                console.log(calcWeights(0.1, 0.23, 0.003, [6.0,6.0,9.0,6.0,9.2,10.0,6.0,9.2,10.0]),
+                   "should be 9.888299999999999, 9.846399999999999");
+                
+            };
 
         </script>
 
@@ -2433,16 +2519,16 @@
                     
                 // Update the analysis results.
                 barObjs.barBaseline.value(results.baselineRisk);
-                barObjs.barRisk.value(results.estimatedRisk.mean).
-                    confidence([results.estimatedRisk.low,results.estimatedRisk.high]);
+                barObjs.barRisk.value(results.estimateRisk.mean).
+                    confidence([results.estimateRisk.low,results.estimateRisk.high]);
                 barObjs.barMis.value(results.amnioLossRate);
                 barObjs.barStill.value(results.stillBirthRate);
                 document.getElementById("risk-low").textContent = 
-                    formatPercentage(results.estimatedRisk.low);
+                    formatPercentage(results.estimateRisk.low);
                 document.getElementById("risk-mean").textContent = 
-                    formatPercentage(results.estimatedRisk.mean)
+                    formatPercentage(results.estimateRisk.mean)
                 document.getElementById("risk-high").textContent = 
-                    formatPercentage(results.estimatedRisk.high)
+                    formatPercentage(results.estimateRisk.high)
                 
                 // Update state
                 doAmnio = results.weights[0] > results.weights[1];
@@ -3203,66 +3289,6 @@
                 }, 0);
                 
             });
-            
-            // ### Test Code
-            
-            var test = function() {
-            
-                // #### Tests for estimatedRisk()
-                
-                console.log(estimatedRisk(30, [1.5,3.0,4.9,3.0,0.4,0.3,0.5], "all"), 
-                    "should be 0.005042677866648");
-                console.log(estimatedRisk(30, [0.5,0.2,0.3,0.4,0.4,0.3,0.4], "all"), 
-                    "should be 3.436517371529128e-05");
-                console.log(estimatedRisk(30, [2.5,3.0,5.0,3.0,2.0,5.0,5.0], "all"), 
-                    "should be 1.128942262511341e-06");
-                console.log(estimatedRisk(30, [2.5,0.2,5.0,0.4,0.4,5.0,5.0], "all"), 
-                    "should be 0.999995045281023");
-                console.log(estimatedRisk(30, [0.5,3.0,0.3,3.0,2.0,0.3,0.4], "all"), 
-                    "should be 1.200434076898316e-08");
-                console.log(estimatedRisk(30, [2.1294,2.7362,0.8968,2.7748,1.4118,0.7584,1.6811], "all"), 
-                    "should be 3.447781779787803e-06");
-                console.log(estimatedRisk(20, [2.5,0.2,5.0,0.4,0.4,5.0,5.0], "all"), 
-                    "should be 0.999992199210378");
-                console.log(estimatedRisk(40, [0.5,3.0,0.3,3.0,2.0,0.3,0.4], "all"), 
-                    "should be 1.324037738264033e-07");
-                console.log(estimatedRisk(45, [2.23,1.54,4.30,1.25,1.03,4.37,3.33], "all"), 
-                    "should be 0.387268998361568");
-                console.log(estimatedRisk(30, [2.5,3.0,0,3.0,2.0,5.0,5.0], "integrated"), 
-                    "should be 1.610812901764032e-05");
-                console.log(estimatedRisk(30, [2.1294,2.7362,0,2.7748,1.4118,0.7584,1.6811], "integrated"), 
-                    "should be 7.937697582244133e-06");
-                console.log(estimatedRisk(45, [2.23,1.54,0,1.25,1.03,4.37,3.33], "integrated"), 
-                    "should be 0.685650139633800");
-                console.log(estimatedRisk(30, [0,0,0,0.4,0.4,0.3,0.4], "quadruple"), 
-                    "should be 3.514910936568825e-05");
-                console.log(estimatedRisk(30, [0,0,0,3.0,2.0,0.3,0.4], "quadruple"), 
-                    "should be 2.065668589689288e-08");
-                console.log(estimatedRisk(40, [0,0,0,3.0,2.0,0.3,0.4], "quadruple"), 
-                    "should be 2.278361621669848e-07");
-                console.log(estimatedRisk(30, [1.5,3.0,4.9,0,0,0,0], "combined"), 
-                    "should be 0.001933011307172");
-                console.log(estimatedRisk(30, [2.5,0.2,5.0,0,0,0,0], "combined"), 
-                    "should be 0.984876005589030");
-                console.log(estimatedRisk(20, [2.5,0.2,5.0,0,0,0,0], "combined"), 
-                    "should be 0.976393552861281");
-
-                // #### Tests for weights()
-
-                console.log(calcWeights(0.005,   [7.2,6.0,7.5,6.4,7.8,10.0,6.8,6.2,9.1 ]),
-                    "should be 9.975555499999999,9.086189999999998");
-                console.log(calcWeights(0.005,   [8.0,8.0,9.0,8.0,6.0,10.0,8.0,7.0,10.0]),
-                    "should be 9.989015000000000, 9.986149999999999");
-                console.log(calcWeights(0.99,    [8.0,8.0,9.0,8.0,6.0,10.0,8.0,7.0,10.0]),
-                    "should be 9.006969999999999,7.257700000000000");
-                console.log(calcWeights(0.00001, [8.0,8.0,9.0,8.0,6.0,10.0,8.0,7.0,10.0]),
-                    "should be 9.993990030000001, 9.999972300000000");
-                console.log(calcWeights(0.5,     [6.0,6.0,9.0,6.0,9.2,10.0,6.0,9.2,10.0]),
-                    "should be 9.489500000000000, 9.231999999999999");
-                console.log(calcWeights(0.1,     [6.0,6.0,9.0,6.0,9.2,10.0,6.0,9.2,10.0]),
-                   "should be 9.888299999999999, 9.846399999999999");
-                
-            };
 
         </script>
 
