@@ -81,7 +81,7 @@
         <!--
         <link rel="stylesheet" type="text/css"
               href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
-         -->
+        -->
         <link rel="stylesheet" type="text/css"
               href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" type="text/css"
@@ -482,8 +482,6 @@
              
             .bar--data {
                 background-color: #3F51B5;
-                border-right: 1px solid #E91E63;
-                box-shadow: -1px 0px 0px 0 #E91E63 inset;
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -492,10 +490,52 @@
                 z-index: 1;
             }
             
+            .bar--range {
+                position: absolute;
+                border-right: 1px solid #E91E63;
+                border-left: 1px solid #E91E63;
+                border-bottom: 1px solid #E91E63;
+                top: calc(100% + 2px);
+                left: 0;
+                height: 2px;
+                width: 0%;
+                z-index: 2;
+            }
+            
+            .bar--range-low {
+                background: rgb(233,30,99);
+                background: -moz-linear-gradient(left, rgba(233,30,99,0) 0%, rgba(233,30,99,0.8) 100%);
+                background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(233,30,99,0)), color-stop(100%,rgba(233,30,99,0.8)));
+                background: -webkit-linear-gradient(left, rgba(233,30,99,0) 0%,rgba(233,30,99,0.8) 100%);
+                background: -o-linear-gradient(left, rgba(233,30,99,0) 0%,rgba(233,30,99,0.8) 100%);
+                background: -ms-linear-gradient(left, rgba(233,30,99,0) 0%,rgba(233,30,99,0.8) 100%);
+                background: linear-gradient(to right, rgba(233,30,99,0) 0%,rgba(233,30,99,0.8) 100%);
+            }
+
+            .bar--range-high {
+                background: rgb(233,30,99);
+                background: -moz-linear-gradient(left, rgba(233,30,99,0.6) 0%, rgba(233,30,99,0) 100%);
+                background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(233,30,99,0.6)), color-stop(100%,rgba(233,30,99,0)));
+                background: -webkit-linear-gradient(left, rgba(233,30,99,0.6) 0%,rgba(233,30,99,0) 100%);
+                background: -o-linear-gradient(left, rgba(233,30,99,0.6) 0%,rgba(233,30,99,0) 100%);
+                background: -ms-linear-gradient(left, rgba(233,30,99,0.6) 0%,rgba(233,30,99,0) 100%);
+                background: linear-gradient(to right, rgba(233,30,99,0.6) 0%,rgba(233,30,99,0) 100%);
+            }
+
+            .bar--needle {
+                background-color: #E91E63;
+                position: absolute;
+                top: -2px;
+                left: 0;
+                height: calc(100% + 4px);
+                width: 3px;
+                z-index: 3;
+            }
+            
             .bar--text {
                 display: inline-block;
                 position: absolute;
-                top: 16px;
+                top: 20px;
                 left: calc(0% - 8.5px);
             }
 
@@ -1325,6 +1365,8 @@
                                     <div id="barBaseline" class="bar">
                                         <div class="bar--background">
                                             <div class="bar--data"></div>
+                                            <div class="bar--range"></div>
+                                            <div class="bar--needle"></div>
                                         </div>
                                         <span class="bar--text">0%</span>
                                     </div>
@@ -1337,6 +1379,8 @@
                                     <div id="barRisk" class="bar">
                                         <div class="bar--background">
                                             <div class="bar--data"></div>
+                                            <div class="bar--range"></div>
+                                            <div class="bar--needle"></div>
                                         </div>
                                         <span class="bar--text">0%</span>
                                     </div>
@@ -1348,6 +1392,8 @@
                                     <div id="barStill" class="bar">
                                         <div class="bar--background">
                                             <div class="bar--data"></div>
+                                            <div class="bar--range"></div>
+                                            <div class="bar--needle"></div>
                                         </div>
                                         <span class="bar--text">0%</span>
                                     </div>
@@ -1359,113 +1405,12 @@
                                     <div id="barMis" class="bar">
                                         <div class="bar--background">
                                             <div class="bar--data"></div>
+                                            <div class="bar--range"></div>
+                                            <div class="bar--needle"></div>
                                         </div>
                                         <span class="bar--text">0%</span>
                                     </div>
                                 </p>
-                                <!--
-                                <hr/>
-                                <p class="mdl-typography--body-1-force-preferred-font 
-                                          mdl_card__supporting-text__note">
-                                    We then use these estimates to calculate the
-                                    chances for each of outcome. We consider the
-                                    case in which <strong>no</strong> amniocentesis
-                                    is performed separately from the case in which
-                                    an amniocentesis is performed.
-                                </p>
-                                <p class="mdl-typography--subhead mdl_card__supporting-text__note">
-                                    If you <strong>don't</strong> have an amniocentesis:
-                                </p>
-                                <p class="mdl-typography--body-1-force-preferred-font 
-                                          mdl_card__supporting-text__note">
-                                    The chance of a healthy birth:
-                                    <div id="barNotestHealthy" class="bar">
-                                        <div class="bar--background">
-                                            <div class="bar--data"></div>
-                                        </div>
-                                        <span class="bar--text">0%</span>
-                                    </div>
-                                </p>
-                                <p class="mdl-typography--body-1-force-preferred-font 
-                                          mdl_card__supporting-text__note">
-                                    The chance of a baby born with Down Syndrome:
-                                    <div id="barNotestDs" class="bar">
-                                        <div class="bar--background">
-                                            <div class="bar--data"></div>
-                                        </div>
-                                        <span class="bar--text">0%</span>
-                                    </div>
-                                </p>
-                                <p class="mdl-typography--body-1-force-preferred-font 
-                                          mdl_card__supporting-text__note">
-                                    The chance of a baby with Down Syndrome that is stillborn:
-                                    <div id="barNotestStill" class="bar">
-                                        <div class="bar--background">
-                                            <div class="bar--data"></div>
-                                        </div>
-                                        <span class="bar--text">0%</span>
-                                    </div>
-                                </p>
-                                <p class="mdl-typography--subhead mdl_card__supporting-text__note">
-                                    If you have an amniocentesis:
-                                </p>
-                                <p class="mdl-typography--body-1-force-preferred-font 
-                                          mdl_card__supporting-text__note">
-                                    The chance that the test shows <strong>no</strong>
-                                    Down Syndrome:
-                                    <div id="barTestHealthy" class="bar">
-                                        <div class="bar--background">
-                                            <div class="bar--data"></div>
-                                        </div>
-                                        <span class="bar--text">0%</span>
-                                    </div>
-                                </p>
-                                <p class="mdl-typography--body-1-force-preferred-font 
-                                          mdl_card__supporting-text__note">
-                                    The chance that the test shows Down Syndrome and
-                                    the baby is born with Down Syndrome:
-                                    <div id="barTestDs" class="bar">
-                                        <div class="bar--background">
-                                            <div class="bar--data"></div>
-                                        </div>
-                                        <span class="bar--text">0%</span>
-                                    </div>
-                                </p>
-                                <p class="mdl-typography--body-1-force-preferred-font 
-                                          mdl_card__supporting-text__note">
-                                    The chance that the test shows Down Syndrome and
-                                    the baby is stillborn:
-                                    <div id="barTestStill" class="bar">
-                                        <div class="bar--background">
-                                            <div class="bar--data"></div>
-                                        </div>
-                                        <span class="bar--text">0%</span>
-                                    </div>
-                                </p>
-                                 <p class="mdl-typography--body-1-force-preferred-font 
-                                          mdl_card__supporting-text__note">
-                                    The chance that the test causes a miscarriage and
-                                    the baby had Down Syndrome:
-                                    <div id="barMisDs" class="bar">
-                                        <div class="bar--background">
-                                            <div class="bar--data"></div>
-                                        </div>
-                                        <span class="bar--text">0%</span>
-                                    </div>
-                                </p>
-                                 <p class="mdl-typography--body-1-force-preferred-font 
-                                          mdl_card__supporting-text__note">
-                                    The chance that the test causes a miscarriage and
-                                    the baby did <strong>not</strong> have Down Syndrome:
-                                    <div id="barMisHealthy" class="bar">
-                                        <div class="bar--background">
-                                            <div class="bar--data"></div>
-                                        </div>
-                                        <span class="bar--text">0%</span>
-                                    </div>
-                                </p>
-                                <hr/>
-                                -->
                                 <p class="mdl-typography--body-1-force-preferred-font 
                                           mdl_card__supporting-text__note">
                                     Using those estimates and the priorities you
@@ -1590,10 +1535,51 @@
             ga("create","UA-XXXXX-X","auto");ga("send","pageview");
         </script>
         -->
-        
-        <script>
+
+        <!--
             
-            // ### Generic Math Functions
+        ### Web Worker for Computations
+        
+        The mathematical calculations that the application requires can be
+        computationally intensive, so we use a separate web worker (i.e.
+        thread) for them. Doing so avoids slowing down the user interface
+        during the calculations. The code for the web worker is embedded
+        embedded is a separate `<script>` tag, but it's given the "type"
+        of "javascript/worker" so that the browser's JavaScript engine
+        won't parse it. We need a unique ID to reference the script when
+        we instantiate it.
+        
+        TODO: This `<script>` block is a good candidate for moving into
+        a separate file. Among other benefits, that should make automated
+        testing much simpler.
+
+        -->
+
+        <script id="compute-script" type="javascript/worker">
+            
+            // #### Utility Functions
+            
+            // Generate a random value from the normal distribution.
+            // See _A First Course of Probability_ by Sheldon Ross (pp. 464, 6ed).
+            // The `mean` and `variance` parameters are optional; if
+            // omitted the function assumes a standard normal N(0,1).
+            
+            var randNorm = function(mean, variance) {
+                if (mean == undefined) { mean = 0.0; }
+                if (variance == undefined) { variance = 1.0; }
+                var v1, v2, s;
+                do {
+                    var u1 = Math.random();
+                    var u2 = Math.random();
+                    v1 = 2 * u1 - 1;
+                    v2 = 2 * u2 - 1;
+                    s = v1 * v1 + v2 * v2;
+                } while (s > 1);
+
+                var x = Math.sqrt(-2 * Math.log(s) / s) * v1;
+                x = mean + Math.sqrt(variance) * x;
+                return x;
+            };
             
             // Calculate the product of a vector and a matrix and the
             // vector transposed, e.g. V * M * V'
@@ -1608,10 +1594,261 @@
                 }, 0);                
             };
             
+            // #### Application-Specific Calculations
+            
+            // Cache results from previous calculations so we can avoid
+            // unnecessary recalculations.
+
+            var baselineRisk,
+                stillBirthRate,
+                risk,
+                amnioLossRate,
+                weights;
+
+            // Calculate baseline risk based solely on maternal age
+            
+            var estimateBaselineRisk = function(age) {
+                return 1/(1+Math.exp(7.330-4.211/(1+Math.exp(-0.2815*(age-37.23)))));
+            };
+            
+            // Estimate the stillbirth rate based on the markers available.
+            //
+            //   * 7 markers = all        [NT; PAPPA; FBHCG1; AFP; UE3; INHIBINA; THCG]
+            //   * 6 markers = integrated [NT; PAPPA; AFP; UE3; INHIBINA; THCG]
+            //   * 4 markers = quadruple  [AFP; UE3; INHIBINA; THCG]
+            //   * 3 markers = combined   [NT; PAPPA; FBHCG1]
+            
+            var estimateStillBirthRate = function(markers) {
+                
+                // If the markers indicate a combined test, we assume that
+                // the pregnancy is in the first trimester. With more time
+                // to full term, this introduces a higher risk of stillbirth
+                if (markers.length === 3) {
+                    return 0.43;
+                } else {
+                    return 0.23;
+                }
+            };
+
+            // Calculate estimated risk based on age and lab results. The
+            // specific method used depends on the number of markers provided.
+            //
+            //   * 7 markers = all        [NT; PAPPA; FBHCG1; AFP; UE3; INHIBINA; THCG]
+            //   * 6 markers = integrated [NT; PAPPA; AFP; UE3; INHIBINA; THCG]
+            //   * 4 markers = quadruple  [AFP; UE3; INHIBINA; THCG]
+            //   * 3 markers = combined   [NT; PAPPA; FBHCG1]
+            
+            var estimateRisk = function(age, markers) {
+
+                // Define variables we need for the calculation. We'll
+                // set their values depending on the markers that are
+                // available.
+                var meanAff, meanUna, inverseCovarianceAff, inverseCovarianceUna, 
+                    sqrtDetCovAff, sqrtDetCovUna;
+
+                switch (markers.length) {
+                    
+                    // all test results
+                    case 7:
+
+                        meanAff = [ 0.2922, -0.3768, 0.2878, -0.1308, -0.1549, 0.3384, 0.3118 ],
+                        meanUna = [ 0, 0, 0, 0, 0, 0, 0 ],
+                        inverseCovarianceAff = [
+                            [ 20.9798,  3.8504,  -3.0081, -3.22,    -9.9803, -3.6164,  1.6674 ],
+                            [  3.8504, 16.2433,	 -2.9975, -4.8633, -14.3813,  0.4282,  3.1796 ],
+                            [ -3.0081, -2.9975,	 21.2946,  2.4591,  12.3187, -1.2296, -8.4456 ],
+                            [ -3.22,   -4.8633,   2.4591, 55.5283,   6.7838, -3.016,  -5.8457 ],
+                            [ -9.9803, -14.3813, 12.3187,  6.7838,  98.2807,  7.5609,  5.5478 ],
+                            [ -3.6164,   0.4282, -1.2296, -3.016,    7.5609, 18.6246, -6.0332 ],
+                            [  1.6674,   3.1796, -8.4456, -5.8457,   5.5478, -6.0332, 26.9573 ]
+                        ],
+                        inverseCovarianceUna = [
+                            [ 48.832,   1.5771,  -0.188,    0.1483,  -3.879,   0.7162,   1.68   ],
+                            [  1.5771, 16.8675,  -2.6161,  -3.0731,  -3.8668,  0.4896,   0.6377 ],
+                            [ -0.188,  -2.6161,  21.4729,   3.9484,  -0.4467, -2.2651, -13.344  ],
+                            [  0.1483, -3.0731,   3.9484,  57.5189, -14.5487, -7.5444,  -5.1355 ],
+                            [ -3.879,  -3.8668,  -0.4467, -14.5487,  82.48,    5.4684,   1.345  ],
+                            [  0.7162,  0.4896,  -2.2651,  -7.5444,   5.4684, 29.7061,  -9.3419 ],
+                            [  1.68,    0.6377, -13.344,   -5.1355,   1.345,  -9.3419,  32.2184 ]
+                        ],
+                        sqrtDetCovAff = 0.000010903,
+                        sqrtDetCovUna = 0.0000049201;
+                        break;
+
+                    // integrated test results
+                    case 6:
+
+                        meanAff = [ 0.2922, -0.3010, -0.1308, -0.1549, 0.3384, 0.3118 ];
+                        meanUna = [ 0, 0, 0, 0, 0, 0 ];
+                        inverseCovarianceAff = [
+                            [ 20.554880240537493,   3.426920428921216,  -2.872626262440822,  -8.240143407329521,  -3.790139512835841,   0.474378122622916 ],
+                            [  3.426920428921216,  15.821371095506429,  -4.517108233290250, -12.647324627206020,   0.255157918471607,   1.990788732636366 ],
+                            [ -2.872626262440822,  -4.517108233290250,  55.244292495460165,   5.361210199803712,  -2.874027057560135,  -4.870423974946864 ],
+                            [ -8.240143407329521, -12.647324627206018,   5.361210199803711,  91.154514825055131,   8.272229531575455,  10.433432349542748 ],
+                            [ -3.790139512835842,   0.255157918471607,  -2.874027057560137,   8.272229531575455,  18.553617181968647,  -6.520846471664629 ],
+                            [  0.474378122622916,   1.990788732636366,  -4.870423974946863,  10.433432349542748,  -6.520846471664631,  23.607740696076391 ]
+                        ];
+                        inverseCovarianceUna = [
+                            [ 57.358365961752945,  1.826316161214356,   0.215312293560837,  -4.559359610577901,   0.816111474811734,   1.837785150484615 ],
+                            [ 1.826316161214356,  16.557460826361925,  -2.590991736098649,  -3.942799962120657,   0.217416458407900,  -0.979293197601671 ],
+                            [ 0.215312293560837,  -2.590991736098649,  56.792997411878638, -14.469163578571125,  -7.127396773434530,  -2.680740597953040 ],
+                            [ -4.559359610577900, -3.942799962120657, -14.469163578571127,  82.524331883598336,   5.411821855504203,   1.045645564606566 ],
+                            [ 0.816111474811734,   0.217416458407899,  -7.127396773434532,   5.411821855504204,  29.468883687242776, -10.745723981046623 ],
+                            [ 1.837785150484616,  -0.979293197601670,  -2.680740597953040,   1.045645564606565, -10.745723981046625,  23.934767642862120 ]
+                        ];
+                        sqrtDetCovAff = 5.031194646938435e-5;
+                        sqrtDetCovUna = 2.103634472974705e-5;
+                        break;
+
+                    // quadruple test results
+                    case 4:
+
+                        meanAff = [ -0.1308, -0.1549, 0.3384, 0.3118 ];
+                        meanUna = [ 0, 0, 0, 0 ];
+                        inverseCovarianceAff = [
+                            [ 53.773527794679616,   1.224407779523546,  -3.168824296555949,  -4.297912838981690 ],
+                            [  1.224407779523548,  79.517259387930125,   7.408568888627167,  12.036819827272375 ],
+                            [ -3.168824296555949,   7.408568888627167,  17.803151377283651,  -6.544573585366461 ],
+                            [ -4.297912838981688,  12.036819827272375,  -6.544573585366462,  23.357147489000226 ]
+                        ];
+                        inverseCovarianceUna = [
+                            [  56.383153220250158, -15.049992266679251,  -7.100319112508539,  -2.851044283837526 ],
+                            [ -15.049992266679252,  81.287817109645474,   5.520755231464582,   0.952857913147896 ],
+                            [  -7.100319112508540,   5.520755231464582,  29.455050761869895, -10.759831476140802 ],
+                            [  -2.851044283837525,   0.952857913147895, -10.759831476140803,  23.810605916644072 ]
+                        ];
+                        sqrtDetCovAff = 8.907667313707855e-4;
+                        sqrtDetCovUna = 6.471449357233173e-4;
+                        break;
+
+                    // combined test results
+                    case 3:
+
+                        meanAff = [ 0.2922, -0.3010, 0.3404 ];
+                        meanUna = [ 0, 0, 0 ];
+                        inverseCovarianceAff = [
+                            [ 19.314547490997647,  2.292959915632461, -1.705040857351463 ],
+                            [  2.292959915632461, 13.070398578561802,  0.763541772277445 ],
+                            [ -1.705040857351463,  0.763541772277445, 15.375487566749186 ]
+                        ];
+                        inverseCovarianceUna = [
+                            [ 56.864138408748879,  1.544508530420665,  1.003072106525415 ],
+                            [  1.544508530420665, 16.424960968013934, -2.123697304646387 ],
+                            [  1.003072106525415, -2.123697304646387, 14.529295377184575 ]
+                        ];
+                        sqrtDetCovAff = 0.016339833569356;
+                        sqrtDetCovUna = 0.008685476472149;
+                        break;
+
+                    // unexppected input
+                    default:
+
+                        return 0;
+
+                };
+                
+                // The actual calculations are the same for all test types.
+
+                var ageRisk = estimateBaselineRisk(age),
+                    ageOdds = ageRisk/(1 - ageRisk);
+                
+                markers = markers.map(function(marker) {
+                    return Math.log(marker)/Math.log(10);
+                });
+                
+                var diffAff = meanAff.map(function(aff, idx) {
+                    return markers[idx]- aff;
+                });
+
+                var diffUna = meanUna.map(function(una, idx) {
+                    return markers[idx]- una;
+                });
+                
+                var valueAff = quadraticForm(diffAff, inverseCovarianceAff),
+                    valueUna = quadraticForm(diffUna, inverseCovarianceUna);
+                
+                var odds = ( ( Math.exp( -0.5 * valueAff) / sqrtDetCovAff ) / 
+                             ( Math.exp( -0.5 * valueUna) / sqrtDetCovUna ) ) * 
+                            ageOdds / ( 1 - estimateStillBirthRate(markers));
+                
+                return odds / (1 + odds);
+                
+            };
+            
+            var estimateAmnioLossRate = function() {
+                return 0.003; // Estimated loss rate from Amniocentesis is constant
+            };
+
+            // Calculate ultimate decision weights given estimated risk and
+            // priority ratings.
+            //     priorities = [misDs, misHealthy, testTerm, testStill, testDs, 
+            //                   testHealthy, notestStill, notestDs, notestHealthy];
+            //     returns [amnio, noAmnio]
+
+            var calcWeights = function(risk, stillBirthRate, amnioLossRate, priorities) {
+
+                var amnio = amnioLossRate * risk * priorities[0] +
+                            amnioLossRate * (1-risk) * priorities[1] +
+                            (1-amnioLossRate) * risk * Math.max( priorities[2], 
+                                stillBirthRate * priorities[3] + 
+                                    (1-stillBirthRate) * priorities[4])  + 
+                            (1-amnioLossRate) * (1-risk) * priorities[5];
+                var noAmnio = risk * stillBirthRate * priorities[6] + 
+                              risk * (1-stillBirthRate) * priorities[7] +
+                              (1-risk) * priorities[8];
+                return [amnio, noAmnio];                
+
+            };
+            
+            // #### Main Processing Loop for Compute Worker
+
+            // This thread is driven by messages from the parent, so
+            // add an event listener to trigger the work. The actual
+            // message from the parent is in `ev.data`.
+            
+            self.addEventListener('message', function(ev) {
+
+                // Extract the inputs as an array of numbers. The
+                // first number is the maternal age and the remaining
+                // numbers are the marker values.
+                var data = JSON.parse(ev.data);
+
+                // Calculate the estimated risk values.
+// TODO: only calculate changed values.
+                baselineRisk   = estimateBaselineRisk(data.age);
+                risk           = estimateRisk(data.age, data.markers);
+                stillBirthRate = estimateStillBirthRate(data.markers);
+                amnioLossRate  = estimateAmnioLossRate();
+                weights        = calcWeights(risk, stillBirthRate, amnioLossRate, data.priorities);
+                
+// TODO: actual CI calculation
+var interval = [risk - 0.1, risk + 0.2];
+                
+                // Return the result to the parent script.
+                self.postMessage(JSON.stringify({
+                    'baselineRisk': baselineRisk,
+                    'estimatedRisk': {
+                        'low':  interval[0], 
+                        'mean': risk, 
+                        'high': interval[1]
+                    },
+                    'stillBirthRate': stillBirthRate,
+                    'amnioLossRate': amnioLossRate,
+                    'weights': weights
+                }));
+                
+            }, false);
+
+        </script>
+
+        <!--
+        Now we have our main JavaScript code.
+        -->
+
+        <script>
+            
             // ### Generic Utility Functions
     
-            // #### hasLocalStorage()
-
             // Check to see if HTML5 localStorage is available. Returns
             // a boolean result.
             
@@ -1627,8 +1864,6 @@
             		return false;
             	}
             };
-            
-            // #### formatNumber()
             
             // Format a number to the specified number of
             // decimal places.
@@ -1648,10 +1883,6 @@
 
             // ### Application State
 
-            // Constants shared by multiple functions
-            
-            var AMNIOLOSSRATE = 0.003;
-
             // State of the overall application that is shared by multiple
             // components.
 
@@ -1659,25 +1890,13 @@
                 hasVisitedResults = false,  // has the user visisted a results panel?
                 areInputsValid = false,     // are all inputs valid?
                 areInputsSuspect = false,   // are inputs suspect?
+                doAmnio = false,            // is amnio recommended?
                 inputObjs = {},             // hash of all input objects
                 barObjs = {},               // hash of all bar objects
                 inputs = [],                // array of all input objects
                 infos = [],                 // array of all info objects
                 ratings = [],               // array of all rating objects
-                resultGauge,                // the result gauge object
-                bars = {},                  // hash of bar values
-                weights = {},               // hash of weight values
-                dsStillBirthRate = 0.23;    // stillbirth rate for DS
-            
-            // ### Application-specific Math Functions
-            
-            // Calculate baseline risk based solely on maternal age
-            
-            var baselineRisk = function(age) {
-                
-                return 1/(1+Math.exp(7.330-4.211/(1+Math.exp(-0.2815*(age-37.23)))));
-
-            };
+                resultGauge;                // the result gauge object
             
             // Are markers ready? Returns empty string if not; otherwise returned
             // string indicates type of analysis that is available. Possible values:
@@ -1708,172 +1927,80 @@
                 }                    
             }
             
-            // Calculate specific risk based on age and lab results.
-            // markers = [NT; PAPPA; FBHCG1; AFP; UE3; INHIBINA; THCG]
-            // The optional third parameter forces a specific analysis.
+            // ### Control the Web Worker for Computation
             
-            var estimatedRisk = function(age, markers, analysis) {
+            // Set up the web worker object
 
-                // Define variables we need for the calculation. We'll
-                // set their values depending on the markers that are
-                // available.
-                var meanAff, meanUna, inverseCovarianceAff, inverseCovarianceUna, 
-                    sqrtDetCovAff, sqrtDetCovUna;
+            var compute = new Worker(
+                window.URL.createObjectURL(
+                    new Blob([document.querySelector('#compute-script').textContent])
+                )
+            );
+            
+            // Listen for messages from the compute worker and dispatch the
+            // response.
+            
+            compute.addEventListener('message', function(ev) {
+                updateResults(JSON.parse(ev.data));
+                updateContentVisibility();
+            });
+             
+            // Trigger calculation of risk estimates based on age and lab results.
+            
+            var startCompute = function() {
 
-                switch (analysis || analysisAvailable()) {
-                    case "": 
+                // Get the input values from the user controls                
+                var age = inputObjs.infoAge.value();
 
-                        // Oops. Nothing to calculate.
-                        return 0;
+                // First get all possible marker values
+                var markers = [
+                    inputObjs.infoNt.value(), 
+                    inputObjs.infoPappa.value(), 
+                    inputObjs.infoFbhcg.value(), 
+                    inputObjs.infoAfp.value(), 
+                    inputObjs.infoUe3.value(), 
+                    inputObjs.infoInhibina.value(), 
+                    inputObjs.infoHcg.value()
+                ];
 
-                    case "all":
-
-                        dsStillBirthRate = 0.23;
-                        meanAff = [ 0.2922, -0.3768, 0.2878, -0.1308, -0.1549, 0.3384, 0.3118 ],
-                        meanUna = [ 0, 0, 0, 0, 0, 0, 0 ],
-                        inverseCovarianceAff = [
-                            [ 20.9798,  3.8504,  -3.0081, -3.22,    -9.9803, -3.6164,  1.6674 ],
-                            [  3.8504, 16.2433,	 -2.9975, -4.8633, -14.3813,  0.4282,  3.1796 ],
-                            [ -3.0081, -2.9975,	 21.2946,  2.4591,  12.3187, -1.2296, -8.4456 ],
-                            [ -3.22,   -4.8633,   2.4591, 55.5283,   6.7838, -3.016,  -5.8457 ],
-                            [ -9.9803, -14.3813, 12.3187,  6.7838,  98.2807,  7.5609,  5.5478 ],
-                            [ -3.6164,   0.4282, -1.2296, -3.016,    7.5609, 18.6246, -6.0332 ],
-                            [  1.6674,   3.1796, -8.4456, -5.8457,   5.5478, -6.0332, 26.9573 ]
-                        ],
-                        inverseCovarianceUna = [
-                            [ 48.832,   1.5771,  -0.188,    0.1483,  -3.879,   0.7162,   1.68   ],
-                            [  1.5771, 16.8675,  -2.6161,  -3.0731,  -3.8668,  0.4896,   0.6377 ],
-                            [ -0.188,  -2.6161,  21.4729,   3.9484,  -0.4467, -2.2651, -13.344  ],
-                            [  0.1483, -3.0731,   3.9484,  57.5189, -14.5487, -7.5444,  -5.1355 ],
-                            [ -3.879,  -3.8668,  -0.4467, -14.5487,  82.48,    5.4684,   1.345  ],
-                            [  0.7162,  0.4896,  -2.2651,  -7.5444,   5.4684, 29.7061,  -9.3419 ],
-                            [  1.68,    0.6377, -13.344,   -5.1355,   1.345,  -9.3419,  32.2184 ]
-                        ],
-                        sqrtDetCovAff = 0.000010903,
-                        sqrtDetCovUna = 0.0000049201;
-                        break;
-
+                // Then prune the markers array to include only
+                // those values that are relevant.
+                switch (analysisAvailable()) {
                     case "integrated":
-
-                        dsStillBirthRate = 0.23;
                         markers.splice(2,1);
-                        meanAff = [ 0.2922, -0.3010, -0.1308, -0.1549, 0.3384, 0.3118 ];
-                        meanUna = [ 0, 0, 0, 0, 0, 0 ];
-                        inverseCovarianceAff = [
-                            [ 20.554880240537493,   3.426920428921216,  -2.872626262440822,  -8.240143407329521,  -3.790139512835841,   0.474378122622916 ],
-                            [  3.426920428921216,  15.821371095506429,  -4.517108233290250, -12.647324627206020,   0.255157918471607,   1.990788732636366 ],
-                            [ -2.872626262440822,  -4.517108233290250,  55.244292495460165,   5.361210199803712,  -2.874027057560135,  -4.870423974946864 ],
-                            [ -8.240143407329521, -12.647324627206018,   5.361210199803711,  91.154514825055131,   8.272229531575455,  10.433432349542748 ],
-                            [ -3.790139512835842,   0.255157918471607,  -2.874027057560137,   8.272229531575455,  18.553617181968647,  -6.520846471664629 ],
-                            [  0.474378122622916,   1.990788732636366,  -4.870423974946863,  10.433432349542748,  -6.520846471664631,  23.607740696076391 ]
-                        ];
-                        inverseCovarianceUna = [
-                            [ 57.358365961752945,  1.826316161214356,   0.215312293560837,  -4.559359610577901,   0.816111474811734,   1.837785150484615 ],
-                            [ 1.826316161214356,  16.557460826361925,  -2.590991736098649,  -3.942799962120657,   0.217416458407900,  -0.979293197601671 ],
-                            [ 0.215312293560837,  -2.590991736098649,  56.792997411878638, -14.469163578571125,  -7.127396773434530,  -2.680740597953040 ],
-                            [ -4.559359610577900, -3.942799962120657, -14.469163578571127,  82.524331883598336,   5.411821855504203,   1.045645564606566 ],
-                            [ 0.816111474811734,   0.217416458407899,  -7.127396773434532,   5.411821855504204,  29.468883687242776, -10.745723981046623 ],
-                            [ 1.837785150484616,  -0.979293197601670,  -2.680740597953040,   1.045645564606565, -10.745723981046625,  23.934767642862120 ]
-                        ];
-                        sqrtDetCovAff = 5.031194646938435e-5;
-                        sqrtDetCovUna = 2.103634472974705e-5;
                         break;
-
                     case "quadruple":
-
-                        dsStillBirthRate = 0.23;
                         markers = markers.slice(3);
-                        meanAff = [ -0.1308, -0.1549, 0.3384, 0.3118 ];
-                        meanUna = [ 0, 0, 0, 0 ];
-                        inverseCovarianceAff = [
-                            [ 53.773527794679616,   1.224407779523546,  -3.168824296555949,  -4.297912838981690 ],
-                            [  1.224407779523548,  79.517259387930125,   7.408568888627167,  12.036819827272375 ],
-                            [ -3.168824296555949,   7.408568888627167,  17.803151377283651,  -6.544573585366461 ],
-                            [ -4.297912838981688,  12.036819827272375,  -6.544573585366462,  23.357147489000226 ]
-                        ];
-                        inverseCovarianceUna = [
-                            [  56.383153220250158, -15.049992266679251,  -7.100319112508539,  -2.851044283837526 ],
-                            [ -15.049992266679252,  81.287817109645474,   5.520755231464582,   0.952857913147896 ],
-                            [  -7.100319112508540,   5.520755231464582,  29.455050761869895, -10.759831476140802 ],
-                            [  -2.851044283837525,   0.952857913147895, -10.759831476140803,  23.810605916644072 ]
-                        ];
-                        sqrtDetCovAff = 8.907667313707855e-4;
-                        sqrtDetCovUna = 6.471449357233173e-4;
                         break;
-
                     case "combined":
-
-                        dsStillBirthRate = 0.43;
                         markers = markers.slice(0,3);
-                        meanAff = [ 0.2922, -0.3010, 0.3404 ];
-                        meanUna = [ 0, 0, 0 ];
-                        inverseCovarianceAff = [
-                            [ 19.314547490997647,  2.292959915632461, -1.705040857351463 ],
-                            [  2.292959915632461, 13.070398578561802,  0.763541772277445 ],
-                            [ -1.705040857351463,  0.763541772277445, 15.375487566749186 ]
-                        ];
-                        inverseCovarianceUna = [
-                            [ 56.864138408748879,  1.544508530420665,  1.003072106525415 ],
-                            [  1.544508530420665, 16.424960968013934, -2.123697304646387 ],
-                            [  1.003072106525415, -2.123697304646387, 14.529295377184575 ]
-                        ];
-                        sqrtDetCovAff = 0.016339833569356;
-                        sqrtDetCovUna = 0.008685476472149;
                         break;
-
                 };
 
-                var ageRisk = baselineRisk(age),
-                    ageOdds = ageRisk/(1 - ageRisk);
-                
-                markers = markers.map(function(marker) {
-                    return Math.log(marker)/Math.log(10);
-                });
-                
-                var diffAff = meanAff.map(function(aff, idx) {
-                    return markers[idx]- aff;
-                });
+                // Next get the expressed priorities from
+                // the ratings objects.
+                var priorities = [
+                    inputObjs.ratingMisDs.value(), 
+                    inputObjs.ratingMisHealthy.value(), 
+                    inputObjs.ratingTestTerm.value(), 
+                    inputObjs.ratingTestStill.value(), 
+                    inputObjs.ratingTestDs.value(), 
+                    inputObjs.ratingTestHealthy.value(), 
+                    inputObjs.ratingNotestStill.value(), 
+                    inputObjs.ratingNotestDs.value(), 
+                    inputObjs.ratingNotestHealthy.value()
+                ];                
 
-                var diffUna = meanUna.map(function(una, idx) {
-                    return markers[idx]- una;
-                });
-                
-                var valueAff = quadraticForm(diffAff, inverseCovarianceAff),
-                    valueUna = quadraticForm(diffUna, inverseCovarianceUna);
-                
-                var odds = ( ( Math.exp( -0.5 * valueAff) / sqrtDetCovAff ) / 
-                             ( Math.exp( -0.5 * valueUna) / sqrtDetCovUna ) ) * 
-                            ageOdds / ( 1 - dsStillBirthRate);
-                
-                return odds / (1 + odds);
+                // Signal the compute worker to perform the
+                // calculations.
+                compute.postMessage(JSON.stringify({
+                    'age':        age, 
+                    'markers':    markers,
+                    'priorities': priorities
+                }));
 
             };
 
-            // Calculate ultimate decision weights given estimated risk and
-            // priority ratings.
-            //     priorities = [misDs, misHealthy, testTerm, testStill, testDs, 
-            //                   testHealthy, notestStill, notestDs, notestHealthy];
-            //     returns [amnio, noAmnio]
-
-            var calcWeights = function(risk, priorities) {
-
-                var amnio = AMNIOLOSSRATE * risk * priorities[0] +
-                            AMNIOLOSSRATE * (1-risk) * priorities[1] +
-                            (1-AMNIOLOSSRATE) * risk * Math.max( priorities[2], 
-                                dsStillBirthRate * priorities[3] + 
-                                    (1-dsStillBirthRate) * priorities[4])  + 
-                            (1-AMNIOLOSSRATE) * (1-risk) * priorities[5];
-                var noAmnio = risk * dsStillBirthRate * priorities[6] + 
-                              risk * (1-dsStillBirthRate) * priorities[7] +
-                              (1-risk) * priorities[8];
-                return [amnio, noAmnio];                
-
-            };
-            
-            // ### Application-specific Utility Functions
-            
-            // #### evaluateInputs()
-            
             // Evaluate the user inputs, updating application state as appropriate.
 
             var evaluateInputs = function() {
@@ -1905,67 +2032,31 @@
 
             };
             
-            // #### calculateResults()
-            
-            // Run the algorithm to calculate results
-            
-            var calculateResults = function() {
-                
-                var age = inputObjs.infoAge.value();
-                var markers = [
-                    inputObjs.infoNt.value(), 
-                    inputObjs.infoPappa.value(), 
-                    inputObjs.infoFbhcg.value(), 
-                    inputObjs.infoAfp.value(), 
-                    inputObjs.infoUe3.value(), 
-                    inputObjs.infoInhibina.value(), 
-                    inputObjs.infoHcg.value()
-                ];
-                var priorities = [
-                    inputObjs.ratingMisDs.value(), 
-                    inputObjs.ratingMisHealthy.value(), 
-                    inputObjs.ratingTestTerm.value(), 
-                    inputObjs.ratingTestStill.value(), 
-                    inputObjs.ratingTestDs.value(), 
-                    inputObjs.ratingTestHealthy.value(), 
-                    inputObjs.ratingNotestStill.value(), 
-                    inputObjs.ratingNotestDs.value(), 
-                    inputObjs.ratingNotestHealthy.value()
-                ];                
-
-                bars.barBaseline = baselineRisk(age);
-                bars.barRisk     = estimatedRisk(age, markers);
-                bars.barStill    = dsStillBirthRate;
-                bars.barMis      = AMNIOLOSSRATE;
-                
-                var w = calcWeights(bars.barRisk, priorities)
-
-                weights.amnio = w[0];
-                weights.noAmnio = w[1];
-            };
-            
-            // #### updateResults()
-            
             // Update the results from the calculations
             
-            var updateResults = function() {
+            var updateResults = function(results) {
                 
                 // Update the main gauge.
-                resultGauge.value((10 + (weights.amnio - weights.noAmnio))/20);
-                
-                // Update the probability bars.
-                for (bar in barObjs) {
-                    barObjs[bar].value(bars[bar]);
-                }
+                resultGauge.value((10 + (results.weights[0] - results.weights[1]))/20);
                 
                 // Update the results table.
                 document.getElementById("results-no-amnio").textContent = 
-                    formatNumber(weights.noAmnio,2);
+                    formatNumber(results.weights[1],2);
                 document.getElementById("results-amnio").textContent = 
-                    formatNumber(weights.amnio,2);
+                    formatNumber(results.weights[0],2);
+                    
+                // Update the analysis results.
+                barObjs.barBaseline.value(results.baselineRisk);
+                barObjs.barRisk.value(results.estimatedRisk.mean).
+                    confidence([results.estimatedRisk.low,results.estimatedRisk.high]);
+                barObjs.barMis.value(results.amnioLossRate);
+                barObjs.barStill.value(results.stillBirthRate);
+                
+                // Update state
+                doAmnio = results.weights[0] > results.weights[1];
 
             };
-
+            
             // #### updateContentVisibility()
             
             // Update the `data-` attributes that control content visibility.
@@ -1977,7 +2068,7 @@
                 var body = document.getElementsByTagName("body")[0];
                 body.setAttribute("data-results-ready", areInputsValid);
                 body.setAttribute("data-results-suspect", areInputsValid && areInputsSuspect);
-                body.setAttribute("data-amnio", weights.amnio > weights.noAmnio);
+                body.setAttribute("data-amnio", doAmnio);
 
             };
             
@@ -2170,7 +2261,6 @@
                     }
                     if (element) { 
                         element.MaterialTextfield.change(x);
-                        handleChange();
                     }
                     return this;
                 };
@@ -2410,9 +2500,11 @@
     
                 var element,           // Containing element for the info component
                     data,              // `.bar--data` element
+                    range,             // `.bar--range` element
+                    needle,            // `.bar--needle` element
                     text,              // `.bar--text` element
                     value = 0.0,       // Current bar value from 0 to 1
-                    confidence = 0.0;  // Confidence interval for value (0-1)
+                    confidence = [];   // Confidence interval for value [min, max]
 
                 // ##### Private Methods and Functions
                 
@@ -2429,6 +2521,14 @@
                 var updateBar = function() {
                     text.textContent = getTextValue();
                     data.style.width = (value * 100) + "%";
+                    needle.style.left = "calc(" + (value * 100) + "% - 1.5px)";
+                    if (confidence.length === 2) {
+                        range.style.display = 'block';
+                        range.style.left = (confidence[0] * 100) + "%";
+                        range.style.width = ((confidence[1] - confidence[0]) * 100) + "%";
+                    } else {
+                        range.style.display = 'none';
+                    }
                     text.style.left = "calc(" + (value * 100) + "% - " + 
                         (text.offsetWidth/2 - 2) + "px)";
                 };
@@ -2438,6 +2538,8 @@
                     element = el;
                     data = element.querySelector(".bar--data");
                     text = element.querySelector(".bar--text");
+                    range = element.querySelector(".bar--range");
+                    needle = element.querySelector(".bar--needle");
                 };
                 
                 var setValue = function(x) {
@@ -2507,13 +2609,11 @@
                 hasInputChanged = true;
 
                 // Whenever the user updates an input, we save the new
-                // state (in local storage) and update the visibility
-                // of content as appropriate.
+                // state (in local storage) evaluate the current state
+                // of our inputs, and revise the calculations.
                 saveInputState();
                 evaluateInputs();
-                calculateResults();
-                updateResults();
-                updateContentVisibility();
+                startCompute();
             };
             
             // #### panelViewed()
@@ -2551,7 +2651,7 @@
                 // while the panel was hidden, it may be incorrect because the
                 // size of the text label wasn't accurately known.
                 if (panel === "details") {
-                    for (bar in barObjs) {
+                    for (var bar in barObjs) {
                         barObjs[bar].update();
                     }
                 }
@@ -2682,10 +2782,7 @@
                 setTimeout(function() {
                     restoreInputState();
                     evaluateInputs();
-                    calculateResults();
-                    updateResults();
-                    updateContentVisibility();
-
+                    startCompute();
                 }, 0);
                 
             });
