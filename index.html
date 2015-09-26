@@ -134,6 +134,13 @@
             }
             
             /*
+             * Style icons used to note content.
+             */
+            i.icon__note {
+                color: #E91E63;
+            }
+            
+            /*
              * Adjust the margins and padding because all the content
              * appears in cards,
              */
@@ -146,6 +153,10 @@
             
             .mdl-card__supporting-text > p:not(:first-of-type) {
                 margin-top: 1.5em;
+            }
+            
+            .mdl-card__supporting-text > p.p__continued {
+                margin-top: 0;
             }
             
             .mdl_card__supporting-text__note {
@@ -560,19 +571,17 @@
             /*
              * ### Content Visibility
              *
-             * Show/hide content based on the application state. There are three
+             * Show/hide content based on the application state. There are several
              * classes that determine main content visibility:
              *
-             * 1. `results__notready`: Content within a container with this
+             * - `results__notready`: Content within a container with this
              *    class is visible when the results are not ready. The content
              *    is generally a prompt for the user to provide the information
              *    needed to generate results.
-             * 2. `results__ready`: Content within a container with this class
+             * - `results__ready`: Content within a container with this class
              *    is visible when the analysis is complete.
-             * 3. `results__suspect`: Content within a container with this
-             *    class is visible when analysis results are available but
-             *    could be improved with better input. The content is 
-             *    generally a suggestion to the user for improving the input.
+             * - `results__in-progress`: Content within a container with this
+             *    class is visibile when computation is in progress.
              *
              * Initially, only the `results__notready` content is visible. To change
              * the content visibility, JavaScript code adds appropriate `data-`
@@ -581,8 +590,8 @@
              * by JavaScript code. JavaScript only sets `data-` attributes; and
              * only JavaScript sets `data-` attributes.)
              *
-             * * `data-results`: set to `"true"` when results are available.
-             * * `data-suspect`: set to `"true"` if results are suspect.
+             * - `data-results`: set to `"true"` when results are available.
+             * - `data-computing`: set to the number of computations pending.
              *
              * For completeness, we also support `data-results-notready` but its
              * use is discouraged.
@@ -596,34 +605,69 @@
              * Initially, both content types are hidden. The appropriate content
              * can be revealed by setting the `data-amnio` attribute on the
              * `<body>` tag to be "true" or "false".
+             *
+             * There are also classes to refine the content based on the lab test
+             * input that is provided.
+             *
+             * - `lab-first` if only first trimester input is available
+             * - `lab-second` if only second trimester input is available
+             * - `lab-both` if lab input is available for both trimesters
+             *
+             * The `data-lab` attribute controls that content. Its values are
+             * "first", "second", or "both".
+             * 
+             * There are a couple of classes that reveal content suggesting
+             * the user complete input for lab test results:
+             *
+             * - `lab-partial__first` if only partial information has been
+             *   provided for first trimester lab tests
+             * - `lab-partial__second` if only partial information has been
+             *   provided for first trimester lab tests
+             *
+             * The `data-lab-partial` controls the visibility of that content,
+             * with values of "first" or "second" respectively.
+             *
+             * The `priorities__limited` class indicates that results are based
+             * on limited priority values. Content within a container with this
+             * class is visible when analysis results are available but could be
+             * improved with better priority input. The content is generally a 
+             * suggestion to the user for improving the input. The attribute that
+             * controls this content is `data-priorities-limited` and it takes
+             * values of "true" or "false".
              */
 
             .results__notready {
-                display: block;
-            }
-            
-            .results__ready {
-                display: none;
-            }
-            
-            .results__suspect {
-                display: none;
-            }
-
-            body[data-results-ready="true"]     .results__notready,
-            body[data-results-notready="false"] .results__notready {
                 display: none;                
             }
 
-            body[data-results-ready="true"]     .results__ready,
-            body[data-results-notready="false"] .results__ready {
+            .results__ready {
+                display: none;
+            }
+
+            body[data-computing="0"][data-results-ready="true"] .results__notready {
+                display: none;                
+            }
+
+            body[data-computing="0"][data-results-ready="true"] .results__ready {
                 display: block;
             }
             
-            body[data-results-suspect="true"] .results__suspect {
-                display: block;
+            body[data-computing="0"][data-results-ready="false"] .results__notready {
+                display: block;                
+            }
+
+            body[data-computing="0"][data-results-ready="false"] .results__ready {
+                display: none;
             }
             
+            body[data-computing] .results__in-progress {
+                display: block;                
+            }
+
+            body[data-computing="0"] .results__in-progress {
+                display: none;                
+            }
+
             .amnio-false, .amnio-true {
                 display: none;
             }
@@ -632,9 +676,82 @@
                 display: block;
             }
 
+            body[data-amnio="true"] span.amnio-true {
+                display: inline;
+            }
+
             body[data-amnio="false"] .amnio-false {
                 display: block;
             }
+
+            body[data-amnio="false"] span.amnio-false {
+                display: inline;
+            }
+            
+            .lab-first, .lab-second, .lab-both {
+                display: none;
+            }
+            
+            body[data-lab="first"] .lab-first {
+                display: block;
+            }
+
+            body[data-lab="first"] span.lab-first {
+                display: inline;
+            }
+            
+            body[data-lab="second"] .lab-second {
+                display: block;
+            }
+
+            body[data-lab="second"] span.lab-second {
+                display: inline;
+            }
+            
+            body[data-lab="both"] .lab-both {
+                display: block;
+            }
+
+            body[data-lab="both"] span.lab-both {
+                display: inline;
+            }
+
+            .lab-partial__first {
+                display: none;
+            }
+
+            body[data-lab-partial="first"] .lab-partial__first {
+                display: block;
+            }
+            
+            body[data-lab-partial="first"] span.lab-partial__first {
+                display: inline;
+            }
+            
+            .lab-partial__second {
+                display: none;
+            }
+
+            body[data-lab-partial="second"] .lab-partial__second {
+                display: block;
+            }
+            
+            body[data-lab-partial="second"] span.lab-partial__second {
+                display: inline;
+            }
+            
+            .priorities__limited {
+                display: none;
+            }
+
+            body[data-priorities-limited="true"] .priorities__limited {
+                display: block;
+            }
+            
+            body[data-priorities-limited="true"] span.priorities__limited {
+                display: inline;
+            }
+            
         </style>
 
     </head>
@@ -652,7 +769,7 @@
     
     -->
 
-    <body class="mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
+    <body class="mdl-color--grey-100 mdl-color-text--grey-700 mdl-base" data-computing="0">
 
         <!--
         
@@ -872,6 +989,12 @@
                                                 Please enter a number between 0.3 and 5.0 (MoM)
                                             </span>
                                         </div>
+                                        <p class="lab-partial__first">
+                                            <i class="material-icons icon__note">announcement</i>
+                                            If you can enter the remaining information for 
+                                            first trimester lab tests, our advice will be
+                                            more accurate.
+                                        </p>
                                     </fieldset>
 
                                     <fieldset>
@@ -934,6 +1057,12 @@
                                                 Please enter a number between 0.4 and 5.0 (MoM)
                                             </span>
                                         </div>
+                                        <p class="lab-partial__second">
+                                            <i class="material-icons icon__note">announcement</i>
+                                            If you can enter the remaining information for 
+                                            second trimester lab tests, our advice will be
+                                            more accurate.
+                                        </p>
                                     </fieldset>
 
                                 </form>
@@ -1236,17 +1365,70 @@
                                 </button>
                             </div>
                         </div>
+                        <div class="mdl-card mdl-shadow--2dp demo-card-event 
+                                    results__in-progress">
+                            <div class="mdl-card__title">
+                                <h2 class="mdl-card__title-text">
+                                    Is Amniocentesis Recommended?
+                                </h2>
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                <p class="mdl-typography--body-1-force-preferred-font">
+                                    Please wait while we analyze your information...
+                                </p>
+                                <div class="mdl-spinner mdl-js-spinner 
+                                            mdl-spinner--single-color is-active">
+                                </div>
+                            </div>
+                        </div>
                         <div class="mdl-card mdl-shadow--2dp demo-card-event results__ready">
                             <div class="mdl-card__title">
                                 <h2 class="mdl-card__title-text">
                                     Is Amniocentesis Recommended?
                                 </h2>
                             </div>
-                            <div class="mdl-card__supporting-text results__suspect">
+                            <div class="mdl-card__supporting-text lab-partial__first">
                                 <hr/>
                                 <p class="mdl-typography--body-1-force-preferred-font 
                                           mdl_card__supporting-text__note">
-                                    <em>Note:</em> We can give you better advice if you 
+                                    <i class="material-icons icon__note">announcement</i>
+                                    It looks like you were able to enter
+                                    some values for your first trimester lab results.
+                                    If you can enter the remaining values, we can
+                                    provide better advice. Would you like to 
+                                    update those values now?
+                                </p>
+                                <a class="mdl-button mdl-button--colored mdl-js-button 
+                                          mdl-js-ripple-effect" 
+                                   data-onclick="info">
+                                    Update Information
+                                </a>
+                                <hr/>
+                            </div>
+                            <div class="mdl-card__supporting-text lab-partial__second">
+                                <hr/>
+                                <p class="mdl-typography--body-1-force-preferred-font 
+                                          mdl_card__supporting-text__note">
+                                    <i class="material-icons icon__note">announcement</i>
+                                    It looks like you were able to enter
+                                    some values for your second trimester lab results.
+                                    If you can enter the remaining values, we can
+                                    provide better advice. Would you like to 
+                                    update those values now?
+                                </p>
+                                <a class="mdl-button mdl-button--colored mdl-js-button 
+                                          mdl-js-ripple-effect" 
+                                   data-onclick="info">
+                                    Update Information
+                                </a>
+                                <hr/>
+                            </div>
+                            <div class="mdl-card__supporting-text priorities__limited">
+                                <hr/>
+                                <p class="mdl-typography--body-1-force-preferred-font 
+                                          mdl_card__supporting-text__note">
+                                    <i class="material-icons icon__note">announcement</i>
+                                    We can give you better advice if you 
                                     pick a wider range of values for your priorities. Would
                                     you like to review them now?
                                 </p>
@@ -1335,17 +1517,70 @@
                                 </button>
                             </div>
                         </div>
+                        <div class="mdl-card mdl-shadow--2dp demo-card-event 
+                                    results__in-progress">
+                            <div class="mdl-card__title">
+                                <h2 class="mdl-card__title-text">
+                                    Is Amniocentesis Recommended?
+                                </h2>
+                            </div>
+                            <div class="mdl-card__supporting-text">
+                                <p class="mdl-typography--body-1-force-preferred-font">
+                                    Please wait while we analyze your information...
+                                </p>
+                                <div class="mdl-spinner mdl-js-spinner 
+                                            mdl-spinner--single-color is-active">
+                                </div>
+                            </div>
+                        </div>
                         <div class="mdl-card mdl-shadow--2dp demo-card-event results__ready">
                             <div class="mdl-card__title">
                                 <h2 class="mdl-card__title-text">
                                     Detailed Analysis
                                 </h2>
                             </div>
-                            <div class="mdl-card__supporting-text results__suspect">
+                            <div class="mdl-card__supporting-text lab-partial__first">
                                 <hr/>
                                 <p class="mdl-typography--body-1-force-preferred-font 
                                           mdl_card__supporting-text__note">
-                                    <em>Note:</em> We can give you better advice if you 
+                                    <i class="material-icons icon__note">announcement</i>
+                                    It looks like you were able to enter
+                                    some values for your first trimester lab results.
+                                    If you can enter the remaining values, we can
+                                    provide better advice. Would you like to 
+                                    update those values now?
+                                </p>
+                                <a class="mdl-button mdl-button--colored mdl-js-button 
+                                          mdl-js-ripple-effect" 
+                                   data-onclick="info">
+                                    Update Information
+                                </a>
+                                <hr/>
+                            </div>
+                            <div class="mdl-card__supporting-text lab-partial__second">
+                                <hr/>
+                                <p class="mdl-typography--body-1-force-preferred-font 
+                                          mdl_card__supporting-text__note">
+                                    <i class="material-icons icon__note">announcement</i>
+                                    It looks like you were able to enter
+                                    some values for your second trimester lab results.
+                                    If you can enter the remaining values, we can
+                                    provide better advice. Would you like to 
+                                    update those values now?
+                                </p>
+                                <a class="mdl-button mdl-button--colored mdl-js-button 
+                                          mdl-js-ripple-effect" 
+                                   data-onclick="info">
+                                    Update Information
+                                </a>
+                                <hr/>
+                            </div>
+                            <div class="mdl-card__supporting-text priorities__limited">
+                                <hr/>
+                                <p class="mdl-typography--body-1-force-preferred-font 
+                                          mdl_card__supporting-text__note">
+                                    <i class="material-icons icon__note">announcement</i>
+                                    We can give you better advice if you 
                                     pick a wider range of values for your priorities. Would
                                     you like to review them now?
                                 </p>
@@ -1362,55 +1597,77 @@
                                           mdl_card__supporting-text__note">
                                     First we estimate the chance of a Down Syndrome
                                     pregnancy for an average woman of your age:
-                                    <div id="barBaseline" class="bar">
-                                        <div class="bar--background">
-                                            <div class="bar--data"></div>
-                                            <div class="bar--range"></div>
-                                            <div class="bar--needle"></div>
-                                        </div>
-                                        <span class="bar--text">0%</span>
-                                    </div>
                                 </p>
+                                <div id="barBaseline" class="bar">
+                                    <div class="bar--background">
+                                        <div class="bar--data"></div>
+                                        <div class="bar--range"></div>
+                                        <div class="bar--needle"></div>
+                                    </div>
+                                    <span class="bar--text">0%</span>
+                                </div>
                                 <p class="mdl-typography--body-1-force-preferred-font 
                                           mdl_card__supporting-text__note">
-                                    Your lab results help us make a more accurate
-                                    estimate of the chance of Down Syndrome for this
-                                    particular pregnancy:
-                                    <div id="barRisk" class="bar">
-                                        <div class="bar--background">
-                                            <div class="bar--data"></div>
-                                            <div class="bar--range"></div>
-                                            <div class="bar--needle"></div>
-                                        </div>
-                                        <span class="bar--text">0%</span>
+                                    Then we use the lab results to improve that estimate
+                                    for this particular pregnancy. Based on your 
+                                    <span class="lab-first">first</span>
+                                    <span class="lab-second">second</span>
+                                    <span class="lab-both">first and second</span>
+                                    trimester results, we expect the chance of Down
+                                    Syndrome to be between <span id="risk-low"></span> and 
+                                    <span id="risk-high"></span>, and our best estimate 
+                                    is <span id="risk-mean"></span>.
+                                </p>
+                                <div id="barRisk" class="bar">
+                                    <div class="bar--background">
+                                        <div class="bar--data"></div>
+                                        <div class="bar--range"></div>
+                                        <div class="bar--needle"></div>
                                     </div>
+                                    <span class="bar--text">0%</span>
+                                </div>
+                                <p class="mdl-typography--body-1-force-preferred-font 
+                                          mdl_card__supporting-text__note lab-first
+                                          p__continued">
+                                    <em>Note:</em>
+                                    If you can provide results
+                                    from second trimester lab tests, we can improve
+                                    that estimate.
+                                </p>
+                                <p class="mdl-typography--body-1-force-preferred-font 
+                                          mdl_card__supporting-text__note lab-second
+                                          p__continued">
+                                    <em>Note:</em>
+                                    If you can provide results
+                                    from first trimester lab tests, we can improve
+                                    that estimate.
                                 </p>
                                 <p class="mdl-typography--body-1-force-preferred-font 
                                           mdl_card__supporting-text__note">
                                     We also estimate the chance that Down Syndrome
                                     results in a stillbirth:
-                                    <div id="barStill" class="bar">
-                                        <div class="bar--background">
-                                            <div class="bar--data"></div>
-                                            <div class="bar--range"></div>
-                                            <div class="bar--needle"></div>
-                                        </div>
-                                        <span class="bar--text">0%</span>
-                                    </div>
                                 </p>
+                                <div id="barStill" class="bar">
+                                    <div class="bar--background">
+                                        <div class="bar--data"></div>
+                                        <div class="bar--range"></div>
+                                        <div class="bar--needle"></div>
+                                    </div>
+                                    <span class="bar--text">0%</span>
+                                </div>
                                 <p class="mdl-typography--body-1-force-preferred-font 
                                           mdl_card__supporting-text__note">
                                     And we estimate the chance that an Amniocentesis
                                     results in a miscarriage:
-                                    <div id="barMis" class="bar">
-                                        <div class="bar--background">
-                                            <div class="bar--data"></div>
-                                            <div class="bar--range"></div>
-                                            <div class="bar--needle"></div>
-                                        </div>
-                                        <span class="bar--text">0%</span>
-                                    </div>
                                 </p>
+                                <div id="barMis" class="bar">
+                                    <div class="bar--background">
+                                        <div class="bar--data"></div>
+                                        <div class="bar--range"></div>
+                                        <div class="bar--needle"></div>
+                                    </div>
+                                    <span class="bar--text">0%</span>
+                                </div>
                                 <p class="mdl-typography--body-1-force-preferred-font 
                                           mdl_card__supporting-text__note">
                                     Using those estimates and the priorities you
@@ -1427,7 +1684,6 @@
                                             <td class="mdl-typography--display-1
                                                        results-table--value"
                                                 id="results-no-amnio">
-                                                0.00
                                             </td>
                                         </tr>
                                         <tr>
@@ -1438,14 +1694,16 @@
                                             <td class="mdl-typography--display-1
                                                        results-table--value"
                                                 id="results-amnio">
-                                                0.0034
                                             </td>
                                         </tr>
                                     </table>
                                 </p>
                                 <p class="mdl-typography--body-1-force-preferred-font
                                           mdl_card__supporting-text__note">
-                                    We suggest the choice with the highest score.
+                                    We suggest the choice with the highest score. 
+                                    Based on your scores, we
+                                    <span class="amnio-false">do <strong>not</strong></span>
+                                    recommend an Amniocentesis.
                                 </p>
                                 <p class="mdl-typography--body-1-force-preferred-font
                                           mdl_card__supporting-text__note">
@@ -1822,7 +2080,7 @@
                 weights        = calcWeights(risk, stillBirthRate, amnioLossRate, data.priorities);
                 
 // TODO: actual CI calculation
-var interval = [risk - 0.1, risk + 0.2];
+var interval = [Math.max(0,risk - 0.1), Math.min(1,risk + 0.2)];
                 
                 // Return the result to the parent script.
                 self.postMessage(JSON.stringify({
@@ -1881,6 +2139,18 @@ var interval = [risk - 0.1, risk + 0.2];
                 return s;
             };
 
+            // Format a value between 0 and 1 as a percentage.
+
+            var formatPercentage = function(x) {
+                if (x >= 0.10) {
+                    return Math.round(x * 100) + "%";
+                } else if (x >= 0.01) {
+                    return (Math.round(x * 1000) / 10) + "%";
+                } else {
+                    return (Math.round(x * 10000) / 100) + "%";
+                }
+            };
+
             // ### Application State
 
             // State of the overall application that is shared by multiple
@@ -1898,35 +2168,6 @@ var interval = [risk - 0.1, risk + 0.2];
                 ratings = [],               // array of all rating objects
                 resultGauge;                // the result gauge object
             
-            // Are markers ready? Returns empty string if not; otherwise returned
-            // string indicates type of analysis that is available. Possible values:
-            // "all", "integrated", "quadruple", and "combined".
-            
-            var analysisAvailable = function() {
-                if (["infoNt", "infoPappa", "infoFbhcg", "infoAfp", "infoUe3", 
-                     "infoInhibina", "infoHcg"].every(function(marker) {
-                    return typeof inputObjs[marker].value() !== "undefined";
-                })) {
-                    return "all";
-                } else if (["infoNt", "infoPappa", "infoAfp", "infoUe3", "infoInhibina",
-                            "infoHcg"].every(function(marker) {
-                    return typeof inputObjs[marker].value() !== "undefined";
-                })) {
-                    return "integrated";
-                } else if (["infoAfp", "infoUe3", "infoInhibina", 
-                            "infoHcg"].every(function(marker) {
-                    return typeof inputObjs[marker].value() !== "undefined";
-                })) {
-                    return "quadruple";
-                } else if (["infoNt", "infoPappa", "infoFbhcg"].every(function(marker) {
-                    return typeof inputObjs[marker].value() !== "undefined";
-                })) {
-                    return "combined";
-                } else {
-                    return "";
-                }                    
-            }
-            
             // ### Control the Web Worker for Computation
             
             // Set up the web worker object
@@ -1941,6 +2182,13 @@ var interval = [risk - 0.1, risk + 0.2];
             // response.
             
             compute.addEventListener('message', function(ev) {
+
+                // Update count of number of calculation threads
+                // in progress.
+                var body = document.getElementsByTagName("body")[0],
+                    cnt = +body.getAttribute("data-computing") - 1;
+                body.setAttribute("data-computing", cnt);
+
                 updateResults(JSON.parse(ev.data));
                 updateContentVisibility();
             });
@@ -1989,7 +2237,13 @@ var interval = [risk - 0.1, risk + 0.2];
                     inputObjs.ratingNotestStill.value(), 
                     inputObjs.ratingNotestDs.value(), 
                     inputObjs.ratingNotestHealthy.value()
-                ];                
+                ];
+                
+                // Keep track of how many computing threads are
+                // active so we'll know when they're all done.
+                var body = document.getElementsByTagName("body")[0],
+                    cnt = +body.getAttribute("data-computing") + 1;
+                body.setAttribute("data-computing", cnt);
 
                 // Signal the compute worker to perform the
                 // calculations.
@@ -2000,7 +2254,38 @@ var interval = [risk - 0.1, risk + 0.2];
                 }));
 
             };
+            
+            // ### State Management
 
+            // Are markers ready? Returns empty string if not; otherwise returned
+            // string indicates type of analysis that is available. Possible values:
+            // "all", "integrated", "quadruple", and "combined".
+            
+            var analysisAvailable = function() {
+                if (["infoNt", "infoPappa", "infoFbhcg", "infoAfp", "infoUe3", 
+                     "infoInhibina", "infoHcg"].every(function(marker) {
+                    return typeof inputObjs[marker].value() !== "undefined";
+                })) {
+                    return "all";
+                } else if (["infoNt", "infoPappa", "infoAfp", "infoUe3", "infoInhibina",
+                            "infoHcg"].every(function(marker) {
+                    return typeof inputObjs[marker].value() !== "undefined";
+                })) {
+                    return "integrated";
+                } else if (["infoAfp", "infoUe3", "infoInhibina", 
+                            "infoHcg"].every(function(marker) {
+                    return typeof inputObjs[marker].value() !== "undefined";
+                })) {
+                    return "quadruple";
+                } else if (["infoNt", "infoPappa", "infoFbhcg"].every(function(marker) {
+                    return typeof inputObjs[marker].value() !== "undefined";
+                })) {
+                    return "combined";
+                } else {
+                    return "";
+                }                    
+            }
+            
             // Evaluate the user inputs, updating application state as appropriate.
 
             var evaluateInputs = function() {
@@ -2051,6 +2336,12 @@ var interval = [risk - 0.1, risk + 0.2];
                     confidence([results.estimatedRisk.low,results.estimatedRisk.high]);
                 barObjs.barMis.value(results.amnioLossRate);
                 barObjs.barStill.value(results.stillBirthRate);
+                document.getElementById("risk-low").textContent = 
+                    formatPercentage(results.estimatedRisk.low);
+                document.getElementById("risk-mean").textContent = 
+                    formatPercentage(results.estimatedRisk.mean)
+                document.getElementById("risk-high").textContent = 
+                    formatPercentage(results.estimatedRisk.high)
                 
                 // Update state
                 doAmnio = results.weights[0] > results.weights[1];
@@ -2063,12 +2354,40 @@ var interval = [risk - 0.1, risk + 0.2];
 
             var updateContentVisibility = function() {
                 
-                // Add an attribute to the markup so that CSS rules can change
+                // Add attributes to the markup so that CSS rules can change
                 // visibility appropriately.
                 var body = document.getElementsByTagName("body")[0];
                 body.setAttribute("data-results-ready", areInputsValid);
-                body.setAttribute("data-results-suspect", areInputsValid && areInputsSuspect);
+                body.setAttribute("data-priorities-limited", areInputsValid && areInputsSuspect);
                 body.setAttribute("data-amnio", doAmnio);
+                
+                var analysis = analysisAvailable();
+                
+                body.setAttribute("data-lab-partial", "");
+                if (hasVisitedResults && 
+                    (analysis === "quadruple") && (["infoNt", "infoPappa", "infoAfp"].
+                        some(function(marker) {
+                            return typeof inputObjs[marker].value() !== "undefined";
+                        }))
+                    ) {
+                    body.setAttribute("data-lab-partial", "first");
+                }
+                if (hasVisitedResults &&
+                    (analysis === "combined") && (["infoNt", "infoPappa", "infoFbhcg"].
+                        some(function(marker) {
+                            return typeof inputObjs[marker].value() !== "undefined";
+                        }))
+                    ) {
+                    body.setAttribute("data-lab-partial", "second");
+                }
+                
+                var lab = {
+                    all: "both",
+                    integrated: "both",
+                    quadruple: "second",
+                    combined: "first"
+                };
+                body.setAttribute("data-lab", lab[analysis]);
 
             };
             
@@ -2508,18 +2827,8 @@ var interval = [risk - 0.1, risk + 0.2];
 
                 // ##### Private Methods and Functions
                 
-                var getTextValue = function() {
-                    if (value >= 0.10) {
-                        return Math.round(value * 100) + "%";
-                    } else if (value >= 0.01) {
-                        return (Math.round(value * 1000) / 10) + "%";
-                    } else {
-                        return (Math.round(value * 10000) / 100) + "%";
-                    }
-                };
-
                 var updateBar = function() {
-                    text.textContent = getTextValue();
+                    text.textContent = formatPercentage(value);
                     data.style.width = (value * 100) + "%";
                     needle.style.left = "calc(" + (value * 100) + "% - 1.5px)";
                     if (confidence.length === 2) {
@@ -2655,6 +2964,10 @@ var interval = [risk - 0.1, risk + 0.2];
                         barObjs[bar].update();
                     }
                 }
+                
+                // Update the content visibility so that warnings and
+                // other information can reflect the user's path.
+                updateContentVisibility();
 
             };
             
