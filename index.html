@@ -137,6 +137,7 @@
             /*
              * Style icons used to note content.
              */
+
             i.icon__note {
                 color: #E91E63;
             }
@@ -162,6 +163,10 @@
             
             .mdl_card__supporting-text__note {
                 padding: 0 8px;
+            }
+            
+            .mdl-card__supporting-text fieldset p {
+                width: calc(100% - 32px);
             }
             
             /*
@@ -331,19 +336,32 @@
             	        transform: translateX(-50%);
             }
             
-            .gauge--marker {
-                background-color: #fff;
-                position: absolute;
-                width: 1px;
-                z-index: 4;
-            }
-            
             .gauge--background {
-            	z-index: 1;
+            	z-index: 0;
             	position: absolute;
             	background-color: #C5CAE9;
             	top: 0;
             	border-radius: 300px 300px 0 0;
+            }
+
+            .gauge--data {
+            	z-index: 1;
+            	position: absolute;
+            	background-color: #3F51B5;
+            	margin-left: auto;
+            	margin-right: auto;
+            	border-radius: 300px 300px 0 0;
+                -webkit-transform-origin: center bottom;
+                   -moz-transform-origin: center bottom;
+                    -ms-transform-origin: center bottom;
+                     -o-transform-origin: center bottom;
+                        transform-origin: center bottom;
+            }
+            
+            .gauge--bottom {
+                z-index: 2;
+                background-color: #fff;
+                position: absolute;
             }
 
             .gauge--center {
@@ -354,32 +372,25 @@
             	border-radius: 300px 300px 0 0;
             }
 
-            .gauge--data {
-            	z-index: 2;
-            	position: absolute;
-            	background-color: #3F51B5;
-            	margin-left: auto;
-            	margin-right: auto;
-            	border-radius: 0 0 300px 300px ;
-                -webkit-transform-origin: center top;
-                   -moz-transform-origin: center top;
-                    -ms-transform-origin: center top;
-                     -o-transform-origin: center top;
-                        transform-origin: center top;
+            .gauge--marker {
+                z-index: 4;
+                background-color: #fff;
+                position: absolute;
+                width: 1px;
             }
             
             .gauge--needle {
+                z-index: 5;
                 background-color: #E91E63;
                 height: 3px;
                 position: absolute;
-                z-index: 5;
                 -webkit-transform-origin: left center;
                    -moz-transform-origin: left center;
                     -ms-transform-origin: left center;
                      -o-transform-origin: left center;
                         transform-origin: left center;
             }
-
+            
             .gauge--labels {
                 display: table;
                 margin: 0 auto;
@@ -411,9 +422,10 @@
             .gauge--marker { height: 120px; left: 119.5px; }
             .gauge--background { width: 240px; height: 120px; }
             .gauge--center { width: 144px; height: 72px; top: 48px; margin-left: 48px; }
-            .gauge--data { width: 240px; height: 120px; top: 120px; }
+            .gauge--data { width: 240px; height: 120px; }
             .gauge--needle { left: 120px; top: 117px; width: 120px; }
             .gauge--labels { top: 120px; width: 240px; }
+            .gauge--bottom { top: 120px; width: 240px; height: 120px; }
             .gauge--label__low { width: 48px; }
             .gauge--label__spacer { width: 144px; }
             .gauge--label__high { width: 48px; }
@@ -428,9 +440,10 @@
                 .gauge--marker { height: 150px; left: 149.5px; }
                 .gauge--background { width: 300px; height: 150px; }
                 .gauge--center { width: 180px; height: 90px; top: 60px; margin-left: 60px; }
-                .gauge--data { width: 300px; height: 150px; top: 150px; }
+                .gauge--data { width: 300px; height: 150px; }
                 .gauge--needle { left: 150px; top: 147px; width: 150px; }
                 .gauge--labels { top: 150px; width: 300px; }
+                .gauge--bottom { top: 150px; width: 300px; height: 150px; }
                 .gauge--label__low { width: 60px; }
                 .gauge--label__spacer { width: 180px; }
                 .gauge--label__high { width: 60px; }
@@ -2953,8 +2966,9 @@
                 
                 var setValue = function(x) {
                     value = x;
-                    data.style[prop] = "rotate(" + (x * 0.5) + "turn)";
-                    needle.style[prop] = "rotate(" + (-0.5 + (x * 0.5)) + "turn)";
+                    var turns = -0.5 + (x * 0.5);
+                    data.style[prop] = "rotate(" + turns + "turn)";
+                    needle.style[prop] = "rotate(" + turns + "turn)";
                 };
 
                 // ##### Object to be Returned
