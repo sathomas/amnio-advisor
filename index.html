@@ -473,18 +473,16 @@
             /*
              * For a given gauge value, x, ranging from 0.0 to 1.0, set
              * the `transform: rotate()` property according to the
-             * following equations:
-             *
-             * - `.gauge--data`: 0.5x turns
-             * - `.gauge--needle`: -0.5 + 0.5x turns
+             * following equation: `-0.5 + 0.5x turns` The default
+             * properties below represent an x value of 0.
              */
 
             .gauge--data {
-                -webkit-transform: rotate(0turn);
-                   -moz-transform: rotate(0turn);
-                    -ms-transform: rotate(0turn);
-                     -o-transform: rotate(0turn);
-                        transform: rotate(0turn);
+                -webkit-transform: rotate(-.50turn);
+                   -moz-transform: rotate(-.50turn);
+                    -ms-transform: rotate(-.50turn);
+                     -o-transform: rotate(-.50turn);
+                        transform: rotate(-.50turn);
             }
             .gauge--needle {
                 -webkit-transform: rotate(-.50turn);
