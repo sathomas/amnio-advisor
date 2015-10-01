@@ -148,6 +148,7 @@
              */
             
             .mdl-card {
+                min-height: 100px;
                 margin: 16px;
                 max-width: 600px;
                 width: auto;
@@ -920,7 +921,7 @@
 
                 <section class="mdl-layout__tab-panel" id="info">
                     <div class="page-content">
-                        <div class="mdl-card mdl-shadow--2dp demo-card-event">
+                        <div class="mdl-card mdl-shadow--2dp">
                             <div class="mdl-card__title">
                                 <h2 class="mdl-card__title-text">Medical Information</h2>
                             </div>
@@ -1010,12 +1011,6 @@
                                                 Please enter a number between 0.3 and 5.0 (MoM)
                                             </span>
                                         </div>
-                                        <p class="lab-partial__first">
-                                            <i class="material-icons icon__note">announcement</i>
-                                            If you can enter the remaining information for 
-                                            first trimester lab tests, our advice will be
-                                            more accurate.
-                                        </p>
                                     </fieldset>
 
                                     <fieldset>
@@ -1078,12 +1073,6 @@
                                                 Please enter a number between 0.4 and 5.0 (MoM)
                                             </span>
                                         </div>
-                                        <p class="lab-partial__second">
-                                            <i class="material-icons icon__note">announcement</i>
-                                            If you can enter the remaining information for 
-                                            second trimester lab tests, our advice will be
-                                            more accurate.
-                                        </p>
                                     </fieldset>
 
                                 </form>
@@ -1099,6 +1088,30 @@
                                         data-onclick="priorities">
                                     Priorities
                                 </button>
+                            </div>
+                        </div>
+                        <div class="mdl-card mdl-shadow--2dp lab-partial__first">
+                            <div class="mdl-card__supporting-text">
+                                <div>
+                                    <i class="material-icons icon__note">announcement</i>
+                                </div>
+                                <p class="mdl-typography--body-1-force-preferred-font">
+                                    If you can enter the remaining information for 
+                                    first trimester lab tests, our advice will be
+                                    more accurate.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="mdl-card mdl-shadow--2dp lab-partial__second">
+                            <div class="mdl-card__supporting-text">
+                                <div>
+                                    <i class="material-icons icon__note">announcement</i>
+                                </div>
+                                <p class="mdl-typography--body-1-force-preferred-font">
+                                    If you can enter the remaining information for 
+                                    second trimester lab tests, our advice will be
+                                    more accurate.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -1350,6 +1363,17 @@
                                 </button>
                             </div>
                         </div>
+                        <div class="mdl-card mdl-shadow--2dp priorities__limited">
+                            <div class="mdl-card__supporting-text">
+                                <div>
+                                    <i class="material-icons icon__note">announcement</i>
+                                </div>
+                                <p class="mdl-typography--body-1-force-preferred-font">
+                                    We can give you better advice if you 
+                                    pick a wider range of values for your priorities.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
@@ -1410,58 +1434,6 @@
                                     Is Amniocentesis Recommended?
                                 </h2>
                             </div>
-                            <div class="mdl-card__supporting-text lab-partial__first">
-                                <hr/>
-                                <p class="mdl-typography--body-1-force-preferred-font 
-                                          mdl_card__supporting-text__note">
-                                    <i class="material-icons icon__note">announcement</i>
-                                    It looks like you were able to enter
-                                    some values for your first trimester lab results.
-                                    If you can enter the remaining values, we can
-                                    give you better advice. Would you like to 
-                                    update those values now?
-                                </p>
-                                <a class="mdl-button mdl-button--colored mdl-js-button 
-                                          mdl-js-ripple-effect" 
-                                   data-onclick="info">
-                                    Update Information
-                                </a>
-                                <hr/>
-                            </div>
-                            <div class="mdl-card__supporting-text lab-partial__second">
-                                <hr/>
-                                <p class="mdl-typography--body-1-force-preferred-font 
-                                          mdl_card__supporting-text__note">
-                                    <i class="material-icons icon__note">announcement</i>
-                                    It looks like you were able to enter
-                                    some values for your second trimester lab results.
-                                    If you can enter the remaining values, we can
-                                    give you better advice. Would you like to 
-                                    update those values now?
-                                </p>
-                                <a class="mdl-button mdl-button--colored mdl-js-button 
-                                          mdl-js-ripple-effect" 
-                                   data-onclick="info">
-                                    Update Information
-                                </a>
-                                <hr/>
-                            </div>
-                            <div class="mdl-card__supporting-text priorities__limited">
-                                <hr/>
-                                <p class="mdl-typography--body-1-force-preferred-font 
-                                          mdl_card__supporting-text__note">
-                                    <i class="material-icons icon__note">announcement</i>
-                                    We can give you better advice if you 
-                                    pick a wider range of values for your priorities. Would
-                                    you like to review them now?
-                                </p>
-                                <a class="mdl-button mdl-button--colored mdl-js-button 
-                                          mdl-js-ripple-effect" 
-                                   data-onclick="priorities">
-                                    Review Priorities
-                                </a>
-                                <hr/>
-                            </div>
                             <div class="mdl-typography--body-1-force-preferred-font 
                                         mdl-card__supporting-text mdl-card--border">
                             	<div class="gauge" id="gaugeResult">
@@ -1503,6 +1475,67 @@
                                         data-onclick="details">
                                     Details
                                 </button>
+                            </div>
+                        </div>
+                        <div class="mdl-card mdl-shadow--2dp lab-partial__first">
+                            <div class="mdl-card__supporting-text">
+                                <div>
+                                    <i class="material-icons icon__note">announcement</i>
+                                </div>
+                                <p class="mdl-typography--body-1-force-preferred-font">
+                                    It looks like you were able to enter
+                                    some values for your first trimester lab results.
+                                    If you can enter the remaining values, we can
+                                    give you better advice. Would you like to 
+                                    update those values now?
+                                </p>
+                            </div>
+                            <div class="mdl-card__actions">
+                                <a class="mdl-button mdl-button--colored mdl-js-button 
+                                          mdl-js-ripple-effect" 
+                                   data-onclick="info">
+                                    Update Information
+                                </a>
+                            </div>
+                        </div>
+                        <div class="mdl-card mdl-shadow--2dp lab-partial__second">
+                            <div class="mdl-card__supporting-text">
+                                <div>
+                                    <i class="material-icons icon__note">announcement</i>
+                                </div>
+                                <p class="mdl-typography--body-1-force-preferred-font">
+                                    It looks like you were able to enter
+                                    some values for your second trimester lab results.
+                                    If you can enter the remaining values, we can
+                                    give you better advice. Would you like to 
+                                    update those values now?
+                                </p>
+                            </div>
+                            <div class="mdl-card__actions">
+                                <a class="mdl-button mdl-button--colored mdl-js-button 
+                                          mdl-js-ripple-effect" 
+                                   data-onclick="info">
+                                    Update Information
+                                </a>
+                            </div>
+                        </div>
+                        <div class="mdl-card mdl-shadow--2dp priorities__limited">
+                            <div class="mdl-card__supporting-text">
+                                <div>
+                                    <i class="material-icons icon__note">announcement</i>
+                                </div>
+                                <p class="mdl-typography--body-1-force-preferred-font">
+                                    We can give you better advice if you 
+                                    pick a wider range of values for your priorities. Would
+                                    you like to review them now?
+                                </p>
+                            </div>
+                            <div class="mdl-card__actions">
+                                <a class="mdl-button mdl-button--colored mdl-js-button 
+                                          mdl-js-ripple-effect" 
+                                   data-onclick="priorities">
+                                    Review Priorities
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -1563,58 +1596,6 @@
                                 <h2 class="mdl-card__title-text">
                                     Detailed Analysis
                                 </h2>
-                            </div>
-                            <div class="mdl-card__supporting-text lab-partial__first">
-                                <hr/>
-                                <p class="mdl-typography--body-1-force-preferred-font 
-                                          mdl_card__supporting-text__note">
-                                    <i class="material-icons icon__note">announcement</i>
-                                    It looks like you were able to enter
-                                    some values for your first trimester lab results.
-                                    If you can enter the remaining values, we can
-                                    give you better advice. Would you like to 
-                                    update those values now?
-                                </p>
-                                <a class="mdl-button mdl-button--colored mdl-js-button 
-                                          mdl-js-ripple-effect" 
-                                   data-onclick="info">
-                                    Update Information
-                                </a>
-                                <hr/>
-                            </div>
-                            <div class="mdl-card__supporting-text lab-partial__second">
-                                <hr/>
-                                <p class="mdl-typography--body-1-force-preferred-font 
-                                          mdl_card__supporting-text__note">
-                                    <i class="material-icons icon__note">announcement</i>
-                                    It looks like you were able to enter
-                                    some values for your second trimester lab results.
-                                    If you can enter the remaining values, we can
-                                    give you better advice. Would you like to 
-                                    update those values now?
-                                </p>
-                                <a class="mdl-button mdl-button--colored mdl-js-button 
-                                          mdl-js-ripple-effect" 
-                                   data-onclick="info">
-                                    Update Information
-                                </a>
-                                <hr/>
-                            </div>
-                            <div class="mdl-card__supporting-text priorities__limited">
-                                <hr/>
-                                <p class="mdl-typography--body-1-force-preferred-font 
-                                          mdl_card__supporting-text__note">
-                                    <i class="material-icons icon__note">announcement</i>
-                                    We can give you better advice if you 
-                                    pick a wider range of values for your priorities. Would
-                                    you like to review them now?
-                                </p>
-                                <a class="mdl-button mdl-button--colored mdl-js-button 
-                                          mdl-js-ripple-effect" 
-                                   data-onclick="priorities">
-                                    Review Priorities
-                                </a>
-                                <hr/>
                             </div>
                             <div class="mdl-typography--body-1-force-preferred-font 
                                         mdl-card__supporting-text mdl-card--border">
@@ -1739,6 +1720,67 @@
                                           mdl-js-ripple-effect" 
                                    data-onclick="priorities">
                                     Adjust Priorities
+                                </a>
+                            </div>
+                        </div>
+                        <div class="mdl-card mdl-shadow--2dp lab-partial__first">
+                            <div class="mdl-card__supporting-text">
+                                <div>
+                                    <i class="material-icons icon__note">announcement</i>
+                                </div>
+                                <p class="mdl-typography--body-1-force-preferred-font">
+                                    It looks like you were able to enter
+                                    some values for your first trimester lab results.
+                                    If you can enter the remaining values, we can
+                                    give you better advice. Would you like to 
+                                    update those values now?
+                                </p>
+                            </div>
+                            <div class="mdl-card__actions">
+                                <a class="mdl-button mdl-button--colored mdl-js-button 
+                                          mdl-js-ripple-effect" 
+                                   data-onclick="info">
+                                    Update Information
+                                </a>
+                            </div>
+                        </div>
+                        <div class="mdl-card mdl-shadow--2dp lab-partial__second">
+                            <div class="mdl-card__supporting-text">
+                                <div>
+                                    <i class="material-icons icon__note">announcement</i>
+                                </div>
+                                <p class="mdl-typography--body-1-force-preferred-font">
+                                    It looks like you were able to enter
+                                    some values for your second trimester lab results.
+                                    If you can enter the remaining values, we can
+                                    give you better advice. Would you like to 
+                                    update those values now?
+                                </p>
+                            </div>
+                            <div class="mdl-card__actions">
+                                <a class="mdl-button mdl-button--colored mdl-js-button 
+                                          mdl-js-ripple-effect" 
+                                   data-onclick="info">
+                                    Update Information
+                                </a>
+                            </div>
+                        </div>
+                        <div class="mdl-card mdl-shadow--2dp priorities__limited">
+                            <div class="mdl-card__supporting-text">
+                                <div>
+                                    <i class="material-icons icon__note">announcement</i>
+                                </div>
+                                <p class="mdl-typography--body-1-force-preferred-font">
+                                    We can give you better advice if you 
+                                    pick a wider range of values for your priorities. Would
+                                    you like to review them now?
+                                </p>
+                            </div>
+                            <div class="mdl-card__actions">
+                                <a class="mdl-button mdl-button--colored mdl-js-button 
+                                          mdl-js-ripple-effect" 
+                                   data-onclick="priorities">
+                                    Review Priorities
                                 </a>
                             </div>
                         </div>
