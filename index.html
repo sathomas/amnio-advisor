@@ -317,17 +317,11 @@
             }
 
             .gauge--container {
-            	margin: 0;
+            	margin: 0 auto;
             	padding: 0;
-            	position: absolute;
-            	left: 50%;
+            	position: relative;
             	overflow: hidden;
             	text-align: center;
-            	-webkit-transform: translateX(-50%);
-            	   -moz-transform: translateX(-50%);
-            	    -ms-transform: translateX(-50%);
-            	     -o-transform: translateX(-50%);
-            	        transform: translateX(-50%);
             }
             
             .gauge--background {
@@ -352,12 +346,6 @@
                         transform-origin: center bottom;
             }
             
-            .gauge--bottom {
-                z-index: 2;
-                background-color: #fff;
-                position: absolute;
-            }
-
             .gauge--center {
             	z-index: 3;
             	position: absolute;
@@ -418,8 +406,7 @@
             .gauge--center { width: 144px; height: 72px; top: 48px; margin-left: 48px; }
             .gauge--data { width: 240px; height: 120px; }
             .gauge--needle { left: 120px; top: 117px; width: 120px; }
-            .gauge--labels { top: 120px; width: 240px; }
-            .gauge--bottom { top: 120px; width: 240px; height: 120px; }
+            .gauge--labels { width: 240px; }
             .gauge--label__low { width: 48px; }
             .gauge--label__spacer { width: 144px; }
             .gauge--label__high { width: 48px; }
@@ -436,8 +423,7 @@
                 .gauge--center { width: 180px; height: 90px; top: 60px; margin-left: 60px; }
                 .gauge--data { width: 300px; height: 150px; }
                 .gauge--needle { left: 150px; top: 147px; width: 150px; }
-                .gauge--labels { top: 150px; width: 300px; }
-                .gauge--bottom { top: 150px; width: 300px; height: 150px; }
+                .gauge--labels { width: 300px; }
                 .gauge--label__low { width: 60px; }
                 .gauge--label__spacer { width: 180px; }
                 .gauge--label__high { width: 60px; }
