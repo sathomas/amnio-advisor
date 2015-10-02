@@ -154,14 +154,6 @@
                 width: auto;
             }
             
-            .mdl-card__supporting-text > p:not(:first-of-type) {
-                margin-top: 1.5em;
-            }
-            
-            .mdl-card__supporting-text > p.p__continued {
-                margin-top: 0;
-            }
-            
             .mdl_card__supporting-text__note {
                 padding: 0 8px;
             }
@@ -321,6 +313,7 @@
 
             .gauge {
                 position: relative;
+				background-color: white;
             }
 
             .gauge--container {
@@ -497,20 +490,20 @@
              * #### Bar Component
              */
 
-             .bar {
-                 position: relative;
-                 left: 8px;
-                 height: calc(2em + 16px);
-                 width: calc(100% - 16px);
+            .bar {
+                position: relative;
+                left: 8px;
+                height: calc(2em + 16px);
+                width: calc(100% - 16px);
              }
              
-             .bar--background {
-                 background-color: #C5CAE9;
-                 height: 16px;
-                 position: absolute;
-                 top: 0;
-                 left: 0;
-                 width: 100%;
+            .bar--background {
+                background-color: #C5CAE9;
+                height: 16px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
              }
              
             .bar--data {
@@ -585,6 +578,18 @@
                 margin: 0 8px;
             }
             
+			.mdl-data-table td:first-of-type, .mdl-data-table th:first-of-type {
+			    padding-left: 18px
+			}
+
+			.mdl-data-table td:last-of-type, .mdl-data-table th:last-of-type {
+			    padding-right: 18px
+			}
+
+			.mdl-data-table td {
+			    padding: 12px 12px 0;
+			}
+
             .mdl-data-table td.results-table--name {
                 padding-bottom: 6px;
                 vertical-align: bottom;
@@ -848,58 +853,56 @@
 
                 <section class="mdl-layout__tab-panel is-active" id="welcome">
                     <div class="page-content">
-                        <div class="mdl-card mdl-shadow--2dp demo-card-event">
+                        <div class="mdl-card mdl-shadow--2dp">
                             <div class="mdl-card__title">
                                 <h2 class="mdl-card__title-text">Amniocentesis Advisor</h2>
                             </div>
-                            <div class="mdl-card__supporting-text">
-                                <p class="mdl-typography--body-1-force-preferred-font">
-                                    Welcome and introductory information here.
-                                </p>
-                                <p class="mdl-typography--body-1-force-preferred-font">
-                                    <em>If you have stumbled across this application on the
-                                    internet, please note that this is a non-functioning
-                                     prototype. It does <strong>not</strong> provide actual
-                                     advice.</em>
-                                </p>
-                				<p class="mdl-typography--body-1-force-preferred-font">
-                    				For more information, you can visit the following web sites:
-                                </p>
-                				<p>
-                    				<ul class="mdl-typography--body-1-force-preferred-font">
-                    					<li><a href="http://www.cdc.gov/ncbddd/birthdefects/features/key-findings-down-syndrome-prevalence.html">
-                        					Prevalence of Down syndrome in the United States
-                        				</a></li>
-                    					<li><a href="http://www.cdc.gov/ncbddd/birthdefects/diagnosis.html">
-                        					Diagnosis for birth defects
-                        				</a></li>
-                    					<li><a href="http://www.ndss.org/">
-                        					National Down Syndrome Society
-                        				</a></li>
-                    					<li><a href="http://www.ndsccenter.org/">
-                        					National Down Syndrome Congress
-                        				</a></li>
-                    					<li><a href="http://www.ds-int.org/">
-                        					Down Syndrome International
-                        				</a></li>
-                    					<li><a href="http://www.nlm.nih.gov/medlineplus/downsyndrome.html">
-                        					Medline
-                        				</a></li>
-                    					<li><a href="http://www.mayoclinic.org/diseases-conditions/down-syndrome/basics/definition/con-20020948">
-                        					Mayo Clinic
-                        				</a></li>
-                    				</ul>
-                				</p>
-                                <p class="mdl-typography--body-1-force-preferred-font">
-                                    <em>Note:</em> Your information is completely private. We
-                                    do not store or save any of your information on our
-                                     servers. Nor do we use any cookies.
-                                </p>
-                                <p class="mdl-typography--body-1-force-preferred-font">
-                                    Get started by telling us some basic medical information.
-                                </p>
-                            </div>
-                            <div class="mdl-card__actions">
+							<div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
+	                            <p>
+	                                Welcome and introductory information here.
+	                            </p>
+	                            <p>
+	                                <em>If you have stumbled across this application on the
+	                                internet, please note that this is a non-functioning
+	                                 prototype. It does <strong>not</strong> provide actual
+	                                 advice.</em>
+	                            </p>
+	            				<p>
+	                				For more information, you can visit the following web sites:
+	                            </p>
+	            				<ul>
+	            					<li><a href="http://www.cdc.gov/ncbddd/birthdefects/features/key-findings-down-syndrome-prevalence.html">
+	                					Prevalence of Down syndrome in the United States
+	                				</a></li>
+	            					<li><a href="http://www.cdc.gov/ncbddd/birthdefects/diagnosis.html">
+	                					Diagnosis for birth defects
+	                				</a></li>
+	            					<li><a href="http://www.ndss.org/">
+	                					National Down Syndrome Society
+	                				</a></li>
+	            					<li><a href="http://www.ndsccenter.org/">
+	                					National Down Syndrome Congress
+	                				</a></li>
+	            					<li><a href="http://www.ds-int.org/">
+	                					Down Syndrome International
+	                				</a></li>
+	            					<li><a href="http://www.nlm.nih.gov/medlineplus/downsyndrome.html">
+	                					Medline
+	                				</a></li>
+	            					<li><a href="http://www.mayoclinic.org/diseases-conditions/down-syndrome/basics/definition/con-20020948">
+	                					Mayo Clinic
+	                				</a></li>
+	            				</ul>
+								<p>
+	                                <em>Note:</em> Your information is completely private. We
+	                                do not store or save any of your information on our
+	                                 servers. Nor do we use any cookies.
+	                            </p>
+	                            <p>
+	                                Get started by telling us some basic medical information.
+	                            </p>
+							</div>
+							<div class="mdl-card__actions">
                                 <button class="mdl-button mdl-js-button mdl-button--raised 
                                                mdl-js-ripple-effect mdl-button--primary" 
                                         data-onclick="info">
@@ -925,8 +928,8 @@
                             <div class="mdl-card__title">
                                 <h2 class="mdl-card__title-text">Medical Information</h2>
                             </div>
-                            <div class="mdl-card__supporting-text">
-                                <p class="mdl-typography--body-1-force-preferred-font">
+                            <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
+                                <p>
                                     In addition to some general information, we need to know
                                     the results from lab tests performed during your first
                                     and second trimesters. If you have results from both
@@ -1077,7 +1080,7 @@
 
                                 </form>
 
-                                <p class="mdl-typography--body-1-force-preferred-font">
+                                <p>
                                     Next, help us understand your concerns and priorities.
                                 </p>
 
@@ -1091,11 +1094,11 @@
                             </div>
                         </div>
                         <div class="mdl-card mdl-shadow--2dp lab-partial__first">
-                            <div class="mdl-card__supporting-text">
+                            <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
                                 <div>
                                     <i class="material-icons icon__note">announcement</i>
                                 </div>
-                                <p class="mdl-typography--body-1-force-preferred-font">
+                                <p>
                                     If you can enter the remaining information for 
                                     first trimester lab tests, our advice will be
                                     more accurate.
@@ -1103,11 +1106,11 @@
                             </div>
                         </div>
                         <div class="mdl-card mdl-shadow--2dp lab-partial__second">
-                            <div class="mdl-card__supporting-text">
+                            <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
                                 <div>
                                     <i class="material-icons icon__note">announcement</i>
                                 </div>
-                                <p class="mdl-typography--body-1-force-preferred-font">
+                                <p>
                                     If you can enter the remaining information for 
                                     second trimester lab tests, our advice will be
                                     more accurate.
@@ -1128,12 +1131,12 @@
 
                 <section class="mdl-layout__tab-panel" id="priorities">
                     <div class="page-content">
-                        <div class="mdl-card mdl-shadow--2dp demo-card-event">
+                        <div class="mdl-card mdl-shadow--2dp">
                             <div class="mdl-card__title">
                                 <h2 class="mdl-card__title-text">Your priorities</h2>
                             </div>
-                            <div class="mdl-card__supporting-text">
-                                <p class="mdl-typography--body-1-force-preferred-font">
+                            <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
+                                <p>
                                     To help us understand your priorities, please tell us how
                                     you feel about the following possible outcomes.
                                 </p>
@@ -1350,7 +1353,7 @@
 
                                 </form>
 
-                                <p class="mdl-typography--body-1-force-preferred-font">
+                                <p>
                                     Based on your information and priorities, we can
                                     offer some advice on an amniocentesis.
                                 </p>
@@ -1364,11 +1367,11 @@
                             </div>
                         </div>
                         <div class="mdl-card mdl-shadow--2dp priorities__limited">
-                            <div class="mdl-card__supporting-text">
+                            <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
                                 <div>
                                     <i class="material-icons icon__note">announcement</i>
                                 </div>
-                                <p class="mdl-typography--body-1-force-preferred-font">
+                                <p>
                                     We can give you better advice if you 
                                     pick a wider range of values for your priorities.
                                 </p>
@@ -1389,15 +1392,15 @@
 
                 <section class="mdl-layout__tab-panel" id="advice">
                     <div class="page-content">
-                        <div class="mdl-card mdl-shadow--2dp demo-card-event 
+                        <div class="mdl-card mdl-shadow--2dp 
                                     results__notready">
                             <div class="mdl-card__title">
                                 <h2 class="mdl-card__title-text">
                                     Is Amniocentesis Recommended?
                                 </h2>
                             </div>
-                            <div class="mdl-card__supporting-text">
-                                <p class="mdl-typography--body-1-force-preferred-font">
+                            <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
+                                <p>
                                     Before we can offer any suggestions, we need some 
                                     basic medical information.
                                 </p>
@@ -1410,15 +1413,15 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="mdl-card mdl-shadow--2dp demo-card-event 
+                        <div class="mdl-card mdl-shadow--2dp 
                                     results__in-progress">
                             <div class="mdl-card__title">
                                 <h2 class="mdl-card__title-text">
                                     Is Amniocentesis Recommended?
                                 </h2>
                             </div>
-                            <div class="mdl-card__supporting-text">
-                                <p class="mdl-typography--body-1-force-preferred-font">
+                            <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
+                                <p>
                                     Please wait while we analyze your information...
                                 </p>
                                 <div class="progress">
@@ -1428,43 +1431,41 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mdl-card mdl-shadow--2dp demo-card-event results__ready">
+                        <div class="mdl-card mdl-shadow--2dp results__ready">
                             <div class="mdl-card__title">
                                 <h2 class="mdl-card__title-text">
                                     Is Amniocentesis Recommended?
                                 </h2>
                             </div>
-                            <div class="mdl-typography--body-1-force-preferred-font 
-                                        mdl-card__supporting-text mdl-card--border">
-                            	<div class="gauge" id="gaugeResult">
-                                	<div class="gauge--container">
-                                		<div class="gauge--marker"></div>
-                                		<div class="gauge--background"></div>
-                                		<div class="gauge--center"></div>
-                                		<div class="gauge--data"></div>
-                                		<div class="gauge--needle"></div>
-                                	</div>
-                                	<div class="gauge--labels mdl-typography--headline">
-                                    	<span class="gauge--label__low">No</span>
-                                    	<span class="gauge--label__spacer"></span>
-                                    	<span class="gauge--label__high">Yes</span>
-                                	</div>
+                        	<div class="mdl-card__media gauge" id="gaugeResult">
+                            	<div class="gauge--container">
+                            		<div class="gauge--marker"></div>
+                            		<div class="gauge--background"></div>
+                            		<div class="gauge--center"></div>
+                            		<div class="gauge--data"></div>
+                            		<div class="gauge--needle"></div>
                             	</div>
-                                <p class="amnio-true 
-                                          mdl-typography--body-1-force-preferred-font">
+                            	<div class="gauge--labels mdl-typography--headline">
+                                	<span class="gauge--label__low">No</span>
+                                	<span class="gauge--label__spacer"></span>
+                                	<span class="gauge--label__high">Yes</span>
+                            	</div>
+                        	</div>
+                            <div class="mdl-typography--body-1-force-preferred-font 
+                                        mdl-card__supporting-text">
+                                <p class="amnio-true">
                                     Based on your priorities and medical information,
                                     an amniocentesis will improve your chances of
                                     a more desirable outcome. We suggest that you have
                                     the procedure.
                                 </p>
-                                <p class="amnio-false 
-                                          mdl-typography--body-1-force-preferred-font">
+                                <p class="amnio-false">
                                     Based on your priorities and medical information,
                                     an amniocentesis will not improve your chances of
                                     a more desirable outcome. We suggest that you do
                                     <strong>not</strong> have the procedure.
                                 </p>
-                                <p class="mdl-typography--body-1-force-preferred-font">
+                                <p>
                                     You can look at the details to understand how
                                     we came to this suggestion.
                                 </p>
@@ -1478,11 +1479,11 @@
                             </div>
                         </div>
                         <div class="mdl-card mdl-shadow--2dp lab-partial__first">
-                            <div class="mdl-card__supporting-text">
+                            <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
                                 <div>
                                     <i class="material-icons icon__note">announcement</i>
                                 </div>
-                                <p class="mdl-typography--body-1-force-preferred-font">
+                                <p>
                                     It looks like you were able to enter
                                     some values for your first trimester lab results.
                                     If you can enter the remaining values, we can
@@ -1499,11 +1500,11 @@
                             </div>
                         </div>
                         <div class="mdl-card mdl-shadow--2dp lab-partial__second">
-                            <div class="mdl-card__supporting-text">
+                            <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
                                 <div>
                                     <i class="material-icons icon__note">announcement</i>
                                 </div>
-                                <p class="mdl-typography--body-1-force-preferred-font">
+                                <p>
                                     It looks like you were able to enter
                                     some values for your second trimester lab results.
                                     If you can enter the remaining values, we can
@@ -1520,11 +1521,11 @@
                             </div>
                         </div>
                         <div class="mdl-card mdl-shadow--2dp priorities__limited">
-                            <div class="mdl-card__supporting-text">
+                            <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
                                 <div>
                                     <i class="material-icons icon__note">announcement</i>
                                 </div>
-                                <p class="mdl-typography--body-1-force-preferred-font">
+                                <p>
                                     We can give you better advice if you 
                                     pick a wider range of values for your priorities. Would
                                     you like to review them now?
@@ -1552,15 +1553,15 @@
 
                 <section class="mdl-layout__tab-panel" id="details">
                     <div class="page-content">
-                        <div class="mdl-card mdl-shadow--2dp demo-card-event 
+                        <div class="mdl-card mdl-shadow--2dp 
                                     results__notready">
                             <div class="mdl-card__title">
                                 <h2 class="mdl-card__title-text">
                                     Detailed Analysis
                                 </h2>
                             </div>
-                            <div class="mdl-card__supporting-text">
-                                <p class="mdl-typography--body-1-force-preferred-font">
+                            <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
+                                <p>
                                     Before we can give you a detailed analysis, we need some 
                                     basic medical information.
                                 </p>
@@ -1573,15 +1574,15 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="mdl-card mdl-shadow--2dp demo-card-event 
+                        <div class="mdl-card mdl-shadow--2dp 
                                     results__in-progress">
                             <div class="mdl-card__title">
                                 <h2 class="mdl-card__title-text">
                                     Is Amniocentesis Recommended?
                                 </h2>
                             </div>
-                            <div class="mdl-card__supporting-text">
-                                <p class="mdl-typography--body-1-force-preferred-font">
+                            <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
+                                <p>
                                     Please wait while we analyze your information...
                                 </p>
                                 <div class="progress">
@@ -1591,7 +1592,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mdl-card mdl-shadow--2dp demo-card-event results__ready">
+                        <div class="mdl-card mdl-shadow--2dp results__ready">
                             <div class="mdl-card__title">
                                 <h2 class="mdl-card__title-text">
                                     Detailed Analysis
@@ -1599,8 +1600,7 @@
                             </div>
                             <div class="mdl-typography--body-1-force-preferred-font 
                                         mdl-card__supporting-text mdl-card--border">
-                                <p class="mdl-typography--body-1-force-preferred-font 
-                                          mdl_card__supporting-text__note">
+                                <p class="mdl_card__supporting-text__note">
                                     First we estimate the chance of a Down Syndrome
                                     pregnancy for an average woman of your age:
                                 </p>
@@ -1612,8 +1612,7 @@
                                     </div>
                                     <span class="bar--text">0%</span>
                                 </div>
-                                <p class="mdl-typography--body-1-force-preferred-font 
-                                          mdl_card__supporting-text__note">
+                                <p class="mdl_card__supporting-text__note">
                                     Then we use the lab results to improve that estimate
                                     for this particular pregnancy. Based on your 
                                     <span class="lab-first">first</span>
@@ -1632,24 +1631,21 @@
                                     </div>
                                     <span class="bar--text">0%</span>
                                 </div>
-                                <p class="mdl-typography--body-1-force-preferred-font 
-                                          mdl_card__supporting-text__note lab-first
+                                <p class="mdl_card__supporting-text__note lab-first
                                           p__continued">
                                     <em>Note:</em>
                                     If you can give us results
                                     from second trimester lab tests, we can improve
                                     that estimate.
                                 </p>
-                                <p class="mdl-typography--body-1-force-preferred-font 
-                                          mdl_card__supporting-text__note lab-second
+                                <p class="mdl_card__supporting-text__note lab-second
                                           p__continued">
                                     <em>Note:</em>
                                     If you can give us results
                                     from first trimester lab tests, we can improve
                                     that estimate.
                                 </p>
-                                <p class="mdl-typography--body-1-force-preferred-font 
-                                          mdl_card__supporting-text__note">
+                                <p class="mdl_card__supporting-text__note">
                                     We also estimate the chance that Down Syndrome
                                     results in a stillbirth:
                                 </p>
@@ -1661,8 +1657,7 @@
                                     </div>
                                     <span class="bar--text">0%</span>
                                 </div>
-                                <p class="mdl-typography--body-1-force-preferred-font 
-                                          mdl_card__supporting-text__note">
+                                <p class="mdl_card__supporting-text__note">
                                     And we estimate the chance that an Amniocentesis
                                     results in a miscarriage:
                                 </p>
@@ -1674,8 +1669,7 @@
                                     </div>
                                     <span class="bar--text">0%</span>
                                 </div>
-                                <p class="mdl-typography--body-1-force-preferred-font 
-                                          mdl_card__supporting-text__note">
+                                <p class="mdl_card__supporting-text__note">
                                     Using those estimates and the priorities you
                                     have provided, we calculate a score for 
                                     <strong>not</strong> having an amniocentesis 
@@ -1704,15 +1698,13 @@
                                         </tr>
                                     </table>
                                 </p>
-                                <p class="mdl-typography--body-1-force-preferred-font
-                                          mdl_card__supporting-text__note">
+                                <p class="mdl_card__supporting-text__note">
                                     We suggest the choice with the highest score. 
                                     Based on your scores, we
                                     <span class="amnio-false">do <strong>not</strong></span>
                                     recommend an Amniocentesis.
                                 </p>
-                                <p class="mdl-typography--body-1-force-preferred-font
-                                          mdl_card__supporting-text__note">
+                                <p class="mdl_card__supporting-text__note">
                                     If you wish, you can adjust your priorities to see
                                     how they might change our advice.
                                 </p>
@@ -1724,11 +1716,11 @@
                             </div>
                         </div>
                         <div class="mdl-card mdl-shadow--2dp lab-partial__first">
-                            <div class="mdl-card__supporting-text">
+                            <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
                                 <div>
                                     <i class="material-icons icon__note">announcement</i>
                                 </div>
-                                <p class="mdl-typography--body-1-force-preferred-font">
+                                <p>
                                     It looks like you were able to enter
                                     some values for your first trimester lab results.
                                     If you can enter the remaining values, we can
@@ -1745,11 +1737,11 @@
                             </div>
                         </div>
                         <div class="mdl-card mdl-shadow--2dp lab-partial__second">
-                            <div class="mdl-card__supporting-text">
+                            <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
                                 <div>
                                     <i class="material-icons icon__note">announcement</i>
                                 </div>
-                                <p class="mdl-typography--body-1-force-preferred-font">
+                                <p>
                                     It looks like you were able to enter
                                     some values for your second trimester lab results.
                                     If you can enter the remaining values, we can
@@ -1766,11 +1758,11 @@
                             </div>
                         </div>
                         <div class="mdl-card mdl-shadow--2dp priorities__limited">
-                            <div class="mdl-card__supporting-text">
+                            <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
                                 <div>
                                     <i class="material-icons icon__note">announcement</i>
                                 </div>
-                                <p class="mdl-typography--body-1-force-preferred-font">
+                                <p>
                                     We can give you better advice if you 
                                     pick a wider range of values for your priorities. Would
                                     you like to review them now?
