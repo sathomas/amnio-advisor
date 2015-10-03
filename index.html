@@ -1848,8 +1848,8 @@
             // omitted the function assumes a standard normal N(0,1).
             
             var randNorm = function(mean, variance) {
-                if (mean == undefined) { mean = 0.0; }
-                if (variance == undefined) { variance = 1.0; }
+                if (mean === undefined) { mean = 0.0; }
+                if (variance === undefined) { variance = 1.0; }
                 var v1, v2, s;
                 do {
                     var u1 = Math.random();
@@ -1948,8 +1948,8 @@
                     // all test results
                     case 7:
 
-                        meanAff = [ 0.2922, -0.3768, 0.2878, -0.1308, -0.1549, 0.3384, 0.3118 ],
-                        meanUna = [ 0, 0, 0, 0, 0, 0, 0 ],
+                        meanAff = [ 0.2922, -0.3768, 0.2878, -0.1308, -0.1549, 0.3384, 0.3118 ];
+                        meanUna = [ 0, 0, 0, 0, 0, 0, 0 ];
                         inverseCovarianceAff = [
                             [ 20.9798,  3.8504,  -3.0081, -3.22,    -9.9803, -3.6164,  1.6674 ],
                             [  3.8504, 16.2433,	 -2.9975, -4.8633, -14.3813,  0.4282,  3.1796 ],
@@ -1958,7 +1958,7 @@
                             [ -9.9803, -14.3813, 12.3187,  6.7838,  98.2807,  7.5609,  5.5478 ],
                             [ -3.6164,   0.4282, -1.2296, -3.016,    7.5609, 18.6246, -6.0332 ],
                             [  1.6674,   3.1796, -8.4456, -5.8457,   5.5478, -6.0332, 26.9573 ]
-                        ],
+                        ];
                         inverseCovarianceUna = [
                             [ 48.832,   1.5771,  -0.188,    0.1483,  -3.879,   0.7162,   1.68   ],
                             [  1.5771, 16.8675,  -2.6161,  -3.0731,  -3.8668,  0.4896,   0.6377 ],
@@ -1967,8 +1967,8 @@
                             [ -3.879,  -3.8668,  -0.4467, -14.5487,  82.48,    5.4684,   1.345  ],
                             [  0.7162,  0.4896,  -2.2651,  -7.5444,   5.4684, 29.7061,  -9.3419 ],
                             [  1.68,    0.6377, -13.344,   -5.1355,   1.345,  -9.3419,  32.2184 ]
-                        ],
-                        sqrtDetCovAff = 0.000010903,
+                        ];
+                        sqrtDetCovAff = 0.000010903;
                         sqrtDetCovUna = 0.0000049201;
                         break;
 
@@ -2042,7 +2042,7 @@
 
                         return 0;
 
-                };
+                }
                 
                 // The actual calculations are the same for all test types.
 
@@ -2138,14 +2138,19 @@
                         return [0,0];
 
                 }
+                
+                // Define function to create a random sample value. We're
+                // defining this function explicitly so we can reference it
+                // in the loop that following and avoid re-defining it 
+                // within the loop.
+                function sampleValue(marker, idx) {
+                    var s2 = marker*marker*cv*cv,
+                        x = randNorm(marker, s2);
+                    return Math.min(Math.max(x, lower[idx]), upper[idx]);
+                }
 
                 for (var i=numBootstrap, samples=[]; i > 0; i--) {
-                    var sample = markers.map(function(marker, idx) {
-                        var s2 = marker*marker*cv*cv,
-                            x = randNorm(marker, s2);
-                        return Math.min(Math.max(x, lower[idx]), upper[idx]);
-                    });
-                    samples.push(estimateRisk(age, sample, stillBirthRate));
+                    samples.push(estimateRisk(age, markers.map(sampleValue), stillBirthRate));
                 }
                 
                 samples.sort(function(a, b) {
@@ -2420,7 +2425,7 @@
                     case "combined":
                         markers = markers.slice(0,3);
                         break;
-                };
+                }
 
                 // Next get the expressed priorities from
                 // the ratings objects.
@@ -2481,7 +2486,7 @@
                 } else {
                     return "";
                 }                    
-            }
+            };
             
             // Evaluate the user inputs, updating application state as appropriate.
 
@@ -2536,9 +2541,9 @@
                 document.getElementById("risk-low").textContent = 
                     formatPercentage(results.estimateRisk.low);
                 document.getElementById("risk-mean").textContent = 
-                    formatPercentage(results.estimateRisk.mean)
+                    formatPercentage(results.estimateRisk.mean);
                 document.getElementById("risk-high").textContent = 
-                    formatPercentage(results.estimateRisk.high)
+                    formatPercentage(results.estimateRisk.high);
                 
                 // Update state
                 doAmnio = results.weights[0] > results.weights[1];
@@ -2619,7 +2624,7 @@
                         }
                     });
                 }
-            }
+            };
             
             // #### setTabPanel()
             
@@ -2688,7 +2693,7 @@
                 var setElement = function(el) {
                     
                     // Keep a reference to the various elements and sub-elements
-                    element = el,
+                    element = el;
                     input = element.getElementsByTagName("input")[0];
                     
                     // Set/update event handlers
@@ -2723,7 +2728,7 @@
 
                 // ##### Object to be Returned
 
-                function exports() { };
+                function exports() { }
 
                 // ##### Public API Methods
 
@@ -2790,7 +2795,7 @@
 
                 return exports;
 
-            };
+            }
             
             // #### Rating
 
@@ -2845,7 +2850,7 @@
                         } else {
                             key.style.opacity = 0;
                         }
-                    })
+                    });
                 };
 
                 // ##### Event Handlers
@@ -2858,7 +2863,7 @@
                         }, 0);
                     }
                     update();
-                }
+                };
 
                 var handleChange = function(ev) {
 
@@ -2871,11 +2876,11 @@
                         callback(ev);
                     }
 
-                }
+                };
 
                 // ##### Object to be Returned
 
-                function exports() { };
+                function exports() { }
 
                 // ##### Public API Methods
 
@@ -2935,7 +2940,7 @@
 
                 return exports;
 
-            };
+            }
             
             // #### Gauge
             
@@ -2972,7 +2977,7 @@
 
                 // ##### Object to be Returned
 
-                function exports() { };
+                function exports() { }
 
                 // ##### Public API Methods
 
@@ -3003,7 +3008,7 @@
 
                 return exports;
 
-            };
+            }
 
             // #### Bar
             
@@ -3062,7 +3067,7 @@
                     
                 // ##### Object to be Returned
 
-                function exports() { };
+                function exports() { }
 
                 // ##### Public API Methods
 
@@ -3103,7 +3108,7 @@
 
                 return exports;
 
-            };
+            }
 
             // ### High Level Event Handlers
             
