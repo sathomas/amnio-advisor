@@ -514,26 +514,6 @@
                 z-index: 2;
             }
             
-            .bar--range-low {
-                background: rgb(233,30,99);
-                background: -moz-linear-gradient(left, rgba(233,30,99,0) 0%, rgba(233,30,99,0.8) 100%);
-                background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(233,30,99,0)), color-stop(100%,rgba(233,30,99,0.8)));
-                background: -webkit-linear-gradient(left, rgba(233,30,99,0) 0%,rgba(233,30,99,0.8) 100%);
-                background: -o-linear-gradient(left, rgba(233,30,99,0) 0%,rgba(233,30,99,0.8) 100%);
-                background: -ms-linear-gradient(left, rgba(233,30,99,0) 0%,rgba(233,30,99,0.8) 100%);
-                background: linear-gradient(to right, rgba(233,30,99,0) 0%,rgba(233,30,99,0.8) 100%);
-            }
-
-            .bar--range-high {
-                background: rgb(233,30,99);
-                background: -moz-linear-gradient(left, rgba(233,30,99,0.6) 0%, rgba(233,30,99,0) 100%);
-                background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(233,30,99,0.6)), color-stop(100%,rgba(233,30,99,0)));
-                background: -webkit-linear-gradient(left, rgba(233,30,99,0.6) 0%,rgba(233,30,99,0) 100%);
-                background: -o-linear-gradient(left, rgba(233,30,99,0.6) 0%,rgba(233,30,99,0) 100%);
-                background: -ms-linear-gradient(left, rgba(233,30,99,0.6) 0%,rgba(233,30,99,0) 100%);
-                background: linear-gradient(to right, rgba(233,30,99,0.6) 0%,rgba(233,30,99,0) 100%);
-            }
-
             .bar--needle {
                 background-color: #E91E63;
                 position: absolute;
@@ -1564,7 +1544,7 @@
                                     results__in-progress">
                             <div class="mdl-card__title">
                                 <h2 class="mdl-card__title-text">
-                                    Is Amniocentesis Recommended?
+                                    Detailed Analysis
                                 </h2>
                             </div>
                             <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
@@ -2372,7 +2352,8 @@
             // State of the overall application that is shared by multiple
             // components.
 
-            var hasInputChanged = false,    // has the user changed *any* input?
+            var currentPanel = "welcome",   // active tab panel
+                hasInputChanged = false,    // has the user changed *any* input?
                 hasVisitedResults = false,  // has the user visisted a results panel?
                 areInputsValid = false,     // are all inputs valid?
                 areInputsSuspect = false,   // are inputs suspect?
@@ -2621,7 +2602,7 @@
                                 localStorage.setItem(i.id(), i.value());
                             }
                         }
-                    })
+                    });
                 }
             };
             
@@ -2631,11 +2612,13 @@
             // local storage).
             
             var restoreInputState = function() {
-                inputs.forEach(function(i) {
-                    if (localStorage.getItem(i.id()) !== null) {
-                        i.value(localStorage.getItem(i.id()));
-                    }
-                })
+                if (hasLocalStorage()) {
+                    inputs.forEach(function(i) {
+                        if (localStorage.getItem(i.id()) !== null) {
+                            i.value(localStorage.getItem(i.id()));
+                        }
+                    });
+                }
             }
             
             // #### setTabPanel()
@@ -3183,6 +3166,14 @@
                     }
                 }
                 
+                // If the panel has changed, save the new value in local storage.
+                if (hasLocalStorage() && (currentPanel !== panel)) {
+                    localStorage.setItem("panel", panel);
+                }
+                
+                // Note the new panel.
+                currentPanel = panel;
+
                 // Update the content visibility so that warnings and
                 // other information can reflect the user's path.
                 updateContentVisibility();
@@ -3229,9 +3220,10 @@
     
                 [].slice.call(document.getElementsByClassName("mdl-layout__tab")).
                     forEach(function(el) {
-                        var target = el.getAttribute("href");
-                        el.addEventListener("click", function(){
-                            panelViewed(target.substring(1));
+                        var target = el.getAttribute("href"),
+                            panel = target.substring(1);
+                        el.addEventListener("click", function() {
+                            panelViewed(panel);
                         });
                     }
                 );
@@ -3315,6 +3307,12 @@
                     evaluateInputs();
                     if (areInputsValid) {
                         startCompute();
+                    }
+                    if (hasLocalStorage()) {
+                        var panel = localStorage.getItem("panel");
+                        if (panel && panel !== "welcome") {
+                            setTabPanel(panel);
+                        }
                     }
                 }, 0);
                 
