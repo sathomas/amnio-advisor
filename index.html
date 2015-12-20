@@ -154,7 +154,7 @@
                 width: auto;
             }
 
-            .mdl_card__supporting-text__note {
+            .mdl-card__supporting-text__note {
                 padding: 0 8px;
             }
 
@@ -290,17 +290,17 @@
              * The standard markup for the component is:
              *
              *      <div class="gauge">
-             *          <div class="gauge--container">
-             *              <div class="gauge--marker"></div>
-             *              <div class="gauge--background"></div>
-             *              <div class="gauge--center"></div>
-             *              <div class="gauge--data"></div>
-             *              <div class="gauge--needle"></div>
+             *          <div class="gauge__container">
+             *              <div class="gauge__marker"></div>
+             *              <div class="gauge__background"></div>
+             *              <div class="gauge__center"></div>
+             *              <div class="gauge__data"></div>
+             *              <div class="gauge__needle"></div>
              *          </div>
-             *          <div class="gauge--labels">
-             *              <span class="gauge--label__low">No</span>
-             *              <span class="gauge--label__spacer"></span>
-             *              <span class="gauge--label__high">Yes</span>
+             *          <div class="gauge__labels">
+             *              <span class="gauge__label__low">No</span>
+             *              <span class="gauge__label__spacer"></span>
+             *              <span class="gauge__label__high">Yes</span>
              *          </div>
              *      </div>
              */
@@ -316,7 +316,7 @@
 				background-color: white;
             }
 
-            .gauge--container {
+            .gauge__container {
             	margin: 0 auto;
             	padding: 0;
             	position: relative;
@@ -324,7 +324,7 @@
             	text-align: center;
             }
 
-            .gauge--background {
+            .gauge__background {
             	z-index: 0;
             	position: absolute;
             	background-color: #C5CAE9;
@@ -332,7 +332,7 @@
             	border-radius: 300px 300px 0 0;
             }
 
-            .gauge--data {
+            .gauge__data {
             	z-index: 1;
             	position: absolute;
             	background-color: #3F51B5;
@@ -346,7 +346,7 @@
                         transform-origin: center bottom;
             }
 
-            .gauge--center {
+            .gauge__center {
             	z-index: 3;
             	position: absolute;
             	background-color: #fff;
@@ -354,14 +354,14 @@
             	border-radius: 300px 300px 0 0;
             }
 
-            .gauge--marker {
+            .gauge__marker {
                 z-index: 4;
                 background-color: #fff;
                 position: absolute;
                 width: 1px;
             }
 
-            .gauge--needle {
+            .gauge__needle {
                 z-index: 5;
                 background-color: #E91E63;
                 height: 3px;
@@ -373,22 +373,22 @@
                         transform-origin: left center;
             }
 
-            .gauge--labels {
+            .gauge__labels {
                 display: table;
                 margin: 0 auto;
                 position: relative;
             }
 
-            .gauge--label__low {
+            .gauge__label__low {
                 display: table-cell;
                 text-align: center;
             }
 
-            .gauge--label__spacer {
+            .gauge__label__spacer {
                 display: table-cell;
             }
 
-            .gauge--label__high {
+            .gauge__label__high {
                 display: table-cell;
                 text-align: center;
             }
@@ -400,16 +400,16 @@
              */
 
             .gauge { height: calc(120px + 3em); }
-            .gauge--container { width: 240px; height: 120px; }
-            .gauge--marker { height: 120px; left: 119.5px; }
-            .gauge--background { width: 240px; height: 120px; }
-            .gauge--center { width: 144px; height: 72px; top: 48px; margin-left: 48px; }
-            .gauge--data { width: 240px; height: 120px; }
-            .gauge--needle { left: 120px; top: 117px; width: 120px; }
-            .gauge--labels { width: 240px; }
-            .gauge--label__low { width: 48px; }
-            .gauge--label__spacer { width: 144px; }
-            .gauge--label__high { width: 48px; }
+            .gauge__container { width: 240px; height: 120px; }
+            .gauge__marker { height: 120px; left: 119.5px; }
+            .gauge__background { width: 240px; height: 120px; }
+            .gauge__center { width: 144px; height: 72px; top: 48px; margin-left: 48px; }
+            .gauge__data { width: 240px; height: 120px; }
+            .gauge__needle { left: 120px; top: 117px; width: 120px; }
+            .gauge__labels { width: 240px; }
+            .gauge__label__low { width: 48px; }
+            .gauge__label__spacer { width: 144px; }
+            .gauge__label__high { width: 48px; }
 
             /*
              * Increase the gauge size slightly on larger viewports.
@@ -417,20 +417,20 @@
 
              @media only screen and (min-width: 400px) {
                 .gauge { height: calc(150px + 3em); }
-                .gauge--container { width: 300px; height: 150px; }
-                .gauge--marker { height: 150px; left: 149.5px; }
-                .gauge--background { width: 300px; height: 150px; }
-                .gauge--center { width: 180px; height: 90px; top: 60px; margin-left: 60px; }
-                .gauge--data { width: 300px; height: 150px; }
-                .gauge--needle { left: 150px; top: 147px; width: 150px; }
-                .gauge--labels { width: 300px; }
-                .gauge--label__low { width: 60px; }
-                .gauge--label__spacer { width: 180px; }
-                .gauge--label__high { width: 60px; }
+                .gauge__container { width: 300px; height: 150px; }
+                .gauge__marker { height: 150px; left: 149.5px; }
+                .gauge__background { width: 300px; height: 150px; }
+                .gauge__center { width: 180px; height: 90px; top: 60px; margin-left: 60px; }
+                .gauge__data { width: 300px; height: 150px; }
+                .gauge__needle { left: 150px; top: 147px; width: 150px; }
+                .gauge__labels { width: 300px; }
+                .gauge__label__low { width: 60px; }
+                .gauge__label__spacer { width: 180px; }
+                .gauge__label__high { width: 60px; }
             }
 
             /*
-             * As an option, the `gauge__liveupdate` class can be added
+             * As an option, the `gauge--liveupdate` class can be added
              * to the main gauge element. When this class is present,
              * we add a transition that animates any changes to the gauge
              * value. Currently, the app does not use this option because
@@ -441,8 +441,8 @@
              * should this change.
              */
 
-            .gauge__liveupdate .gauge--data,
-            .gauge__liveupdate .gauge--needle {
+            .gauge--liveupdate .gauge__data,
+            .gauge--liveupdate .gauge__needle {
                 -webkit-transition: all 1.5s ease-in-out;
                    -moz-transition: all 1.5s ease-in-out;
                     -ms-transition: all 1.5s ease-in-out;
@@ -457,14 +457,14 @@
              * properties below represent an x value of 0.
              */
 
-            .gauge--data {
+            .gauge__data {
                 -webkit-transform: rotate(-.50turn);
                    -moz-transform: rotate(-.50turn);
                     -ms-transform: rotate(-.50turn);
                      -o-transform: rotate(-.50turn);
                         transform: rotate(-.50turn);
             }
-            .gauge--needle {
+            .gauge__needle {
                 -webkit-transform: rotate(-.50turn);
                    -moz-transform: rotate(-.50turn);
                     -ms-transform: rotate(-.50turn);
@@ -483,7 +483,7 @@
                 width: calc(100% - 16px);
              }
 
-            .bar--background {
+            .bar__background {
                 background-color: #C5CAE9;
                 height: 16px;
                 position: absolute;
@@ -492,7 +492,7 @@
                 width: 100%;
              }
 
-            .bar--data {
+            .bar__data {
                 background-color: #3F51B5;
                 position: absolute;
                 top: 0;
@@ -502,7 +502,7 @@
                 z-index: 1;
             }
 
-            .bar--range {
+            .bar__range {
                 position: absolute;
                 border-right: 1px solid #E91E63;
                 border-left: 1px solid #E91E63;
@@ -514,7 +514,7 @@
                 z-index: 2;
             }
 
-            .bar--needle {
+            .bar__needle {
                 background-color: #E91E63;
                 position: absolute;
                 top: -2px;
@@ -524,7 +524,7 @@
                 z-index: 3;
             }
 
-            .bar--text {
+            .bar__text {
                 display: inline-block;
                 position: absolute;
                 top: 20px;
@@ -1404,17 +1404,17 @@
                                 </h2>
                             </div>
                         	<div class="mdl-card__media gauge" id="gaugeResult">
-                            	<div class="gauge--container">
-                            		<div class="gauge--marker"></div>
-                            		<div class="gauge--background"></div>
-                            		<div class="gauge--center"></div>
-                            		<div class="gauge--data"></div>
-                            		<div class="gauge--needle"></div>
+                            	<div class="gauge__container">
+                            		<div class="gauge__marker"></div>
+                            		<div class="gauge__background"></div>
+                            		<div class="gauge__center"></div>
+                            		<div class="gauge__data"></div>
+                            		<div class="gauge__needle"></div>
                             	</div>
-                            	<div class="gauge--labels mdl-typography--headline">
-                                	<span class="gauge--label__low">No</span>
-                                	<span class="gauge--label__spacer"></span>
-                                	<span class="gauge--label__high">Yes</span>
+                            	<div class="gauge__labels mdl-typography--headline">
+                                	<span class="gauge__label__low">No</span>
+                                	<span class="gauge__label__spacer"></span>
+                                	<span class="gauge__label__high">Yes</span>
                             	</div>
                         	</div>
                             <div class="mdl-typography--body-1-force-preferred-font
@@ -1566,19 +1566,19 @@
                             </div>
                             <div class="mdl-typography--body-1-force-preferred-font
                                         mdl-card__supporting-text mdl-card--border">
-                                <p class="mdl_card__supporting-text__note">
+                                <p class="mdl-card__supporting-text__note">
                                     First we estimate the chance of a Down Syndrome
                                     pregnancy for an average woman of your age:
                                 </p>
                                 <div id="barBaseline" class="bar">
-                                    <div class="bar--background">
-                                        <div class="bar--data"></div>
-                                        <div class="bar--range"></div>
-                                        <div class="bar--needle"></div>
+                                    <div class="bar__background">
+                                        <div class="bar__data"></div>
+                                        <div class="bar__range"></div>
+                                        <div class="bar__needle"></div>
                                     </div>
-                                    <span class="bar--text">0%</span>
+                                    <span class="bar__text">0%</span>
                                 </div>
-                                <p class="mdl_card__supporting-text__note">
+                                <p class="mdl-card__supporting-text__note">
                                     Then we use the lab results to improve that estimate
                                     for this particular pregnancy. Based on your
                                     <span class="lab-first">first</span>
@@ -1590,52 +1590,52 @@
                                     is <span id="risk-mean"></span>.
                                 </p>
                                 <div id="barRisk" class="bar">
-                                    <div class="bar--background">
-                                        <div class="bar--data"></div>
-                                        <div class="bar--range"></div>
-                                        <div class="bar--needle"></div>
+                                    <div class="bar__background">
+                                        <div class="bar__data"></div>
+                                        <div class="bar__range"></div>
+                                        <div class="bar__needle"></div>
                                     </div>
-                                    <span class="bar--text">0%</span>
+                                    <span class="bar__text">0%</span>
                                 </div>
-                                <p class="mdl_card__supporting-text__note lab-first
+                                <p class="mdl-card__supporting-text__note lab-first
                                           p__continued">
                                     <em>Note:</em>
                                     If you can give us results
                                     from second trimester lab tests, we can improve
                                     that estimate.
                                 </p>
-                                <p class="mdl_card__supporting-text__note lab-second
+                                <p class="mdl-card__supporting-text__note lab-second
                                           p__continued">
                                     <em>Note:</em>
                                     If you can give us results
                                     from first trimester lab tests, we can improve
                                     that estimate.
                                 </p>
-                                <p class="mdl_card__supporting-text__note">
+                                <p class="mdl-card__supporting-text__note">
                                     We also estimate the chance that Down Syndrome
                                     results in a stillbirth:
                                 </p>
                                 <div id="barStill" class="bar">
-                                    <div class="bar--background">
-                                        <div class="bar--data"></div>
-                                        <div class="bar--range"></div>
-                                        <div class="bar--needle"></div>
+                                    <div class="bar__background">
+                                        <div class="bar__data"></div>
+                                        <div class="bar__range"></div>
+                                        <div class="bar__needle"></div>
                                     </div>
-                                    <span class="bar--text">0%</span>
+                                    <span class="bar__text">0%</span>
                                 </div>
-                                <p class="mdl_card__supporting-text__note">
+                                <p class="mdl-card__supporting-text__note">
                                     And we estimate the chance that an Amniocentesis
                                     results in a miscarriage:
                                 </p>
                                 <div id="barMis" class="bar">
-                                    <div class="bar--background">
-                                        <div class="bar--data"></div>
-                                        <div class="bar--range"></div>
-                                        <div class="bar--needle"></div>
+                                    <div class="bar__background">
+                                        <div class="bar__data"></div>
+                                        <div class="bar__range"></div>
+                                        <div class="bar__needle"></div>
                                     </div>
-                                    <span class="bar--text">0%</span>
+                                    <span class="bar__text">0%</span>
                                 </div>
-                                <p class="mdl_card__supporting-text__note">
+                                <p class="mdl-card__supporting-text__note">
                                     Using those estimates and the priorities you
                                     have provided, we calculate a score for
                                     <strong>not</strong> having an amniocentesis
@@ -1664,13 +1664,13 @@
                                         </tr>
                                     </table>
                                 </p>
-                                <p class="mdl_card__supporting-text__note">
+                                <p class="mdl-card__supporting-text__note">
                                     We suggest the choice with the highest score.
                                     Based on your scores, we
                                     <span class="amnio-false">do <strong>not</strong></span>
                                     recommend an Amniocentesis.
                                 </p>
-                                <p class="mdl_card__supporting-text__note">
+                                <p class="mdl-card__supporting-text__note">
                                     If you wish, you can adjust your priorities to see
                                     how they might change our advice.
                                 </p>
@@ -2954,8 +2954,8 @@
                 // ##### Private Properties and Attributes
 
                 var element,      // Containing element for the info component
-                    data,         // `.gauge--data` element
-                    needle,       // `.gauge--needle` element
+                    data,         // `.gauge__data` element
+                    needle,       // `.gauge__needle` element
                     value = 0.0,  // Current gauge value from 0 to 1
                     prop;         // Style for transform
 
@@ -2964,8 +2964,8 @@
                 var setElement = function(el) {
                     // Keep a reference to the various elements and sub-elements
                     element = el;
-                    data = element.querySelector(".gauge--data");
-                    needle = element.querySelector(".gauge--needle");
+                    data = element.querySelector(".gauge__data");
+                    needle = element.querySelector(".gauge__needle");
                 };
 
                 var setValue = function(x) {
@@ -3022,10 +3022,10 @@
                 // ##### Private Properties and Attributes
 
                 var element,           // Containing element for the info component
-                    data,              // `.bar--data` element
-                    range,             // `.bar--range` element
-                    needle,            // `.bar--needle` element
-                    text,              // `.bar--text` element
+                    data,              // `.bar__data` element
+                    range,             // `.bar__range` element
+                    needle,            // `.bar__needle` element
+                    text,              // `.bar__text` element
                     value = 0.0,       // Current bar value from 0 to 1
                     confidence = [];   // Confidence interval for value [min, max]
 
@@ -3049,10 +3049,10 @@
                 var setElement = function(el) {
                     // Keep a reference to the various elements and sub-elements
                     element = el;
-                    data = element.querySelector(".bar--data");
-                    text = element.querySelector(".bar--text");
-                    range = element.querySelector(".bar--range");
-                    needle = element.querySelector(".bar--needle");
+                    data = element.querySelector(".bar__data");
+                    text = element.querySelector(".bar__text");
+                    range = element.querySelector(".bar__range");
+                    needle = element.querySelector(".bar__needle");
                 };
 
                 var setValue = function(x) {
