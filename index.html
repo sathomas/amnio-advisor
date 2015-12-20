@@ -821,20 +821,66 @@
                     <div class="page-content">
                         <div class="mdl-card mdl-shadow--2dp">
                             <div class="mdl-card__title">
-                                <h2 class="mdl-card__title-text">Amniocentesis Advisor</h2>
+                                <h2 class="mdl-card__title-text">Amniocentesis Advisor for Down Syndrome</h2>
                             </div>
 							<div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
 	                            <p>
-	                                Welcome and introductory information here.
+    	                            This application can help you decide whether or not to
+    	                            have an amniocentesis procedure. The suggestions it offers
+    	                            are based both on your medical information and on your
+    	                            personal priorities and preferences for different pregnancy
+    	                            outcomes. Medical information may be found in the laboratory
+    	                            reports of your prenatal screening tests or by consulting
+    	                            your doctor. The application learns your personal priorities
+    	                            and preferences by asking you to rate possible outcomes.
 	                            </p>
 	                            <p>
-	                                <em>If you have stumbled across this application on the
-	                                internet, please note that this is a non-functioning
-	                                 prototype. It does <strong>not</strong> provide actual
-	                                 advice.</em>
+    	                            This application can help you:
 	                            </p>
-	            				<p>
-	                				For more information, you can visit the following web sites:
+	            				<ul>
+    	            				<li>
+    	            				    Get a simple yes-no recommendation for amniocentesis
+    	            				    and see how strongly the medical information and your
+    	            				    priorities support that recommendation
+    	            				</li>
+	            					<li>
+	            					    Learn your risk of having a Down Syndrome baby
+            					    </li>
+	            					<li>
+	            					    Compare your risk to the average risk in your age group
+            					    </li>
+	            					<li>
+	            					    Understand how imprecision in test results influences that risk
+	            					</li>
+	            					<li>
+	            					    Find out how changes to your priorities and preferences affect the recommendations
+            					    </li>
+	            				</ul>
+								<p>
+	                                <em>Note:</em> Your information is completely private. We
+	                                do not store or save any of your information on our
+	                                 servers. Nor do we use any cookies.
+	                            </p>
+	                            <p>
+	                                Get started by telling us some basic medical information.
+	                            </p>
+							</div>
+							<div class="mdl-card__actions">
+                                <button class="mdl-button mdl-js-button mdl-button--raised
+                                               mdl-js-ripple-effect mdl-button--primary"
+                                        data-onclick="info">
+                                    Get Started
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title">
+                                <h2 class="mdl-card__title-text">Learn More</h2>
+                            </div>
+							<div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
+	                            <p>
+	                				To learn more about Down Syndrome and prenatal
+	                				screening, you can visit the following web sites:
 	                            </p>
 	            				<ul>
 	            					<li><a href="http://www.cdc.gov/ncbddd/birthdefects/features/key-findings-down-syndrome-prevalence.html">
@@ -859,22 +905,48 @@
 	                					Mayo Clinic
 	                				</a></li>
 	            				</ul>
-								<p>
-	                                <em>Note:</em> Your information is completely private. We
-	                                do not store or save any of your information on our
-	                                 servers. Nor do we use any cookies.
-	                            </p>
+							</div>
+                        </div>
+
+                        <div class="mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title">
+                                <h2 class="mdl-card__title-text">Disclaimer</h2>
+                            </div>
+							<div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
 	                            <p>
-	                                Get started by telling us some basic medical information.
+                                    This application can be used for Down syndrome maternal
+                                    serum screenings, including combined screening, quadruple
+                                    screening and integrated screening. The risk calculation
+                                    is suitable for singleton pregnancies. The age risk and
+                                    post-test risk are calculated using formulas and parameters
+                                    from published papers. The range of the post-test risk is
+                                    derived using mathematical simulation. The recommendation
+                                    and results of Amniocentesis Advisor reflect the information
+                                    that the user provides. They can be sensitive to the
+                                    indicated priorities. Before selecting a course of action,
+                                    please discuss the results with your doctor or genetic counsellor.
 	                            </p>
 							</div>
-							<div class="mdl-card__actions">
-                                <button class="mdl-button mdl-js-button mdl-button--raised
-                                               mdl-js-ripple-effect mdl-button--primary"
-                                        data-onclick="info">
-                                    Medical Info
-                                </button>
+                        </div>
+
+                        <div class="mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title">
+                                <h2 class="mdl-card__title-text">About this App</h2>
                             </div>
+							<div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
+	                            <p>
+    	                            This application is the result of research directed by Drs.
+    	                            <a href="https://www.isye.gatech.edu/users/turgay-ayer">Turgay Ayer</a>
+    	                            and <a href="https://www.isye.gatech.edu/users/pinar-keskinocak">Pinar Keskinocak</a>
+    	                            in the <a href="https://www.isye.gatech.edu">H. Milton
+                                    Stewart School of Industrial and Systems Engineering</a> at
+                                    the <a href="https://www.gatech.edu">Georgia Institute of Technology</a>.
+                                    <a href="mailto:jyan40@gatech.edu">Jia Yan</a> implemented
+                                    the mathematical calculations. Gi Won (Andy) Kim developed
+                                    the first prototype, and <a href="http://sathomas.me">Stephen Thomas</a>
+                                    completed the current version of the web application.
+	                            </p>
+							</div>
                         </div>
                     </div>
                 </section>
@@ -1761,12 +1833,13 @@
             <footer class="mdl-mini-footer mdl-color--primary">
                 <div class="mdl-mini-footer__left-section">
                     <ul class="mdl-mini-footer__link-list">
+                        <li><a href="moreinfo.html">Info</a></li>
                         <li><a href="#">About</a></li>
-                        <li><a href="#">Privacy & Terms</a></li>
+                        <li><a href="#">Disclaimer</a></li>
                     </ul>
                 </div>
             </footer>
-             -->
+            -->
 
         </div>
 
