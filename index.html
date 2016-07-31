@@ -2534,15 +2534,15 @@
                 // Next get the expressed priorities from
                 // the ratings objects.
                 var priorities = [
-                    inputObjs.ratingMisDs.value(),
-                    inputObjs.ratingMisHealthy.value(),
-                    inputObjs.ratingTestTerm.value(),
-                    inputObjs.ratingTestStill.value(),
-                    inputObjs.ratingTestDs.value(),
-                    inputObjs.ratingTestHealthy.value(),
-                    inputObjs.ratingNotestStill.value(),
-                    inputObjs.ratingNotestDs.value(),
-                    inputObjs.ratingNotestHealthy.value()
+                    inputObjs.ratingMisDs ?         inputObjs.ratingMisDs.value()         : 5,
+                    inputObjs.ratingMisHealthy ?    inputObjs.ratingMisHealthy.value()    : 5,
+                    inputObjs.ratingTestTerm ?      inputObjs.ratingTestTerm.value()      : 5,
+                    inputObjs.ratingTestStill ?     inputObjs.ratingTestStill.value()     : 5,
+                    inputObjs.ratingTestDs ?        inputObjs.ratingTestDs.value()        : 5,
+                    inputObjs.ratingTestHealthy ?   inputObjs.ratingTestHealthy.value()   : 5,
+                    inputObjs.ratingNotestStill ?   inputObjs.ratingNotestStill.value()   : 5,
+                    inputObjs.ratingNotestDs ?      inputObjs.ratingNotestDs.value()      : 5,
+                    inputObjs.ratingNotestHealthy ? inputObjs.ratingNotestHealthy.value() : 5
                 ];
 
                 // Keep track of how many computing threads are
@@ -2746,6 +2746,8 @@
                     var slider = document.querySelectorAll('.slider')[idx],
                         label = slider.getElementsByTagName('label')[0];
                     label.innerHTML = input.parentNode.getElementsByClassName('mdl-checkbox__label')[0].innerHTML;
+                    ratings[idx].id(outcome);
+                    inputObjs[outcome] = ratings[idx];
                 });
 
                 document.querySelector('.chkbox-list').className += ' chkbox-list--hidden';
@@ -3020,10 +3022,6 @@
 
                 var element,             // Containing element for the rating component
                     input,               // Actual input control
-                    lowIcon,             // Icon for low value
-                    highIcon,            // Icon for high value
-                    keys,                // Key values
-                    colorMin = false,    // Preserve color on minimum value?
                     hasChanged = false,  // Has the user changed the input?
                     callback;            // Callback for value changes
 
@@ -3034,53 +3032,17 @@
                     // Keep a reference to the various elements and sub-elements
                     element = el;
                     input = element.getElementsByTagName("input")[0];
-                    lowIcon = element.getElementsByTagName("i")[0];
-                    highIcon = element.getElementsByTagName("i")[1];
-                    keys = [].slice.call(element.getElementsByClassName("rating--key"));
 
                     // Set/update event handlers
-                    input.addEventListener("input", handleInput);
                     input.addEventListener("change", handleChange);
 
                 };
 
-                var update = function() {
-                    // Cache the current value
-                    var value = parseFloat(input.value);
-
-                    // Update the icons
-                    lowIcon.style.opacity = value < 6 ? 1 : 0.25 + ((10 - value)/6);
-                    highIcon.style.opacity = value > 4 ? 1 : 0.25 + (value/6);
-
-                    // Update the keys
-                    keys.forEach(function(key, idx) {
-                        idx = 20/8 * idx;
-                        if (Math.abs(value - idx) < 2) {
-                            key.style.opacity = (2 - Math.abs(value - idx)) / 2;
-                        } else {
-                            key.style.opacity = 0;
-                        }
-                    });
-                };
-
                 // ##### Event Handlers
-
-                var handleInput = function(ev) {
-                    if (colorMin) {
-                        // We don't want special styling on lowest value
-                        setTimeout(function() {
-                            input.classList.remove("is-lowest-value");
-                        }, 0);
-                    }
-                    update();
-                };
 
                 var handleChange = function(ev) {
 
                     hasChanged = true;
-
-                    // IE10 doesn't fire input events, so fire one for it
-                    handleInput(ev);
 
                     if (typeof callback === "function") {
                         callback(ev);
@@ -3102,12 +3064,6 @@
 
                 exports.hasChanged = function() {
                     return hasChanged;
-                };
-
-                exports.colorMin = function(b) {
-                    if (!arguments.length) { return colorMin; }
-                    colorMin = b;
-                    return this;
                 };
 
                 exports.element = function(el) {
@@ -3145,7 +3101,6 @@
 
                 if (arguments.length) {
                     setElement(el);
-                    update();
                 }
 
                 return exports;
@@ -3476,7 +3431,7 @@
 
                 // ##### Initialize Rating Components
 
-                [].slice.call(document.getElementsByClassName("rating")).
+                [].slice.call(document.getElementsByClassName("slider")).
                     forEach(function(el) {
                         var obj = new Rating(el);
 
@@ -3484,8 +3439,8 @@
                         // state as appropriate. It's both a generic input (so it goes
                         // in the `inputObjs` object and the `inputs` array), and a
                         // specific Rating object.
-                        inputObjs[obj.id()] = obj;
-                        inputs.push(obj);
+//                        inputObjs[obj.id()] = obj;
+//                        inputs.push(obj);
                         ratings.push(obj);
 
                         // Register our event handler if the user changes the input.
