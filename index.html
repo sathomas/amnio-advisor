@@ -805,16 +805,40 @@
                 display: inline;
             }
 
+            .priorities__notbest {
+              display: none;
+            }
+
+            body[data-priorities-notbest="true"] .priorities__notbest {
+              display: block;
+            }
+
+            body[data-priorities-notbest="true"] span.priorities__notbest {
+              display: inline;
+            }
+
+            .priorities__notworst {
+              display: none;
+            }
+
+            body[data-priorities-notbest="false"][data-priorities-notworst="true"] .priorities__notworst {
+              display: block;
+            }
+
+            body[data-priorities-notbest="false"][data-priorities-notworst="true"] span.priorities__notworst {
+              display: inline;
+            }
+
             .priorities__limited {
-                display: none;
+              display: none;
             }
 
-            body[data-priorities-limited="true"] .priorities__limited {
-                display: block;
+            body[data-priorities-notbest="false"][data-priorities-notworst="false"][data-priorities-limited="true"] .priorities__limited {
+              display: block;
             }
 
-            body[data-priorities-limited="true"] span.priorities__limited {
-                display: inline;
+            body[data-priorities-notbest="false"][data-priorities-notworst="false"][data-priorities-limited="true"] span.priorities__limited {
+              display: inline;
             }
 
             /* Stages of priority selection */
@@ -1446,6 +1470,30 @@
 
                         </div>
 
+                        <div class="mdl-card mdl-shadow--2dp priorities__notbest">
+                          <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
+                            <div>
+                              <i class="material-icons icon__note">announcement</i>
+                            </div>
+                            <p>
+                              It looks like you rated some other outcome higher
+                              than your best 3 outcomes.
+                            </p>
+                          </div>
+                        </div>
+
+                        <div class="mdl-card mdl-shadow--2dp priorities__notworst">
+                          <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
+                            <div>
+                              <i class="material-icons icon__note">announcement</i>
+                            </div>
+                            <p>
+                              It looks like you rated some other outcome lower
+                              than your worst 3 outcomes.
+                            </p>
+                          </div>
+                        </div>
+
                         <div class="mdl-card mdl-shadow--2dp priorities__limited">
                             <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
                                 <div>
@@ -1599,6 +1647,44 @@
                                     Update Information
                                 </a>
                             </div>
+                        </div>
+                        <div class="mdl-card mdl-shadow--2dp priorities__notbest">
+                          <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
+                            <div>
+                              <i class="material-icons icon__note">announcement</i>
+                            </div>
+                            <p>
+                              It looks like you rated some other outcome higher
+                              than your best 3 outcomes. Would you like to review
+                              your ratings now?
+                            </p>
+                          </div>
+                          <div class="mdl-card__actions">
+                            <a class="mdl-button mdl-button--colored mdl-js-button
+                                  mdl-js-ripple-effect"
+                               data-onclick="priorities">
+                              Review Priorities
+                            </a>
+                          </div>
+                        </div>
+                        <div class="mdl-card mdl-shadow--2dp priorities__notworst">
+                          <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
+                            <div>
+                              <i class="material-icons icon__note">announcement</i>
+                            </div>
+                            <p>
+                              It looks like you rated some other outcome lower
+                              than your worst 3 outcomes. Would you like to review
+                              your ratings now?
+                            </p>
+                          </div>
+                          <div class="mdl-card__actions">
+                            <a class="mdl-button mdl-button--colored mdl-js-button
+                                  mdl-js-ripple-effect"
+                               data-onclick="priorities">
+                              Review Priorities
+                            </a>
+                          </div>
                         </div>
                         <div class="mdl-card mdl-shadow--2dp priorities__limited">
                             <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
@@ -1837,26 +1923,64 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="mdl-card mdl-shadow--2dp priorities__limited">
-                            <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
-                                <div>
-                                    <i class="material-icons icon__note">announcement</i>
-                                </div>
-                                <p>
-                                    We can give you better advice if you
-                                    pick a wider range of values for your priorities. Would
-                                    you like to review them now?
-                                </p>
+                        <div class="mdl-card mdl-shadow--2dp priorities__notbest">
+                          <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
+                            <div>
+                              <i class="material-icons icon__note">announcement</i>
                             </div>
-                            <div class="mdl-card__actions">
-                                <a class="mdl-button mdl-button--colored mdl-js-button
-                                          mdl-js-ripple-effect"
-                                   data-onclick="priorities">
-                                    Review Priorities
-                                </a>
-                            </div>
+                            <p>
+                              It looks like you rated some other outcome higher
+                              than your best 3 outcomes. Would you like to review
+                              your ratings now?
+                            </p>
+                          </div>
+                          <div class="mdl-card__actions">
+                            <a class="mdl-button mdl-button--colored mdl-js-button
+                                  mdl-js-ripple-effect"
+                               data-onclick="priorities">
+                              Review Priorities
+                            </a>
+                          </div>
                         </div>
-                    </div>
+                        <div class="mdl-card mdl-shadow--2dp priorities__notworst">
+                          <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
+                            <div>
+                              <i class="material-icons icon__note">announcement</i>
+                            </div>
+                            <p>
+                              It looks like you rated some other outcome lower
+                              than your worst 3 outcomes. Would you like to review
+                              your ratings now?
+                            </p>
+                          </div>
+                          <div class="mdl-card__actions">
+                            <a class="mdl-button mdl-button--colored mdl-js-button
+                                  mdl-js-ripple-effect"
+                               data-onclick="priorities">
+                              Review Priorities
+                            </a>
+                          </div>
+                        </div>
+                        <div class="mdl-card mdl-shadow--2dp priorities__limited">
+                          <div class="mdl-card__supporting-text mdl-typography--body-1-force-preferred-font">
+                            <div>
+                              <i class="material-icons icon__note">announcement</i>
+                            </div>
+                            <p>
+                              We can give you better advice if you
+                              pick a wider range of values for your priorities. Would
+                              you like to review them now?
+                            </p>
+                          </div>
+                          <div class="mdl-card__actions">
+                            <a class="mdl-button mdl-button--colored mdl-js-button
+                                  mdl-js-ripple-effect"
+                               data-onclick="priorities">
+                              Review Priorities
+                            </a>
+                          </div>
+                        </div>
+                   </div>
                 </section>
             </main>
 
@@ -2457,22 +2581,24 @@
             // State of the overall application that is shared by multiple
             // components.
 
-            var currentPanel = "welcome",   // active tab panel
-                hasInputChanged = false,    // has the user changed *any* input?
-                hasVisitedResults = false,  // has the user visisted a results panel?
-                hasPickedBest = false,      // has the user picked best outcomes?
-                hasPickedWorst = false,     // has the user picked worst outcomes?
-                areInputsValid = false,     // are all inputs valid?
-                areInputsSuspect = false,   // are inputs suspect?
-                doAmnio = false,            // is amnio recommended?
-                inputObjs = {},             // hash of all input objects
-                barObjs = {},               // hash of all bar objects
-                inputs = [],                // array of all input objects
-                infos = [],                 // array of all info objects
-                ratings = [],               // array of all rating objects
-                bestOutcomes = [],          // array of user's best outcomes
-                worstOutcomes = [],         // array of user's worst outcomes
-                resultGauge;                // the result gauge object
+            var currentPanel = "welcome",       // active tab panel
+                hasInputChanged = false,        // has the user changed *any* input?
+                hasVisitedResults = false,      // has the user visisted a results panel?
+                hasPickedBest = false,          // has the user picked best outcomes?
+                hasPickedWorst = false,         // has the user picked worst outcomes?
+                areInputsValid = false,         // are all inputs valid?
+                areInputsSuspect = false,       // are inputs suspect?
+                areBestInputsSuspect = false,   // are inputs suspect?
+                areWorstInputsSuspect = false,  // are inputs suspect?
+                doAmnio = false,                // is amnio recommended?
+                inputObjs = {},                 // hash of all input objects
+                barObjs = {},                   // hash of all bar objects
+                inputs = [],                    // array of all input objects
+                infos = [],                     // array of all info objects
+                ratings = [],                   // array of all rating objects
+                bestOutcomes = [],              // array of user's best outcomes
+                worstOutcomes = [],             // array of user's worst outcomes
+                resultGauge;                    // the result gauge object
 
             // ### Control the Web Worker for Computation
 
@@ -2604,6 +2730,19 @@
                 var maxRating = Math.max.apply(null, ratings.map(function(r) {
                     return r.value();})
                 );
+                var minBestRating = Math.min.apply(null, ratings.slice(0,3).map(function(r) {
+                  return r.value();})
+                );
+                var maxNotBestRating = Math.max.apply(null, ratings.slice(-6).map(function(r) {
+                  return r.value();})
+                );
+                var maxWorstRating = Math.max.apply(null, ratings.slice(-3).map(function(r) {
+                  return r.value();})
+                );
+                var minNotWorstRating = Math.min.apply(null, ratings.slice(0,6).map(function(r) {
+                  return r.value();})
+                );
+                
 
                 // Are all the inputs ready and valid?
                 areInputsValid = inputs.every(function(i) {
@@ -2620,6 +2759,10 @@
                 //   2. Every rating is an extreme.
                 areInputsSuspect = ((maxRating - minRating) < 4) ||
                     ratings.every(function(r) {return r.value() < 1 || r.value() > 9;});
+                    
+                // See if choices for best or worst outcomes are suspect
+                areBestInputsSuspect = maxNotBestRating > minBestRating;
+                areWorstInputsSuspect = minNotWorstRating < maxWorstRating;
 
             };
 
@@ -2665,6 +2808,8 @@
                 var body = document.getElementsByTagName("body")[0];
                 body.setAttribute("data-results-ready", areInputsValid);
                 body.setAttribute("data-priorities-limited", areInputsValid && areInputsSuspect);
+                body.setAttribute("data-priorities-notbest", areInputsValid && areBestInputsSuspect);
+                body.setAttribute("data-priorities-notworst", areInputsValid && areWorstInputsSuspect);
                 body.setAttribute("data-amnio", doAmnio);
 
                 var analysis = analysisAvailable();
@@ -3465,6 +3610,11 @@
                 );
 
                 // #### Restore Input State
+                
+                // Allow resetting saved values through URL
+                if (window.location.search.indexOf('reset') !== -1) {
+                    localStorage.clear();
+                }
 
                 // We defer execution of the actual restore code
                 // until the stack has unwound. That avoids any
