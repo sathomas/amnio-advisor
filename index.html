@@ -2594,6 +2594,7 @@
                 inputObjs = {},                 // hash of all input objects
                 barObjs = {},                   // hash of all bar objects
                 inputs = [],                    // array of all input objects
+                chkboxes = [],                  // array of all checkboxes
                 infos = [],                     // array of all info objects
                 ratings = [],                   // array of all rating objects
                 bestOutcomes = [],              // array of user's best outcomes
@@ -2911,6 +2912,7 @@
                     hasPickedBest = true;
                 }
                 updatePrioritiesState();
+                saveInputState();
             }
             
             var prevStep = function() {
@@ -2931,6 +2933,7 @@
                     hasPickedBest = false;
                 }
                 updatePrioritiesState();
+                saveInputState();
             }
 
             // Add listeners to appropriate elements for priority manangement
@@ -2957,6 +2960,13 @@
                             }
                         }
                     });
+                    chkboxes.forEach(function(c) {
+                        localStorage.setItem(c.id, JSON.stringify({
+                            'checked': c.checked,
+                            'className': c.parentNode.parentNode.className
+                        }));
+                        
+                    });
                     localStorage.bestOutcomes = JSON.stringify(bestOutcomes);
                     localStorage.worstOutcomes = JSON.stringify(worstOutcomes);
                     localStorage.hasPickedBest = JSON.stringify(hasPickedBest);
@@ -2976,10 +2986,23 @@
                             i.value(localStorage.getItem(i.id()));
                         }
                     });
+                    chkboxes.forEach(function(c) {
+                        var obj = JSON.parse(localStorage.getItem(c.id));
+                        if (obj && obj.checked) {
+                            c.parentNode.MaterialCheckbox.check();
+                        }
+                        c.parentNode.parentNode.className = (obj && obj.className) || c.parentNode.parentNode.className;
+                        
+                    });
                     bestOutcomes = localStorage.bestOutcomes ? JSON.parse(localStorage.bestOutcomes) : [];
                     worstOutcomes = localStorage.worstOutcomes ? JSON.parse(localStorage.worstOutcomes) : [];
                     hasPickedBest = localStorage.hasPickedBest ? JSON.parse(localStorage.hasPickedBest) : false;
                     hasPickedWorst = localStorage.hasPickedWorst ? JSON.parse(localStorage.hasPickedWorst) : false;
+
+                    updatePrioritiesState();
+                    if (hasPickedWorst) {
+                        setSliders();
+                    }
                 }
             };
 
@@ -3574,6 +3597,15 @@
                     obj.callback(inputChanged);
                 });
 
+                // ##### Initialize Priority Checkboxes
+                
+                [].slice.call(document.querySelectorAll("input[type='checkbox']")).
+                    forEach(function(el) {
+                        chkboxes.push(el);
+                    }
+                );
+
+
                 // ##### Initialize Rating Components
 
                 [].slice.call(document.getElementsByClassName("slider")).
@@ -3584,8 +3616,8 @@
                         // state as appropriate. It's both a generic input (so it goes
                         // in the `inputObjs` object and the `inputs` array), and a
                         // specific Rating object.
-//                        inputObjs[obj.id()] = obj;
-//                        inputs.push(obj);
+                        inputObjs[obj.id()] = obj;
+                        inputs.push(obj);
                         ratings.push(obj);
 
                         // Register our event handler if the user changes the input.
